@@ -135,15 +135,15 @@ export default function Home() {
               <div className="founder-sig">
                 <div className="founder-avatar">SA</div>
                 <div>
-                  <div className="founder-name">Saif Alqadessi</div>
-                  <div className="founder-title">CEO & Founder, idexi</div>
+                  <div className="founder-name">Saif Alqdessi</div>
+                  <div className="founder-title">Co-Founder, Tech Lead</div>
                 </div>
               </div>
               <div className="founder-sig">
                 <div className="founder-avatar">JA</div>
                 <div>
                   <div className="founder-name">Jafar Alkhadrawi</div>
-                  <div className="founder-title">CEO & Founder, idexi</div>
+                  <div className="founder-title">Co-Founder, Business Lead</div>
                 </div>
               </div>
             </div>
