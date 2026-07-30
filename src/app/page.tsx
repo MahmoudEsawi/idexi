@@ -9,6 +9,7 @@ import {
 import InteractiveWaves from "@/components/InteractiveWaves";
 import Hero from "@/components/Hero";
 import ServiceCard from "@/components/ServiceCard";
+import EventLifecycleTimeline from "@/components/EventLifecycleTimeline";
 
 export default function Home() {
   const [formData, setFormData] = useState({ name: "", email: "", company: "", service: "face", message: "" });
@@ -26,13 +27,6 @@ export default function Home() {
       setFormData({ name: "", email: "", company: "", service: "face", message: "" });
     }, 4000);
   };
-
-  const steps = [
-    { title: "Smart Pass Issuance", desc: "Attendees register and receive encrypted smart-passes with biometric profiles.", phase: "01", tag: "idexi Pass" },
-    { title: "Express Bio Check-In", desc: "Guests scan and verify at access points — zero bottlenecks, millisecond check-in.", phase: "02", tag: "idexi Pass" },
-    { title: "Crowd Analytics (Live)", desc: "Sensors assess crowd density, movement, and exit patterns dynamically.", phase: "03", tag: "idexi Flow" },
-    { title: "Instant Photo Delivery", desc: "AI matches faces across event photos, then instantly emails each guest their gallery.", phase: "04", tag: "idexi Face" },
-  ];
 
   const industries = [
     { name: "Corporate Summits", desc: "Express check-ins and live intelligence for high-profile events.", icon: ShieldCheck },
@@ -56,9 +50,9 @@ export default function Home() {
             <p>Three integrated products for photography delivery, queue reduction, and crowd analytics.</p>
           </div>
           <div className="services-grid">
-            <ServiceCard title="idexi Face" tagline="Attendee Delight" description="AI face recognition scans event photography in real-time, matching and auto-emailing attendees their personal gallery instantly." href="/services/face" Icon={Camera} badge="Popular" />
-            <ServiceCard title="idexi Flow" tagline="Operations & Safety" description="Crowd diagnostic telemetry monitors density, bottlenecks, and foot traffic to keep large-scale venues safe and running." href="/services/flow" Icon={Activity} badge="Enterprise" accentColor="#7b5cfa" />
-            <ServiceCard title="idexi Pass" tagline="Seamless Access" description="Digital registration and express check-in replaces ticketing lines with secure biometric scans and offline smart verification." href="/services/pass" Icon={Ticket} badge="New" accentColor="#34d399" />
+            <ServiceCard title="idexi Face" tagline="Attendee Delight" description="AI face recognition scans event photography in real-time, matching and auto-emailing attendees their personal gallery instantly." href="/services/face" Icon={Camera} badge="Popular" accentColor="var(--accent-face)" />
+            <ServiceCard title="idexi Flow" tagline="Operations & Safety" description="Crowd diagnostic telemetry monitors density, bottlenecks, and foot traffic to keep large-scale venues safe and running." href="/services/flow" Icon={Activity} badge="Enterprise" accentColor="var(--accent-flow)" />
+            <ServiceCard title="idexi Pass" tagline="Seamless Access" description="Digital registration and express check-in replaces ticketing lines with secure biometric scans and offline smart verification." href="/services/pass" Icon={Ticket} badge="New" accentColor="var(--accent-pass)" />
           </div>
         </div>
       </section>
@@ -70,17 +64,7 @@ export default function Home() {
             <h2>Integrated Event <span className="text-gradient">Lifecycle</span></h2>
             <p>Watch how our products connect to create a seamless attendee journey.</p>
           </div>
-          <div className="hiw-timeline">
-            {steps.map((s, i) => (
-              <div key={i} className="hiw-card glass-card">
-                <div className="hiw-num">{s.phase}</div>
-                <div className="hiw-tag">{s.tag}</div>
-                <h3>{s.title}</h3>
-                <p>{s.desc}</p>
-                {i < steps.length - 1 && <div className="hiw-connector" />}
-              </div>
-            ))}
-          </div>
+          <EventLifecycleTimeline />
         </div>
       </section>
 
@@ -262,48 +246,6 @@ const pageCSS = `
   .hiw-section {
     background: linear-gradient(180deg, rgba(6,9,32,0.4), transparent, rgba(6,9,32,0.4));
   }
-  .hiw-timeline {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-  }
-  .hiw-card {
-    position: relative;
-    padding: 2rem;
-  }
-  .hiw-card h3 {
-    font-size: 1.15rem;
-    color: #fff;
-    margin-bottom: 0.5rem;
-  }
-  .hiw-card p {
-    font-size: 0.9rem;
-    line-height: 1.55;
-  }
-  .hiw-num {
-    font-size: 3rem;
-    font-weight: 800;
-    font-family: var(--font-headings);
-    background: linear-gradient(135deg, rgba(49,196,243,0.2), rgba(49,196,243,0.05));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    line-height: 1;
-    margin-bottom: 0.5rem;
-  }
-  .hiw-tag {
-    font-size: 0.7rem;
-    font-weight: 600;
-    padding: 0.15rem 0.5rem;
-    border-radius: 6px;
-    background: rgba(255,255,255,0.04);
-    color: var(--text-secondary);
-    display: inline-block;
-    margin-bottom: 1rem;
-  }
-  .hiw-connector {
-    display: none; /* hidden on grid, only relevant in future linear layout */
-  }
-
   /* ═══ INDUSTRIES ═══ */
   .industries-grid {
     display: grid;
@@ -550,14 +492,12 @@ const pageCSS = `
   /* ═══ RESPONSIVE ═══ */
   @media (max-width: 1024px) {
     .services-grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
-    .hiw-timeline { grid-template-columns: repeat(2, 1fr); }
     .industries-grid { grid-template-columns: repeat(2, 1fr); }
     .stats-grid { grid-template-columns: repeat(2, 1fr); }
     .about-grid { grid-template-columns: 1fr; }
     .contact-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 600px) {
-    .hiw-timeline { grid-template-columns: 1fr; }
     .industries-grid { grid-template-columns: 1fr; }
     .stats-grid { grid-template-columns: 1fr; gap: 2.5rem; }
     .form-row { grid-template-columns: 1fr; }

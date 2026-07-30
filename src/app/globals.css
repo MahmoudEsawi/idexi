@@ -9,6 +9,11 @@
   --accent-cyan: #31c4f3;
   --accent-blue: #29377b;
   --accent-glow: rgba(49, 196, 243, 0.6);
+
+  /* Per-product accents — the one documented exception to the single-accent rule (see idexi-design-system skill) */
+  --accent-pass: #34d399;
+  --accent-flow: #7b5cfa;
+  --accent-face: var(--accent-cyan);
   --text-primary: #ffffff;
   --text-secondary: #a3b1e0;
   --text-muted: #5d6da8;
