@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import {
-  Camera, Activity, Ticket, ArrowRight, Sparkles, CheckCircle2,
+  Camera, Activity, Ticket, ArrowRight, Sparkles,
   ShieldCheck, Calendar, ChevronRight
 } from "lucide-react";
 import InteractiveWaves from "@/components/InteractiveWaves";
@@ -11,6 +11,7 @@ import Hero from "@/components/Hero";
 import ServiceCard from "@/components/ServiceCard";
 import EventLifecycleTimeline from "@/components/EventLifecycleTimeline";
 import VenueAccordion from "@/components/VenueAccordion";
+import FounderCard from "@/components/FounderCard";
 
 export default function Home() {
   const [formData, setFormData] = useState({ name: "", email: "", company: "", service: "face", message: "" });
@@ -96,32 +97,28 @@ export default function Home() {
         <div className="container about-grid">
           <div className="about-left">
             <h2>Our <span className="text-gradient">Story</span></h2>
-            <p>At idexi, we believe in frictionless gatherings. Events are for connection, yet organizers are bogged down by ticketing errors, crowd safety risks, and slow photo distribution.</p>
-            <p>We built an integrated suite of AI-first solutions to put intelligence back into physical spaces — powering events that feel entirely magic.</p>
-            <div className="founders-row">
-              <div className="founder-sig">
-                <div className="founder-avatar">SA</div>
-                <div>
-                  <div className="founder-name">Saif Alqdessi</div>
-                  <div className="founder-title">Co-Founder, Tech Lead</div>
-                </div>
-              </div>
-              <div className="founder-sig">
-                <div className="founder-avatar">JA</div>
-                <div>
-                  <div className="founder-name">Jafar Alkhadrawi</div>
-                  <div className="founder-title">Co-Founder, Business Lead</div>
-                </div>
-              </div>
-            </div>
+            <p>Born from 8 years of frontline experience in event management and media coverage, idexi was created by AI graduates Saif and Jafar to solve the industry&apos;s biggest friction points.</p>
+            <p>We merged deep event expertise with cutting-edge AI to eliminate ticketing errors and automate instant photo delivery — putting intelligence back into physical spaces to power events that feel entirely magic.</p>
           </div>
-          <div className="about-right glass-card">
-            <h3>Why Partners Choose Us</h3>
-            <ul className="about-list">
-              <li><CheckCircle2 size={18} /> <span>Edge Diagnostics — works during total network blackout.</span></li>
-              <li><CheckCircle2 size={18} /> <span>Privacy First — fully GDPR & CCPA compliant biometric caching.</span></li>
-              <li><CheckCircle2 size={18} /> <span>Seamless Integrations — plugs into your CRM, ticketing, or email provider.</span></li>
-            </ul>
+          <div className="about-right">
+            <div className="founders-grid">
+              <FounderCard
+                name="Saif Alqdessi"
+                role="Co-Founder, Tech Lead"
+                image="/saif.webp"
+                email="alqdessi.qp@gmail.com"
+                linkedin="https://www.linkedin.com/in/saif-alqdess"
+                index={0}
+              />
+              <FounderCard
+                name="Jafar Alkhadrawi"
+                role="Co-Founder, Business Lead"
+                image="/jafar.webp"
+                email="khadrawi.jafer@gmail.com"
+                linkedin="https://www.linkedin.com/in/jafar-alkhadrawi"
+                index={1}
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -285,54 +282,13 @@ const pageCSS = `
     font-size: 1.02rem;
     line-height: 1.7;
   }
-  .founders-row {
-    display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
-    margin-top: 1rem;
+  .about-right {
+    width: 100%;
   }
-  .founder-sig {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 1rem;
-  }
-  .founder-avatar {
-    width: 48px; height: 48px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 0.9rem;
-  }
-  .founder-name { font-weight: 700; color: #fff; font-size: 1rem; }
-  .founder-title { font-size: 0.8rem; color: var(--text-secondary); }
-  .about-right h3 {
-    font-family: var(--font-headings);
-    color: #fff;
-    margin-bottom: 1.5rem;
-  }
-  .about-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 1.4rem;
-  }
-  .about-list li {
-    display: flex;
-    gap: 0.75rem;
-    align-items: flex-start;
-    font-size: 0.95rem;
-    color: var(--text-secondary);
-    line-height: 1.55;
-  }
-  .about-list li svg {
-    color: var(--accent-cyan);
-    flex-shrink: 0;
-    margin-top: 2px;
+  .founders-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
   }
 
   /* ═══ CONTACT ═══ */

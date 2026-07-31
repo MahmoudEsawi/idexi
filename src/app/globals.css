@@ -14,6 +14,13 @@
   --accent-pass: #34d399;
   --accent-flow: #7b5cfa;
   --accent-face: var(--accent-cyan);
+
+  /* Functional/status colors — the other documented exception, used only for
+     live-data states (mockup chrome, verification badges), never decoratively */
+  --status-error: #ff5f56;
+  --status-warning: #ffbd2e;
+  --status-success: #27c93f;
+
   --text-primary: #ffffff;
   --text-secondary: #a3b1e0;
   --text-muted: #5d6da8;
@@ -498,7 +505,7 @@ section {
   padding: 0.25rem 0.6rem;
   border-radius: 6px;
   background: rgba(39, 201, 63, 0.1);
-  color: #27c93f;
+  color: var(--status-success);
 }
 .service-section {
   margin-bottom: 6rem;
@@ -589,6 +596,30 @@ section {
   font-size: 0.95rem;
   color: var(--text-secondary);
   line-height: 1.6;
+}
+
+/* Compact "who is it for" treatment — a chip row instead of a full card grid,
+   for pages where a fuller venue-type breakdown already exists elsewhere
+   (e.g. the homepage's Venue Accordion). Reuses .service-badge's pill styling. */
+.service-audience-compact .service-subsection-title {
+  margin-bottom: 1.5rem;
+}
+.service-audience-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.service-audience-chip {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(49, 196, 243, 0.08);
+  border: 1px solid rgba(49, 196, 243, 0.2);
+  border-radius: 9999px;
+  padding: 0.55rem 1.25rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: var(--font-headings);
 }
 
 /* FLOW SERVICE telemetries */
