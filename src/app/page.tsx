@@ -4,12 +4,13 @@ import React, { useState } from "react";
 import Link from "next/link";
 import {
   Camera, Activity, Ticket, ArrowRight, Sparkles, CheckCircle2,
-  Users, ShieldCheck, Calendar, Layers, ChevronRight
+  ShieldCheck, Calendar, ChevronRight
 } from "lucide-react";
 import InteractiveWaves from "@/components/InteractiveWaves";
 import Hero from "@/components/Hero";
 import ServiceCard from "@/components/ServiceCard";
 import EventLifecycleTimeline from "@/components/EventLifecycleTimeline";
+import VenueAccordion from "@/components/VenueAccordion";
 
 export default function Home() {
   const [formData, setFormData] = useState({ name: "", email: "", company: "", service: "face", message: "" });
@@ -27,13 +28,6 @@ export default function Home() {
       setFormData({ name: "", email: "", company: "", service: "face", message: "" });
     }, 4000);
   };
-
-  const industries = [
-    { name: "Corporate Summits", desc: "Express check-ins and live intelligence for high-profile events.", icon: ShieldCheck },
-    { name: "Music Festivals", desc: "Manage high-density gates and monitor safety in real-time.", icon: Users },
-    { name: "Conferences & Expos", desc: "Automate lead capture and attendee journey tracking.", icon: Layers },
-    { name: "Gala & Private Events", desc: "Automatic private photo albums delivered to each guest.", icon: Camera },
-  ];
 
   return (
     <>
@@ -75,18 +69,7 @@ export default function Home() {
             <h2>Engineered For <span className="text-gradient">Every Venue</span></h2>
             <p>From corporate conferences to heavy-traffic music festivals.</p>
           </div>
-          <div className="industries-grid">
-            {industries.map((ind, i) => {
-              const Icon = ind.icon;
-              return (
-                <div key={i} className="industry-card glass-card">
-                  <div className="ind-icon-box"><Icon size={22} /></div>
-                  <h3>{ind.name}</h3>
-                  <p>{ind.desc}</p>
-                </div>
-              );
-            })}
-          </div>
+          <VenueAccordion />
         </div>
       </section>
 
@@ -246,37 +229,6 @@ const pageCSS = `
   .hiw-section {
     background: linear-gradient(180deg, rgba(6,9,32,0.4), transparent, rgba(6,9,32,0.4));
   }
-  /* ═══ INDUSTRIES ═══ */
-  .industries-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-  }
-  .industry-card {
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-  }
-  .industry-card h3 {
-    font-size: 1.15rem;
-    color: #fff;
-  }
-  .industry-card p {
-    font-size: 0.9rem;
-    line-height: 1.55;
-  }
-  .ind-icon-box {
-    width: 46px; height: 46px;
-    border-radius: 12px;
-    background: rgba(49,196,243,0.06);
-    border: 1px solid rgba(49,196,243,0.12);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--accent-cyan);
-  }
-
   /* ═══ STATS ═══ */
   .stats-section {
     background: rgba(6,9,32,0.7);
@@ -492,13 +444,11 @@ const pageCSS = `
   /* ═══ RESPONSIVE ═══ */
   @media (max-width: 1024px) {
     .services-grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
-    .industries-grid { grid-template-columns: repeat(2, 1fr); }
     .stats-grid { grid-template-columns: repeat(2, 1fr); }
     .about-grid { grid-template-columns: 1fr; }
     .contact-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 600px) {
-    .industries-grid { grid-template-columns: 1fr; }
     .stats-grid { grid-template-columns: 1fr; gap: 2.5rem; }
     .form-row { grid-template-columns: 1fr; }
   }

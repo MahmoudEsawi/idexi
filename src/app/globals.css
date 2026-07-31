@@ -24,6 +24,9 @@
   --glass-border: rgba(49, 196, 243, 0.12);
   --glass-border-hover: rgba(49, 196, 243, 0.4);
 
+  /* Radius — the primary "panel" radius, previously hardcoded as 20px in .glass-card */
+  --radius-xl: 20px;
+
   /* Fonts */
   --font-headings: 'Sora', sans-serif;
   --font-body: 'Inter', sans-serif;
@@ -174,7 +177,7 @@ button, .btn {
 .glass-card {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  border-radius: 20px;
+  border-radius: var(--radius-xl);
   padding: 2.5rem;
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -196,7 +199,7 @@ button, .btn {
   height: 120px;
   background: radial-gradient(circle at top left, rgba(49, 196, 243, 0.1), transparent 70%);
   pointer-events: none;
-  border-radius: 20px 0 0 0;
+  border-radius: var(--radius-xl) 0 0 0;
 }
 
 .glass-card:hover {
