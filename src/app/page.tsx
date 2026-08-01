@@ -108,7 +108,6 @@ export default function Home() {
                 image="/saif.webp"
                 email="alqdessi.qp@gmail.com"
                 linkedin="https://www.linkedin.com/in/saif-alqdess"
-                index={0}
               />
               <FounderCard
                 name="Jafar Alkhadrawi"
@@ -116,7 +115,6 @@ export default function Home() {
                 image="/jafar.webp"
                 email="khadrawi.jafer@gmail.com"
                 linkedin="https://www.linkedin.com/in/jafar-alkhadrawi"
-                index={1}
               />
             </div>
           </div>
