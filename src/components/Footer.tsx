@@ -3,99 +3,151 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, Phone, MapPin, ArrowUpRight, Sparkles } from "lucide-react";
+import { useInViewOnce } from "@/hooks/useInViewOnce";
+
+// TODO: replace with official idexi company profile URLs
+const SOCIAL_LINKS = {
+  linkedin: "#",
+  instagram: "#",
+  x: "#",
+} as const;
+
+interface FooterLink {
+  label: string;
+  href: string;
+}
+
+interface FooterColumn {
+  title: string;
+  links: FooterLink[];
+}
+
+const footerColumns: FooterColumn[] = [
+  {
+    title: "Product",
+    links: [
+      { label: "idexi Pass", href: "/services/pass" },
+      { label: "idexi Flow", href: "/services/flow" },
+      { label: "idexi Face", href: "/services/face" },
+      { label: "How It Works", href: "/#how-it-works" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "Our Story", href: "/#about" },
+      { label: "Use Cases", href: "/#use-cases" },
+      { label: "Book a Demo", href: "/#contact" },
+    ],
+  },
+  {
+    title: "Resources",
+    links: [
+      { label: "FAQs", href: "/faqs" },
+      // Privacy Policy and Terms of Service slot in here once attorney-drafted
+      // biometric-compliance text exists — do not add /privacy or /terms yet.
+    ],
+  },
+];
+
+function LinkedInIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+    </svg>
+  );
+}
+
+function InstagramIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.336 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.86.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.645-1.44-1.44 0-.795.645-1.439 1.439-1.439.795 0 1.44.644 1.44 1.439z" />
+    </svg>
+  );
+}
+
+function XIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  );
+}
+
+const socialColumn: { label: string; href: string; icon: React.ReactNode }[] = [
+  { label: "LinkedIn", href: SOCIAL_LINKS.linkedin, icon: <LinkedInIcon /> },
+  { label: "Instagram", href: SOCIAL_LINKS.instagram, icon: <InstagramIcon /> },
+  { label: "X (Twitter)", href: SOCIAL_LINKS.x, icon: <XIcon /> },
+];
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
-
-  const handleScrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  const { ref, inView } = useInViewOnce<HTMLElement>(0.15);
 
   return (
-    <footer className="idexi-footer">
+    <footer
+      ref={ref}
+      className={`idexi-footer ${inView ? "idexi-footer-revealed" : ""}`}
+    >
       <style>{footerCSS}</style>
-      <div className="footer-glow" />
+      <div className="footer-glow" aria-hidden="true" />
+
       <div className="container footer-grid">
-        {/* Brand details */}
-        <div className="footer-brand-block">
-          <Link href="/" className="footer-logo-link">
-            <Image
-              src="/logo-white-horizontal.png"
-              alt="idexi — Intelligent Event Solutions"
-              width={160}
-              height={42}
-              style={{ height: "auto" }}
-            />
-          </Link>
-          <p className="footer-brand-desc">
-            Next-generation AI-powered event diagnostics, photography check-ins, and audience flow solutions.
+        <div className="footer-brand-col" style={{ "--stagger-idx": 0 } as React.CSSProperties}>
+          <Image
+            src="/logo-white-horizontal.png"
+            alt="idexi — Intelligent Event Solutions"
+            width={160}
+            height={41}
+            style={{ height: "auto" }}
+          />
+          <p className="footer-tagline">
+            AI-powered check-in, crowd intelligence, and photo delivery for live events.
           </p>
-          <div className="footer-socials-row">
-            <a href="#" aria-label="LinkedIn" className="footer-social-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                <rect x="2" y="9" width="4" height="12" />
-                <circle cx="4" cy="4" r="2" />
-              </svg>
-            </a>
-            <a href="#" aria-label="Twitter" className="footer-social-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
-              </svg>
-            </a>
-          </div>
+          <p className="footer-copyright">
+            &copy; {currentYear} idexi. All rights reserved.
+          </p>
         </div>
 
-        {/* Links Column 1: Products */}
-        <div className="footer-links-col">
-          <h4 className="footer-col-title">Solutions</h4>
-          <Link href="/services/face" className="footer-link">idexi Face <ArrowUpRight size={12} className="footer-link-arrow" /></Link>
-          <Link href="/services/flow" className="footer-link">idexi Flow <ArrowUpRight size={12} className="footer-link-arrow" /></Link>
-          <Link href="/services/pass" className="footer-link">idexi Pass <ArrowUpRight size={12} className="footer-link-arrow" /></Link>
-        </div>
-
-        {/* Links Column 2: Platform */}
-        <div className="footer-links-col">
-          <h4 className="footer-col-title">Platform</h4>
-          <a href="/#how-it-works" className="footer-link">How It Works</a>
-          <a href="/#use-cases" className="footer-link">Use Cases</a>
-          <a href="/#about" className="footer-link">About Us</a>
-          <a href="/#contact" className="footer-link">Book a Demo</a>
-        </div>
-
-        {/* Links Column 3: Contact details */}
-        <div className="footer-links-col">
-          <h4 className="footer-col-title">Get in Touch</h4>
-          <div className="footer-contact-item">
-            <Mail size={16} style={{ color: "var(--accent-cyan)" }} />
-            <a href="mailto:hello@idexi.ai" className="footer-contact-link">hello@idexi.ai</a>
+        {footerColumns.map((column, i) => (
+          <div
+            className="footer-col"
+            key={column.title}
+            style={{ "--stagger-idx": i + 1 } as React.CSSProperties}
+          >
+            <h3 className="footer-col-title">{column.title}</h3>
+            <ul className="footer-link-list">
+              {column.links.map((link) => (
+                <li key={link.label}>
+                  <Link href={link.href} className="footer-link">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className="footer-contact-item">
-            <Phone size={16} style={{ color: "var(--accent-cyan)" }} />
-            <span style={{ color: "var(--text-secondary)" }}>+1 (555) 019-2831</span>
-          </div>
-          <div className="footer-contact-item">
-            <MapPin size={16} style={{ color: "var(--accent-cyan)" }} />
-            <span style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>San Francisco, CA</span>
-          </div>
-        </div>
-      </div>
+        ))}
 
-      {/* Divider */}
-      <div className="footer-divider" />
-
-      {/* Bottom Footer */}
-      <div className="container footer-bottom-row">
-        <span className="footer-copyright">
-          &copy; {currentYear} idexi. All rights reserved. Powered by AI.
-        </span>
-        <div className="footer-bottom-links">
-          <a href="#" className="footer-bottom-link">Privacy Policy</a>
-          <a href="#" className="footer-bottom-link">Terms of Service</a>
-          <button onClick={handleScrollToTop} className="footer-scroll-top-btn">
-            Back to top ↑
-          </button>
+        <div
+          className="footer-col"
+          style={{ "--stagger-idx": footerColumns.length + 1 } as React.CSSProperties}
+        >
+          <h3 className="footer-col-title">Social Links</h3>
+          <ul className="footer-link-list">
+            {socialColumn.map((social) => (
+              <li key={social.label}>
+                <a
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer-link footer-social-link"
+                >
+                  {social.icon}
+                  {social.label}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </footer>
@@ -104,178 +156,130 @@ export default function Footer() {
 
 const footerCSS = `
   .idexi-footer {
+    position: relative;
+    overflow: hidden;
+    /* <body> is display:flex; flex-direction:column with height:100% (globals.css),
+       and <main> is flex:1 with content taller than the viewport. A flex item's
+       automatic minimum size (which normally protects it from shrinking below its
+       own content) is suppressed by the spec whenever that item's own overflow is
+       non-visible — so overflow:hidden here (needed to contain the blurred glow)
+       silently made the footer free to collapse toward zero instead of its actual
+       ~250px of grid content. flex-shrink:0 overrides that: never shrink below
+       natural size, regardless of the overflow-disables-auto-min-size interaction. */
+    flex-shrink: 0;
     background: rgba(11, 18, 50, 0.45);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-top: 1px solid rgba(49, 196, 243, 0.15);
-    padding: 5rem 1.5rem 2rem 1.5rem;
-    position: relative;
-    overflow: hidden;
+    border-top: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    padding: 4rem 1.5rem 2.5rem;
   }
   .footer-glow {
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 600px;
-    height: 150px;
-    background: radial-gradient(ellipse at top, rgba(49, 196, 243, 0.12) 0%, transparent 70%);
+    width: 500px;
+    height: 120px;
+    background: radial-gradient(ellipse at top, var(--accent-glow) 0%, transparent 70%);
+    opacity: 0.35;
+    filter: blur(12px);
     pointer-events: none;
-    z-index: 0;
   }
   .footer-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1.2fr;
-    gap: 3rem;
     position: relative;
     z-index: 1;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    gap: 2.5rem;
   }
-  .footer-brand-block {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
+  .footer-brand-col,
+  .footer-col {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateY(-8px);
+    transition: opacity 0.8s ease, filter 0.8s ease, transform 0.8s ease;
+    transition-delay: calc(var(--stagger-idx, 0) * 100ms + 100ms);
   }
-  .footer-logo-link {
-    display: inline-block;
+  .idexi-footer-revealed .footer-brand-col,
+  .idexi-footer-revealed .footer-col {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
   }
-  .footer-brand-desc {
-    font-size: 0.95rem;
-    color: var(--text-secondary);
-    max-width: 320px;
+  .footer-tagline {
+    margin-top: 1rem;
+    max-width: 300px;
+    font-size: 0.92rem;
     line-height: 1.6;
-  }
-  .footer-socials-row {
-    display: flex;
-    gap: 0.75rem;
-  }
-  .footer-social-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(49, 196, 243, 0.15);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     color: var(--text-secondary);
-    transition: var(--transition-smooth);
   }
-  .footer-social-icon:hover {
-    color: #ffffff;
-    border-color: var(--accent-cyan);
-    background: rgba(49, 196, 243, 0.1);
-    box-shadow: 0 0 16px rgba(49, 196, 243, 0.3);
-    transform: translateY(-2px);
-  }
-  .footer-links-col {
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
+  .footer-copyright {
+    margin-top: 1.5rem;
+    font-size: 0.82rem;
+    color: var(--text-muted);
   }
   .footer-col-title {
-    font-size: 1rem;
+    font-family: var(--font-headings);
+    font-size: 0.85rem;
     font-weight: 700;
-    color: #ffffff;
-    margin-bottom: 0.5rem;
-    position: relative;
+    letter-spacing: 0.04em;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+  .footer-link-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
   }
   .footer-link {
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-    transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.5rem;
+    min-height: 44px;
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    transition: color 0.25s ease;
   }
   .footer-link:hover {
     color: var(--accent-cyan);
   }
-  .footer-link-arrow {
-    opacity: 0;
-    transform: translate(-2px, 2px);
-    transition: all 0.2s ease;
+  .footer-link:focus-visible {
+    outline: 2px solid var(--accent-cyan);
+    outline-offset: 3px;
+    border-radius: 4px;
   }
-  .footer-link:hover .footer-link-arrow {
-    opacity: 1;
-    transform: translate(0, 0);
-  }
-  .footer-contact-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-  .footer-contact-link {
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-    transition: all 0.2s ease;
-  }
-  .footer-contact-link:hover {
-    color: var(--accent-cyan);
-  }
-  .footer-divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(49, 196, 243, 0.15), transparent);
-    margin: 3rem 0 2rem 0;
-  }
-  .footer-bottom-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    position: relative;
-    z-index: 1;
-  }
-  .footer-copyright {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-  }
-  .footer-bottom-links {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-  }
-  .footer-bottom-link {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    transition: color 0.2s ease;
-  }
-  .footer-bottom-link:hover {
-    color: var(--accent-cyan);
-  }
-  .footer-scroll-top-btn {
-    background: transparent;
-    border: none;
-    color: var(--accent-cyan);
-    font-size: 0.85rem;
-    cursor: pointer;
-    font-weight: 600;
-    transition: color 0.2s ease;
-  }
-  .footer-scroll-top-btn:hover {
-    color: #ffffff;
+  .footer-social-link svg {
+    flex-shrink: 0;
   }
 
-  @media (max-width: 991px) {
+  @media (prefers-reduced-motion: reduce) {
+    .footer-brand-col,
+    .footer-col {
+      transition: none !important;
+      opacity: 1 !important;
+      filter: blur(0) !important;
+      transform: translateY(0) !important;
+    }
+  }
+
+  @media (max-width: 1024px) {
     .footer-grid {
       grid-template-columns: 1fr 1fr;
-      gap: 2.5rem;
+    }
+    .footer-brand-col {
+      grid-column: 1 / -1;
     }
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 767px) {
     .footer-grid {
       grid-template-columns: 1fr;
-      gap: 2rem;
+      gap: 2.25rem;
     }
-    .footer-bottom-row {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1rem;
+    .footer-brand-col {
+      grid-column: auto;
     }
   }
 `;
-

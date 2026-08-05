@@ -3,12 +3,15 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import {
-  Camera, Activity, Ticket, ArrowRight, Sparkles, CheckCircle2,
-  Users, ShieldCheck, Calendar, Layers, ChevronRight
+  Camera, Activity, Ticket, ArrowRight, Sparkles,
+  ShieldCheck, Calendar, ChevronRight
 } from "lucide-react";
 import InteractiveWaves from "@/components/InteractiveWaves";
 import Hero from "@/components/Hero";
 import ServiceCard from "@/components/ServiceCard";
+import EventLifecycleTimeline from "@/components/EventLifecycleTimeline";
+import VenueAccordion from "@/components/VenueAccordion";
+import FounderCard from "@/components/FounderCard";
 
 export default function Home() {
   const [formData, setFormData] = useState({ name: "", email: "", company: "", service: "face", message: "" });
@@ -27,20 +30,6 @@ export default function Home() {
     }, 4000);
   };
 
-  const steps = [
-    { title: "Smart Pass Issuance", desc: "Attendees register and receive encrypted smart-passes with biometric profiles.", phase: "01", tag: "idexi Pass" },
-    { title: "Express Bio Check-In", desc: "Guests scan and verify at access points — zero bottlenecks, millisecond check-in.", phase: "02", tag: "idexi Pass" },
-    { title: "Crowd Analytics (Live)", desc: "Sensors assess crowd density, movement, and exit patterns dynamically.", phase: "03", tag: "idexi Flow" },
-    { title: "Instant Photo Delivery", desc: "AI matches faces across event photos, then instantly emails each guest their gallery.", phase: "04", tag: "idexi Face" },
-  ];
-
-  const industries = [
-    { name: "Corporate Summits", desc: "Express check-ins and live intelligence for high-profile events.", icon: ShieldCheck },
-    { name: "Music Festivals", desc: "Manage high-density gates and monitor safety in real-time.", icon: Users },
-    { name: "Conferences & Expos", desc: "Automate lead capture and attendee journey tracking.", icon: Layers },
-    { name: "Gala & Private Events", desc: "Automatic private photo albums delivered to each guest.", icon: Camera },
-  ];
-
   return (
     <>
       <style>{pageCSS}</style>
@@ -56,9 +45,9 @@ export default function Home() {
             <p>Three integrated products for photography delivery, queue reduction, and crowd analytics.</p>
           </div>
           <div className="services-grid">
-            <ServiceCard title="idexi Face" tagline="Attendee Delight" description="AI face recognition scans event photography in real-time, matching and auto-emailing attendees their personal gallery instantly." href="/services/face" Icon={Camera} badge="Popular" />
-            <ServiceCard title="idexi Flow" tagline="Operations & Safety" description="Crowd diagnostic telemetry monitors density, bottlenecks, and foot traffic to keep large-scale venues safe and running." href="/services/flow" Icon={Activity} badge="Enterprise" accentColor="#7b5cfa" />
-            <ServiceCard title="idexi Pass" tagline="Seamless Access" description="Digital registration and express check-in replaces ticketing lines with secure biometric scans and offline smart verification." href="/services/pass" Icon={Ticket} badge="New" accentColor="#34d399" />
+            <ServiceCard title="idexi Face" tagline="Attendee Delight" description="AI face recognition scans event photography in real-time, matching and auto-emailing attendees their personal gallery instantly." href="/services/face" Icon={Camera} badge="Popular" accentColor="var(--accent-face)" />
+            <ServiceCard title="idexi Flow" tagline="Operations & Safety" description="Crowd diagnostic telemetry monitors density, bottlenecks, and foot traffic to keep large-scale venues safe and running." href="/services/flow" Icon={Activity} badge="Enterprise" accentColor="var(--accent-flow)" />
+            <ServiceCard title="idexi Pass" tagline="Seamless Access" description="Digital registration and express check-in replaces ticketing lines with secure biometric scans and offline smart verification." href="/services/pass" Icon={Ticket} badge="New" accentColor="var(--accent-pass)" />
           </div>
         </div>
       </section>
@@ -70,17 +59,7 @@ export default function Home() {
             <h2>Integrated Event <span className="text-gradient">Lifecycle</span></h2>
             <p>Watch how our products connect to create a seamless attendee journey.</p>
           </div>
-          <div className="hiw-timeline">
-            {steps.map((s, i) => (
-              <div key={i} className="hiw-card glass-card">
-                <div className="hiw-num">{s.phase}</div>
-                <div className="hiw-tag">{s.tag}</div>
-                <h3>{s.title}</h3>
-                <p>{s.desc}</p>
-                {i < steps.length - 1 && <div className="hiw-connector" />}
-              </div>
-            ))}
-          </div>
+          <EventLifecycleTimeline />
         </div>
       </section>
 
@@ -91,18 +70,7 @@ export default function Home() {
             <h2>Engineered For <span className="text-gradient">Every Venue</span></h2>
             <p>From corporate conferences to heavy-traffic music festivals.</p>
           </div>
-          <div className="industries-grid">
-            {industries.map((ind, i) => {
-              const Icon = ind.icon;
-              return (
-                <div key={i} className="industry-card glass-card">
-                  <div className="ind-icon-box"><Icon size={22} /></div>
-                  <h3>{ind.name}</h3>
-                  <p>{ind.desc}</p>
-                </div>
-              );
-            })}
-          </div>
+          <VenueAccordion />
         </div>
       </section>
 
@@ -129,32 +97,26 @@ export default function Home() {
         <div className="container about-grid">
           <div className="about-left">
             <h2>Our <span className="text-gradient">Story</span></h2>
-            <p>At idexi, we believe in frictionless gatherings. Events are for connection, yet organizers are bogged down by ticketing errors, crowd safety risks, and slow photo distribution.</p>
-            <p>We built an integrated suite of AI-first solutions to put intelligence back into physical spaces — powering events that feel entirely magic.</p>
-            <div className="founders-row">
-              <div className="founder-sig">
-                <div className="founder-avatar">SA</div>
-                <div>
-                  <div className="founder-name">Saif Alqdessi</div>
-                  <div className="founder-title">Co-Founder, Tech Lead</div>
-                </div>
-              </div>
-              <div className="founder-sig">
-                <div className="founder-avatar">JA</div>
-                <div>
-                  <div className="founder-name">Jafar Alkhadrawi</div>
-                  <div className="founder-title">Co-Founder, Business Lead</div>
-                </div>
-              </div>
-            </div>
+            <p>Born from 8 years of frontline experience in event management and media coverage, idexi was created by AI graduates Saif and Jafar to solve the industry&apos;s biggest friction points.</p>
+            <p>We merged deep event expertise with cutting-edge AI to eliminate ticketing errors and automate instant photo delivery — putting intelligence back into physical spaces to power events that feel entirely magic.</p>
           </div>
-          <div className="about-right glass-card">
-            <h3>Why Partners Choose Us</h3>
-            <ul className="about-list">
-              <li><CheckCircle2 size={18} /> <span>Edge Diagnostics — works during total network blackout.</span></li>
-              <li><CheckCircle2 size={18} /> <span>Privacy First — fully GDPR & CCPA compliant biometric caching.</span></li>
-              <li><CheckCircle2 size={18} /> <span>Seamless Integrations — plugs into your CRM, ticketing, or email provider.</span></li>
-            </ul>
+          <div className="about-right">
+            <div className="founders-grid">
+              <FounderCard
+                name="Saif Alqdessi"
+                role="Co-Founder, Tech Lead"
+                image="/saif.webp"
+                email="alqdessi.qp@gmail.com"
+                linkedin="https://www.linkedin.com/in/saif-alqdess"
+              />
+              <FounderCard
+                name="Jafar Alkhadrawi"
+                role="Co-Founder, Business Lead"
+                image="/jafar.webp"
+                email="khadrawi.jafer@gmail.com"
+                linkedin="https://www.linkedin.com/in/jafar-alkhadrawi"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -262,79 +224,6 @@ const pageCSS = `
   .hiw-section {
     background: linear-gradient(180deg, rgba(6,9,32,0.4), transparent, rgba(6,9,32,0.4));
   }
-  .hiw-timeline {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-  }
-  .hiw-card {
-    position: relative;
-    padding: 2rem;
-  }
-  .hiw-card h3 {
-    font-size: 1.15rem;
-    color: #fff;
-    margin-bottom: 0.5rem;
-  }
-  .hiw-card p {
-    font-size: 0.9rem;
-    line-height: 1.55;
-  }
-  .hiw-num {
-    font-size: 3rem;
-    font-weight: 800;
-    font-family: var(--font-headings);
-    background: linear-gradient(135deg, rgba(49,196,243,0.2), rgba(49,196,243,0.05));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    line-height: 1;
-    margin-bottom: 0.5rem;
-  }
-  .hiw-tag {
-    font-size: 0.7rem;
-    font-weight: 600;
-    padding: 0.15rem 0.5rem;
-    border-radius: 6px;
-    background: rgba(255,255,255,0.04);
-    color: var(--text-secondary);
-    display: inline-block;
-    margin-bottom: 1rem;
-  }
-  .hiw-connector {
-    display: none; /* hidden on grid, only relevant in future linear layout */
-  }
-
-  /* ═══ INDUSTRIES ═══ */
-  .industries-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-  }
-  .industry-card {
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-  }
-  .industry-card h3 {
-    font-size: 1.15rem;
-    color: #fff;
-  }
-  .industry-card p {
-    font-size: 0.9rem;
-    line-height: 1.55;
-  }
-  .ind-icon-box {
-    width: 46px; height: 46px;
-    border-radius: 12px;
-    background: rgba(49,196,243,0.06);
-    border: 1px solid rgba(49,196,243,0.12);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--accent-cyan);
-  }
-
   /* ═══ STATS ═══ */
   .stats-section {
     background: rgba(6,9,32,0.7);
@@ -391,54 +280,13 @@ const pageCSS = `
     font-size: 1.02rem;
     line-height: 1.7;
   }
-  .founders-row {
-    display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
-    margin-top: 1rem;
+  .about-right {
+    width: 100%;
   }
-  .founder-sig {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 1rem;
-  }
-  .founder-avatar {
-    width: 48px; height: 48px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 0.9rem;
-  }
-  .founder-name { font-weight: 700; color: #fff; font-size: 1rem; }
-  .founder-title { font-size: 0.8rem; color: var(--text-secondary); }
-  .about-right h3 {
-    font-family: var(--font-headings);
-    color: #fff;
-    margin-bottom: 1.5rem;
-  }
-  .about-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 1.4rem;
-  }
-  .about-list li {
-    display: flex;
-    gap: 0.75rem;
-    align-items: flex-start;
-    font-size: 0.95rem;
-    color: var(--text-secondary);
-    line-height: 1.55;
-  }
-  .about-list li svg {
-    color: var(--accent-cyan);
-    flex-shrink: 0;
-    margin-top: 2px;
+  .founders-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
   }
 
   /* ═══ CONTACT ═══ */
@@ -550,15 +398,11 @@ const pageCSS = `
   /* ═══ RESPONSIVE ═══ */
   @media (max-width: 1024px) {
     .services-grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
-    .hiw-timeline { grid-template-columns: repeat(2, 1fr); }
-    .industries-grid { grid-template-columns: repeat(2, 1fr); }
     .stats-grid { grid-template-columns: repeat(2, 1fr); }
     .about-grid { grid-template-columns: 1fr; }
     .contact-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 600px) {
-    .hiw-timeline { grid-template-columns: 1fr; }
-    .industries-grid { grid-template-columns: 1fr; }
     .stats-grid { grid-template-columns: 1fr; gap: 2.5rem; }
     .form-row { grid-template-columns: 1fr; }
   }

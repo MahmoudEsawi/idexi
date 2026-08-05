@@ -42,3 +42,29 @@ next-env.d.ts
 
 # local agents configs
 .agents/
+
+# =========================
+# AI Tools & Local Settings
+# =========================
+.claude/
+.cursor/
+.vscode/
+
+# =========================
+# Graphify & Analysis Logs
+# =========================
+graphify-out/
+*.graphify*
+GRAPH_REPORT.md
+cost.json
+
+# =========================
+# Temporary, Debug & Fix Scripts
+# =========================
+*fix*.py
+*test*.py
+*debug*.py
+*scratchpad*
+*.log
+tmp/
+temp/
