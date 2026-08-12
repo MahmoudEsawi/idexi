@@ -1,437 +1,346 @@
 "use client";
 
-import React, { useRef, useState } from "react";
-import Link from "next/link";
+import React, { useState } from "react";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
 interface Venue {
+  code: string;
   name: string;
   desc: string;
   image: string;
-  alt: string;
 }
 
 const venues: Venue[] = [
   {
+    code: "01",
     name: "Corporate Summits",
-    desc: "Express check-ins and live intelligence for high-profile events.",
+    desc: "Express biometric check-in and live executive audience analytics.",
     image: "/1.-Corporate-Summits.webp",
-    alt: "Executives networking on stage at a corporate conference",
   },
   {
+    code: "02",
     name: "Music Festivals",
-    desc: "Manage high-density gates and monitor safety in real-time.",
+    desc: "Manage high-density gate surges and monitor real-time crowd telemetry.",
     image: "/2.-Music-Festivals.webp",
-    alt: "A dense festival crowd facing a brightly lit stage at night",
   },
   {
+    code: "03",
     name: "University Events",
-    desc: "Handle graduation crowds and get every student their photos.",
+    desc: "Commencement crowds handled seamlessly with instant ceremony photos.",
     image: "/5.-Universities-_-Graduations.webp",
-    alt: "Graduates in caps and gowns celebrating at a commencement ceremony",
   },
   {
+    code: "04",
     name: "Conferences & Expos",
-    desc: "Automate lead capture and attendee journey tracking.",
+    desc: "Automate biometric lead delivery and booth foot-traffic metrics.",
     image: "/3.-Conferences-_-Expos.webp",
-    alt: "Attendees browsing exhibitor booths on a busy expo floor",
   },
   {
+    code: "05",
     name: "Gala & Private Events",
-    desc: "Automatic private photo albums delivered to each guest.",
+    desc: "Deliver instant high-res photo galleries directly to VIP guests.",
     image: "/4.-Gala-_-Private-Events.webp",
-    alt: "Guests in formal attire mingling at an elegant evening gala",
   },
 ];
 
 export default function VenueAccordion() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
-
   const active = venues[activeIndex];
-
-  const canHoverActivate = () =>
-    typeof window !== "undefined" &&
-    window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-
-  const handleMouseEnter = (index: number) => {
-    if (canHoverActivate()) setActiveIndex(index);
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    const focusIndex = buttonRefs.current.findIndex((btn) => btn === document.activeElement);
-    if (focusIndex === -1) return;
-
-    let nextIndex: number | null = null;
-    if (event.key === "ArrowRight") {
-      nextIndex = (focusIndex + 1) % venues.length;
-    } else if (event.key === "ArrowLeft") {
-      nextIndex = (focusIndex - 1 + venues.length) % venues.length;
-    }
-    if (nextIndex === null) return;
-
-    event.preventDefault();
-    setActiveIndex(nextIndex);
-    buttonRefs.current[nextIndex]?.focus();
-  };
 
   return (
     <>
-      <style>{venueCSS}</style>
-      <div className="venue-layout">
-        {/* Desktop/tablet: static eyebrow + CTA, dynamic name/description */}
-        <div className="venue-left">
-          <span className="venue-eyebrow">Venue Types</span>
-          <div className="venue-dynamic">
-            <h3 className="venue-name" aria-live="polite">
-              {active.name}
-            </h3>
-            <p className="venue-desc" aria-live="polite">
-              {active.desc}
-            </p>
-          </div>
-          <Link href="/#contact" className="btn btn-primary venue-cta">
-            Book a Demo <ArrowRight size={16} />
-          </Link>
+      <style>{venueOverlayCSS}</style>
+      <div className="venue-photo-section">
+        {/* Full-Bleed Background Photo */}
+        <div className="venue-bg-media">
+          <Image
+            src={active.image}
+            alt={active.name}
+            fill
+            priority
+            className="venue-bg-img"
+          />
+          <div className="venue-bg-overlay" />
         </div>
 
-        <div
-          className="venue-accordion"
-          role="tablist"
-          aria-label="Venue types"
-          aria-orientation="horizontal"
-          onKeyDown={handleKeyDown}
-        >
-          {venues.map((venue, i) => {
-            const isActive = i === activeIndex;
-            const tabId = `venue-tab-${i}`;
-            const panelId = `venue-panel-${i}`;
+        <div className="container venue-photo-container">
+          {/* Top Bar Overlaid Directly On Photo */}
+          <div className="venue-overlay-top-bar">
+            <span className="overlay-tag-pill">CHOOSE YOUR VENUE ●</span>
+            <span className="overlay-tag-center">VENUE INTELLIGENCE</span>
+            <span className="overlay-tag-right text-lime">IDEXI AI</span>
+          </div>
 
-            return (
-              <div className={`venue-panel-group ${isActive ? "venue-panel-active" : ""}`} key={venue.name}>
-                <button
-                  ref={(el) => {
-                    buttonRefs.current[i] = el;
-                  }}
-                  id={tabId}
-                  role="tab"
-                  type="button"
-                  aria-selected={isActive}
-                  aria-controls={panelId}
-                  tabIndex={isActive ? 0 : -1}
-                  className="venue-panel"
-                  onClick={() => setActiveIndex(i)}
-                  onMouseEnter={() => handleMouseEnter(i)}
-                  onFocus={() => setActiveIndex(i)}
-                >
-                  <div className="venue-panel-media">
-                    <Image
-                      src={venue.image}
-                      alt={venue.alt}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 740px, 520px"
-                      className="venue-panel-img"
-                      loading={i === 0 ? undefined : "lazy"}
-                      priority={i === 0}
-                    />
-                    <div className="venue-panel-overlay" aria-hidden="true" />
-                    <div className="venue-panel-text-scrim" aria-hidden="true" />
-                  </div>
-                  <span className="venue-panel-label-wrap">
-                    <span className="venue-panel-label">{venue.name}</span>
-                  </span>
-                </button>
+          {/* Huge Split Headline Overlaid Directly On Photo */}
+          <div className="venue-overlay-split-headline">
+            <span className="split-word">Elevate</span>
+            <span className="split-word text-lime">Your</span>
+            <span className="split-word">Event</span>
+            <span className="split-word text-lime">Experience</span>
+          </div>
 
-                {/* Mobile-only: description expands inline beneath this panel's own row */}
-                <div id={panelId} role="tabpanel" aria-labelledby={tabId} className="venue-panel-mobile">
-                  <div className="venue-panel-mobile-inner">
-                    <p>{venue.desc}</p>
-                  </div>
-                </div>
+          {/* Bottom Bar Overlaid Directly On Photo */}
+          <div className="venue-overlay-bottom-bar">
+            {/* Left Action Button & Active Spec */}
+            <div className="venue-overlay-left">
+              <div className="active-venue-meta">
+                <span className="meta-code text-lime">VENUE #{active.code}</span>
+                <h3 className="meta-title">{active.name}</h3>
+                <p className="meta-desc">{active.desc}</p>
               </div>
-            );
-          })}
+
+              <Link href="/#contact" className="btn btn-lime venue-overlay-btn">
+                BOOK A DEMO <ArrowUpRight size={16} />
+              </Link>
+            </div>
+
+            {/* Right Thumbnails Overlaid Directly On Photo */}
+            <div className="venue-thumbnails-grid">
+              {venues.map((v, i) => (
+                <button
+                  key={v.code}
+                  className={`venue-thumb-card ${i === activeIndex ? "active" : ""}`}
+                  onClick={() => setActiveIndex(i)}
+                  onMouseEnter={() => setActiveIndex(i)}
+                >
+                  <div className="thumb-img-wrap">
+                    <Image src={v.image} alt={v.name} fill className="thumb-img" />
+                  </div>
+                  <div className="thumb-info">
+                    <span className="thumb-code text-lime">#{v.code}</span>
+                    <span className="thumb-title">{v.name}</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </>
   );
 }
 
-const venueCSS = `
-  .venue-layout {
+const venueOverlayCSS = `
+  .venue-photo-section {
+    position: relative;
+    min-height: 85vh;
     display: flex;
-    align-items: stretch;
+    align-items: center;
+    padding: 6rem 0;
+    overflow: hidden;
+    background: #07080b;
+  }
+
+  .venue-bg-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .venue-bg-img {
+    object-fit: cover;
+    filter: grayscale(80%) contrast(120%) brightness(0.45);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .venue-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(7, 8, 11, 0.75) 0%, rgba(7, 8, 11, 0.45) 50%, rgba(7, 8, 11, 0.95) 100%);
+  }
+
+  .venue-photo-container {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 70vh;
     gap: 3rem;
   }
 
-  /* ═══ LEFT COLUMN ═══ */
-  .venue-left {
-    flex: 0 0 340px;
+  /* Top Bar */
+  .venue-overlay-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .overlay-tag-pill {
+    font-family: var(--font-headings);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: #ffffff;
+    background: rgba(13, 15, 20, 0.75);
+    border: 1px solid var(--grid-line);
+    backdrop-filter: blur(10px);
+    padding: 0.45rem 1.1rem;
+    border-radius: 99px;
+  }
+
+  .overlay-tag-center {
+    font-family: var(--font-headings);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+  }
+
+  .overlay-tag-right {
+    font-family: var(--font-headings);
+    font-size: 0.85rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+  }
+
+  /* Giant Split Headline Overlaid Directly On Photo */
+  .venue-overlay-split-headline {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    text-align: center;
+    width: 100%;
+    margin: 1.5rem 0;
+  }
+
+  .split-word {
+    font-family: var(--font-headings);
+    font-size: clamp(1.4rem, 3.1vw, 3.8rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: #ffffff;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* Bottom Bar */
+  .venue-overlay-bottom-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 3rem;
+  }
+
+  .venue-overlay-left {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    max-width: 380px;
   }
-  .venue-eyebrow {
-    font-family: var(--font-headings);
-    font-weight: 700;
-    font-size: 0.78rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent-cyan);
-  }
-  .venue-dynamic {
+
+  .active-venue-meta {
     display: flex;
     flex-direction: column;
-    gap: 0.85rem;
-    /* Sized to the longest name + longest description in this set so switching
-       venues never shifts the CTA below it. */
-    min-height: 190px;
+    gap: 0.4rem;
   }
-  .venue-name {
-    font-size: 1.6rem;
+
+  .meta-code {
+    font-family: var(--font-headings);
+    font-size: 0.75rem;
     font-weight: 800;
-    color: var(--text-primary);
+    letter-spacing: 0.08em;
   }
-  .venue-desc {
-    font-size: 1rem;
-    line-height: 1.65;
+
+  .meta-title {
+    font-family: var(--font-headings);
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #ffffff;
+    text-transform: uppercase;
+  }
+
+  .meta-desc {
+    font-size: 0.9rem;
     color: var(--text-secondary);
+    line-height: 1.5;
   }
-  .venue-cta {
+
+  .venue-overlay-btn {
     align-self: flex-start;
   }
 
-  /* ═══ ACCORDION ═══ */
-  .venue-accordion {
-    flex: 1;
+  /* Right Thumbnails Overlaid Directly On Photo */
+  .venue-thumbnails-grid {
     display: flex;
-    align-items: stretch;
-    gap: 0.85rem;
-    height: 440px;
-    min-width: 0;
+    gap: 0.8rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
   }
-  .venue-panel-group {
-    position: relative;
-    flex: 0 60px;
-    min-width: 60px;
-    transition: flex-grow 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+
+  .venue-thumb-card {
+    background: rgba(13, 15, 20, 0.75);
+    border: 1px solid var(--grid-line);
+    border-radius: 8px;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: var(--transition-fast);
+    min-width: 130px;
   }
-  .venue-panel-group.venue-panel-active {
-    flex-grow: 6;
+
+  .venue-thumb-card:hover,
+  .venue-thumb-card.active {
+    border-color: var(--accent-purple-bright);
+    background: rgba(13, 15, 20, 0.95);
+    transform: translateY(-3px);
   }
-  .venue-panel {
+
+  .thumb-img-wrap {
     position: relative;
     width: 100%;
-    height: 100%;
-    min-height: 44px;
-    border: 1.5px solid var(--glass-border);
-    border-radius: var(--radius-xl);
+    height: 75px;
+    border-radius: 4px;
     overflow: hidden;
-    padding: 0;
-    cursor: pointer;
-    background: var(--bg-deep);
-    transition: border-color 0.4s ease, box-shadow 0.4s ease;
   }
-  .venue-panel:focus-visible {
-    outline: 2px solid var(--accent-cyan);
-    outline-offset: 3px;
-  }
-  .venue-panel-active .venue-panel {
-    border-color: var(--accent-cyan);
-    box-shadow: 0 0 28px 2px var(--accent-glow);
-  }
-  .venue-panel-media {
-    position: absolute;
-    inset: 0;
-  }
-  .venue-panel-img {
+
+  .thumb-img {
     object-fit: cover;
+    filter: grayscale(100%);
+    transition: filter 0.3s ease;
   }
-  .venue-panel-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      180deg,
-      rgba(11, 18, 50, 0.35) 0%,
-      var(--bg-gradient-start) 100%
-    );
-    opacity: 0.85;
-    transition: opacity 0.5s ease;
-    pointer-events: none;
+
+  .venue-thumb-card:hover .thumb-img,
+  .venue-thumb-card.active .thumb-img {
+    filter: grayscale(0%);
   }
-  .venue-panel-active .venue-panel-overlay {
-    opacity: 0.45;
-  }
-  /* Independent of the panel-wide overlay above (which is intentionally lighter
-     on the active panel to show off the photo) — this scrim sits at a fixed,
-     unconditional opacity purely to guarantee the label text stays readable
-     regardless of active state or how bright the underlying photo is there.
-     Measured: without this, 3 of 5 venue photos failed 4.5:1 contrast on the
-     active panel's lighter overlay (as low as 3.32:1). */
-  .venue-panel-text-scrim {
-    position: absolute;
-    inset: auto 0 0 0;
-    height: 45%;
-    background: linear-gradient(
-      180deg,
-      transparent 0%,
-      rgba(11, 18, 50, 0.7) 55%,
-      rgba(11, 18, 50, 0.92) 100%
-    );
-    pointer-events: none;
-  }
-  /* Rotating .venue-panel-label directly around its own center (the old
-     approach) pivots around a point whose position depends on the text's
-     length — the longer the name, the further the rotated box's edge swings
-     past the panel boundary, clipping the first letters against overflow:
-     hidden ("Conferences & Expos" overflowed the bottom by 46px). Wrapping it
-     in a fixed box spanning the panel's full height and centering the rotated
-     label inside via flexbox sidesteps that: the label is always centered in
-     a space taller than any of these five names could need, so nothing is
-     clipped regardless of length. */
-  .venue-panel-label-wrap {
-    position: absolute;
-    inset: 0;
+
+  .thumb-info {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.75rem 0;
-    pointer-events: none;
+    flex-direction: column;
+    text-align: left;
   }
-  .venue-panel-label {
-    white-space: nowrap;
+
+  .thumb-code {
     font-family: var(--font-headings);
-    font-weight: 700;
-    font-size: 0.92rem;
-    color: var(--text-primary);
-    transform: rotate(-90deg);
-    transition: var(--transition-smooth);
-  }
-  .venue-panel-active .venue-panel-label-wrap {
-    align-items: flex-end;
-    padding-bottom: 1.5rem;
-  }
-  .venue-panel-active .venue-panel-label {
-    transform: rotate(0deg);
+    font-size: 0.65rem;
+    font-weight: 900;
   }
 
-  /* Mobile-only inline expand panel — collapsed to zero height via the
-     grid-rows trick (animatable height without measuring "auto" in JS),
-     hidden entirely above the mobile breakpoint since the left column
-     carries this same copy there instead. */
-  .venue-panel-mobile {
-    display: none;
+  .thumb-title {
+    font-family: var(--font-headings);
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .venue-panel-group {
-      transition: none !important;
-    }
-    .venue-panel-overlay {
-      transition: none !important;
-    }
-    .venue-panel-label {
-      transition: none !important;
-    }
-  }
-
-  /* ═══ TABLET (768–1023px): stack columns, keep accordion horizontal ═══ */
   @media (max-width: 1024px) {
-    .venue-layout {
-      flex-direction: column;
-      gap: 2rem;
-    }
-    .venue-left {
-      flex: none;
-    }
-    .venue-dynamic {
-      min-height: 0;
-    }
-    .venue-accordion {
-      /* The base rule's flex:1 1 0% (needed for desktop's row layout) sets
-         flex-basis:0% — once .venue-layout switches to flex-direction:column
-         here, that 0% basis applies along the height axis with nothing above
-         to grow into, collapsing the accordion to ~50px regardless of the
-         height below. flex:none stops it from flexing at all so height wins. */
-      flex: none;
-      height: 380px;
-    }
+    .venue-overlay-bottom-bar { flex-direction: column; align-items: flex-start; gap: 2rem; }
+    .venue-thumbnails-grid { width: 100%; }
+    .venue-overlay-split-headline { grid-template-columns: repeat(2, 1fr); }
   }
 
-  /* ═══ MOBILE (<768px): vertical stack, no horizontal accordion ═══ */
-  @media (max-width: 768px) {
-    .venue-left {
-      display: none;
-    }
-    .venue-accordion {
-      flex: none;
-      flex-direction: column;
-      height: auto;
-      gap: 0.75rem;
-    }
-    .venue-panel-group {
-      flex: none;
-      width: 100%;
-      transition: none;
-    }
-    .venue-panel {
-      display: block;
-      height: auto;
-      min-height: 44px;
-      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-    }
-    .venue-panel-media {
-      position: relative;
-      inset: auto;
-      height: 130px;
-    }
-    .venue-panel-active .venue-panel-media {
-      height: 170px;
-    }
-    .venue-panel-label-wrap {
-      position: static;
-      display: block;
-      padding: 0;
-    }
-    .venue-panel-label {
-      position: static;
-      display: block;
-      transform: none !important;
-      text-align: left;
-      padding: 0.85rem 1.1rem;
-      background: var(--glass-bg);
-    }
-    .venue-panel-mobile {
-      display: grid;
-      grid-template-rows: 0fr;
-      transition: grid-template-rows 0.4s ease;
-      overflow: hidden;
-      background: var(--glass-bg);
-      border: 1.5px solid var(--glass-border);
-      border-top: none;
-      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
-    }
-    .venue-panel-active .venue-panel-mobile {
-      grid-template-rows: 1fr;
-    }
-    .venue-panel-mobile-inner {
-      min-height: 0;
-      overflow: hidden;
-      padding: 0 1.1rem;
-    }
-    .venue-panel-active .venue-panel-mobile-inner {
-      padding: 0 1.1rem 1.1rem;
-    }
-    .venue-panel-mobile-inner p {
-      font-size: 0.92rem;
-      line-height: 1.6;
-      color: var(--text-secondary);
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .venue-panel-mobile {
-        transition: none !important;
-      }
-    }
+  @media (max-width: 600px) {
+    .venue-overlay-split-headline { grid-template-columns: 1fr; text-align: left; }
+    .venue-overlay-top-bar { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
   }
 `;

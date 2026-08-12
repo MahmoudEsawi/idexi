@@ -68,3 +68,4 @@ cost.json
 *.log
 tmp/
 temp/
+.npm-cache/

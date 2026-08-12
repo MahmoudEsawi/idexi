@@ -2,63 +2,64 @@
 
 import React from "react";
 import Link from "next/link";
-import { Ticket, ShieldCheck, WifiOff, Users2, ArrowLeft, ArrowRight, Smartphone } from "lucide-react";
-import InteractiveWaves from "@/components/InteractiveWaves";
+import { Ticket, ShieldCheck, WifiOff, Users2, ArrowLeft, ArrowUpRight, Smartphone } from "lucide-react";
 
 export default function PassService() {
   const steps = [
-    { title: "One-Click Registration", desc: "Attendees register online or via your event app and instantly generate a secure, encrypted smart-pass." },
-    { title: "Digital Wallet Add", desc: "Passes easily save to Apple Wallet or Google Wallet with high-contrast barcodes and NFC profiles." },
-    { title: "Express Verification", desc: "At the gate, passes scan in milliseconds. Integrates with optional facial-verification options." },
-    { title: "Instant Event Badge", desc: "Upon verification, connected badge printers output custom visitor credentials instantly." }
+    { title: "ONE-CLICK REGISTRATION", desc: "Attendees register online and generate an encrypted smart-pass." },
+    { title: "DIGITAL WALLET STORAGE", desc: "Passes save to Apple Wallet or Google Wallet with high-contrast barcodes and NFC profiles." },
+    { title: "EXPRESS VERIFICATION", desc: "Passes scan in milliseconds at access points with optional biometric verification." },
+    { title: "INSTANT CREDENTIAL ISSUANCE", desc: "Connected badge printers output custom visitor credentials instantly upon verification." }
   ];
 
   const targetAudiences = [
-    { title: "VIP Events & Dinners", desc: "Deliver seamless, highly personal welcomes with facial check-ins for high-profile guests." },
-    { title: "Heavy Attendance Expos", desc: "Deploy offline-ready entry tunnels capable of scanning thousands of tickets per minute." },
-    { title: "Multi-Day Conferences", desc: "Secure secondary session rooms and workshops with sub-gate verification rules." }
+    { title: "VIP EVENTS & SUMMITS", desc: "Deliver seamless welcomes with facial check-ins for high-profile guests." },
+    { title: "HEAVY ATTENDANCE EXPOS", desc: "Deploy offline-ready entry tunnels scanning thousands of tickets per minute." },
+    { title: "MULTI-DAY CONFERENCES", desc: "Secure secondary session rooms and workshops with sub-gate rules." }
   ];
 
   return (
     <div className="service-page-container">
-      <InteractiveWaves />
-      
       <div className="container service-page-content">
         {/* Back Link */}
         <Link href="/" className="service-back-link">
-          <ArrowLeft size={16} /> Back to Overview
+          <ArrowLeft size={16} /> BACK TO OVERVIEW
         </Link>
 
         {/* Hero Section */}
         <div className="service-hero-grid">
           <div className="service-info-col">
-            <div className="service-badge">
+            <div className="service-badge text-lime">
               <Ticket size={14} />
-              <span>idexi Pass</span>
+              <span>IDEXI PASS /// SYSTEM 03</span>
             </div>
-            <h1 className="service-title">Smart Check-In <br /><span className="text-gradient">& Express Registration</span></h1>
+            <h1 className="service-title">
+              EXPRESS BIOMETRIC CHECK-IN <br /><span className="text-lime">& ACCESS CONTROL</span>
+            </h1>
             <p className="service-description">
-              Eliminate physical lines entirely. Set up lightning-fast access gates using biometric recognition, NFC smart-passes, and offline-resilient edge terminals.
+              Lightning-fast access gates using biometric recognition, NFC smart-passes, and offline-resilient edge terminals.
             </p>
             <div className="service-cta-row">
-              <Link href="/#contact" className="btn btn-primary">Book a Demo <ArrowRight size={16} /></Link>
+              <Link href="/#contact" className="btn btn-lime">
+                BOOK DEMO <ArrowUpRight size={16} />
+              </Link>
             </div>
           </div>
 
-          {/* Interactive visual mockup */}
-          <div className="service-visual-col glass-card">
+          {/* Visual mockup */}
+          <div className="service-visual-col">
             <div className="service-mockup-container">
               <div className="service-mockup-header">
-                <span className="service-mockup-dot" style={{ background: "#ff5f56" }} />
-                <span className="service-mockup-dot" style={{ background: "#ffbd2e" }} />
-                <span className="service-mockup-dot" style={{ background: "#27c93f" }} />
-                <span className="service-mockup-title">Gate Terminal #04</span>
+                <span className="service-mockup-dot" style={{ background: "#ff4d4d" }} />
+                <span className="service-mockup-dot" style={{ background: "#ffb800" }} />
+                <span className="service-mockup-dot" style={{ background: "#00e676" }} />
+                <span className="service-mockup-title">GATE TERMINAL #04</span>
               </div>
               <div className="service-mockup-body">
                 <div className="pass-mockup">
                   <div className="pass-header">
-                    <span className="pass-title">idexi Smart Pass</span>
-                    <Smartphone size={20} style={{ color: "var(--accent-cyan)" }} />
+                    <span className="pass-title">IDEXI SMART PASS</span>
+                    <Smartphone size={20} className="text-lime" />
                   </div>
                   
                   <div className="pass-barcode-area">
@@ -73,14 +74,14 @@ export default function PassService() {
                     </div>
                     <div style={{ textAlign: "right" }}>
                       <div className="pass-label">ACCESS LAYER</div>
-                      <div className="pass-val" style={{ color: "var(--accent-cyan)" }}>All-Access VIP</div>
+                      <div className="pass-val text-lime">All-Access VIP</div>
                     </div>
                   </div>
                 </div>
 
                 <div className="scan-status-container">
-                  <span className="scan-indicator">● SCAN VERIFIED</span>
-                  <span style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>Egress point: Main Foyer</span>
+                  <span className="scan-indicator text-lime">SCAN VERIFIED</span>
+                  <span style={{ fontSize: "0.78rem", color: "var(--text-secondary)" }}>Egress Point: Main Foyer</span>
                 </div>
               </div>
             </div>
@@ -89,11 +90,12 @@ export default function PassService() {
 
         {/* How It Works Steps */}
         <div className="service-section">
-          <h2 className="service-subsection-title">How It Works</h2>
+          <span className="section-label">EXPRESS PIPELINE</span>
+          <h2 className="service-subsection-title">SMART CHECK-IN ARCHITECTURE</h2>
           <div className="service-steps-grid">
             {steps.map((step, idx) => (
-              <div key={idx} className="service-step-card glass-card">
-                <div className="service-step-number">0{idx + 1}</div>
+              <div key={idx} className="service-step-card">
+                <div className="service-step-number text-lime">0{idx + 1}</div>
                 <h3 className="service-step-title">{step.title}</h3>
                 <p className="service-step-desc">{step.desc}</p>
               </div>
@@ -101,33 +103,34 @@ export default function PassService() {
           </div>
         </div>
 
-        {/* Benefits & Value Proposition */}
+        {/* Benefits */}
         <div className="service-benefits-section">
           <div className="service-benefits-grid">
             <div className="service-benefit-item">
-              <WifiOff size={24} style={{ color: "var(--accent-cyan)", marginBottom: "1rem" }} />
-              <h3 className="service-benefit-title">100% Offline-Capable</h3>
-              <p className="service-benefit-desc">Venues with weak cellular service pose no risk. Our hardware works offline and syncs immediately once connected.</p>
+              <WifiOff size={24} className="text-lime" style={{ marginBottom: "1rem" }} />
+              <h3 className="service-benefit-title">OFFLINE-CAPABLE</h3>
+              <p className="service-benefit-desc">Hardware operates offline during cellular disruptions and syncs automatically once online.</p>
             </div>
             <div className="service-benefit-item">
-              <ShieldCheck size={24} style={{ color: "var(--accent-cyan)", marginBottom: "1rem" }} />
-              <h3 className="service-benefit-title">Fraud Protection</h3>
-              <p className="service-benefit-desc">Encrypted, dynamic barcodes prevent ticket sharing or duplicates, securing event margins.</p>
+              <ShieldCheck size={24} className="text-lime" style={{ marginBottom: "1rem" }} />
+              <h3 className="service-benefit-title">FRAUD PROTECTION</h3>
+              <p className="service-benefit-desc">Encrypted dynamic barcodes prevent ticket sharing or duplicates.</p>
             </div>
             <div className="service-benefit-item">
-              <Users2 size={24} style={{ color: "var(--accent-cyan)", marginBottom: "1rem" }} />
-              <h3 className="service-benefit-title">Biometric Access Tunnels</h3>
-              <p className="service-benefit-desc">Enable friction-free entry options with face-identification terminals checking in guests automatically on the move.</p>
+              <Users2 size={24} className="text-lime" style={{ marginBottom: "1rem" }} />
+              <h3 className="service-benefit-title">BIOMETRIC ENTRY TUNNELS</h3>
+              <p className="service-benefit-desc">Enable friction-free entry options with face-identification terminals checking in guests automatically.</p>
             </div>
           </div>
         </div>
 
         {/* Targets Column */}
         <div className="service-section">
-          <h2 className="service-subsection-title">Who Is It For?</h2>
+          <span className="section-label">TARGET DEPLOYMENTS</span>
+          <h2 className="service-subsection-title">VENUE CAPABILITIES</h2>
           <div className="service-targets-grid">
             {targetAudiences.map((aud, idx) => (
-              <div key={idx} className="service-target-card glass-card">
+              <div key={idx} className="service-target-card">
                 <h3 className="service-target-title">{aud.title}</h3>
                 <p className="service-target-desc">{aud.desc}</p>
               </div>

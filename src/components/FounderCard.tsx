@@ -12,7 +12,7 @@ interface FounderCardProps {
   linkedin: string;
 }
 
-function LinkedInIcon({ size = 18 }: { size?: number }) {
+function LinkedInIcon({ size = 16 }: { size?: number }) {
   return (
     <svg
       width={size}
@@ -30,40 +30,42 @@ export default function FounderCard({ name, role, image, email, linkedin }: Foun
   return (
     <>
       <style>{founderCardCSS}</style>
-      <div className="founder-card">
-        <div className="hover-wave" aria-hidden="true" />
-
+      <div className="volt-founder-card">
         <div className="founder-photo-frame">
           <Image
             src={image}
             alt={`${name}, ${role}`}
-            width={152}
-            height={152}
+            width={180}
+            height={180}
             priority
             className="founder-photo"
           />
         </div>
 
-        <h3 className="founder-name">{name}</h3>
-        <p className="founder-role">{role}</p>
+        <div className="founder-info-box">
+          <h3 className="founder-name">{name}</h3>
+          <p className="founder-role text-lime">{role}</p>
 
-        <div className="founder-contact">
-          <a
-            href={`mailto:${email}`}
-            className="founder-contact-link"
-            aria-label={`Email ${name}`}
-          >
-            <Mail size={18} aria-hidden="true" />
-          </a>
-          <a
-            href={linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="founder-contact-link"
-            aria-label={`${name} on LinkedIn`}
-          >
-            <LinkedInIcon size={18} />
-          </a>
+          <div className="founder-contact">
+            <a
+              href={`mailto:${email}`}
+              className="founder-contact-link"
+              aria-label={`Email ${name}`}
+            >
+              <Mail size={16} aria-hidden="true" />
+              <span>EMAIL</span>
+            </a>
+            <a
+              href={linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="founder-contact-link"
+              aria-label={`${name} on LinkedIn`}
+            >
+              <LinkedInIcon size={16} />
+              <span>LINKEDIN</span>
+            </a>
+          </div>
         </div>
       </div>
     </>
@@ -71,160 +73,100 @@ export default function FounderCard({ name, role, image, email, linkedin }: Foun
 }
 
 const founderCardCSS = `
-  /* Transparent by default — the photo is the focal point, not a card
-     boundary. All hover/focus feedback comes from the wave, the photo's
-     own border/zoom, and the revealed contact row, not the container. */
-  .founder-card {
+  .volt-founder-card {
     position: relative;
-    padding: 1.5rem 1.25rem 1.75rem;
+    padding: 2.2rem;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    text-align: center;
-    gap: 0.35rem;
+    gap: 2rem;
+    background: #0d0f14;
+    border: 1px solid var(--grid-line);
+    border-radius: 12px;
+    transition: var(--transition-fast);
   }
 
-  /* Rising wave — the reference's signature hover detail, retinted to the
-     brand's glow token. Reveals on real hover AND on :focus-within, so
-     keyboard users tabbing to a contact link see the same backdrop. */
-  .hover-wave {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 50%;
-    transform: scaleY(0);
-    transform-origin: bottom;
-    border-top-left-radius: 50%;
-    border-top-right-radius: 50%;
-    background: linear-gradient(0deg, var(--accent-glow) 0%, transparent 100%);
-    opacity: 0.35;
-    transition: transform 0.5s ease-out;
-    pointer-events: none;
-  }
-  .founder-card:hover .hover-wave,
-  .founder-card:focus-within .hover-wave {
-    transform: scaleY(1);
+  .volt-founder-card:hover {
+    border-color: var(--accent-lime);
+    transform: translateY(-3px);
   }
 
   .founder-photo-frame {
-    position: relative;
-    z-index: 1;
-    width: 152px;
-    height: 152px;
+    width: 120px;
+    height: 120px;
+    min-width: 120px;
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid transparent;
-    transition: border-color 0.5s ease-out, transform 0.5s ease-out;
+    border: 2px solid var(--grid-line);
+    transition: border-color 0.2s ease;
   }
-  .founder-card:hover .founder-photo-frame,
-  .founder-card:focus-within .founder-photo-frame {
-    border-color: var(--accent-cyan);
-    transform: scale(1.06);
+
+  .volt-founder-card:hover .founder-photo-frame {
+    border-color: var(--accent-lime);
   }
+
   .founder-photo {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease-out;
+    filter: grayscale(100%);
+    transition: filter 0.2s ease;
   }
-  .founder-card:hover .founder-photo,
-  .founder-card:focus-within .founder-photo {
-    transform: scale(1.1);
+
+  .volt-founder-card:hover .founder-photo {
+    filter: grayscale(0%);
+  }
+
+  .founder-info-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
   }
 
   .founder-name {
-    position: relative;
-    z-index: 1;
-    margin-top: 0.9rem;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text-primary);
-  }
-  .founder-role {
-    position: relative;
-    z-index: 1;
-    font-size: 0.85rem;
-    color: var(--text-secondary);
+    font-family: var(--font-headings);
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
   }
 
-  /* Hidden by default via opacity + pointer-events, NOT visibility:hidden —
-     a visibility:hidden element drops out of the tab order entirely, which
-     would make ":focus-within reveals it" impossible (you can't tab onto
-     something Tab is told to skip). opacity keeps it focusable the whole
-     time; pointer-events:none just stops stray clicks while it's invisible. */
+  .founder-role {
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
   .founder-contact {
-    position: relative;
-    z-index: 1;
     display: flex;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-    opacity: 0;
-    transform: translateY(10px);
-    pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }
-  .founder-card:hover .founder-contact,
-  .founder-card:focus-within .founder-contact {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-  }
-  /* Touch devices have no hover and don't tab — a pure reveal-on-interact
-     pattern would make these links permanently unreachable there. Keep them
-     always visible whenever the device has no true hover capability. */
-  @media (hover: none) {
-    .founder-contact {
-      opacity: 1;
-      transform: none;
-      pointer-events: auto;
-    }
+    gap: 0.8rem;
+    margin-top: 0.8rem;
   }
 
   .founder-contact-link {
+    font-family: var(--font-headings);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: #ffffff;
+    background: #07080b;
+    border: 1px solid var(--grid-line);
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    color: var(--text-muted);
-    transition: color 0.3s ease;
-  }
-  .founder-contact-link:hover {
-    color: var(--accent-cyan);
-  }
-  .founder-contact-link:focus-visible {
-    outline: 2px solid var(--accent-cyan);
-    outline-offset: 2px;
-    color: var(--accent-cyan);
+    gap: 0.4rem;
+    transition: var(--transition-fast);
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .hover-wave {
-      transform: none !important;
-      opacity: 0;
-      transition: opacity 0.3s ease !important;
-    }
-    .founder-card:hover .hover-wave,
-    .founder-card:focus-within .hover-wave {
-      opacity: 1;
-    }
-    .founder-photo-frame,
-    .founder-card:hover .founder-photo-frame,
-    .founder-card:focus-within .founder-photo-frame {
-      transition: border-color 0.3s ease !important;
-      transform: none !important;
-    }
-    .founder-photo,
-    .founder-card:hover .founder-photo,
-    .founder-card:focus-within .founder-photo {
-      transition: none !important;
-      transform: none !important;
-    }
-    .founder-contact {
-      transition: opacity 0.3s ease !important;
-      transform: none !important;
-    }
+  .founder-contact-link:hover {
+    background: var(--accent-lime);
+    color: #07080b;
+    border-color: var(--accent-lime);
+  }
+
+  @media (max-width: 600px) {
+    .volt-founder-card { flex-direction: column; text-align: center; }
   }
 `;

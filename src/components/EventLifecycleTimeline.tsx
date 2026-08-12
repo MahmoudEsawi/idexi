@@ -14,26 +14,26 @@ interface Stage {
 const stages: Stage[] = [
   {
     icon: Ticket,
-    badge: "idexi Pass",
-    title: "Smart Pass Issuance",
+    badge: "01 /// IDEXI PASS",
+    title: "SMART PASS ISSUANCE",
     desc: "Attendees register and receive encrypted smart-passes with biometric profiles.",
   },
   {
     icon: ScanFace,
-    badge: "idexi Pass",
-    title: "Express Bio Check-In",
+    badge: "02 /// IDEXI PASS",
+    title: "EXPRESS BIO CHECK-IN",
     desc: "Guests scan and verify at access points — zero bottlenecks, millisecond check-in.",
   },
   {
     icon: Activity,
-    badge: "idexi Flow",
-    title: "Crowd Analytics (Live)",
+    badge: "03 /// IDEXI FLOW",
+    title: "CROWD TELEMETRY (LIVE)",
     desc: "Sensors assess crowd density, movement, and exit patterns dynamically.",
   },
   {
     icon: Camera,
-    badge: "idexi Face",
-    title: "Instant Photo Delivery",
+    badge: "04 /// IDEXI FACE",
+    title: "INSTANT PHOTO DELIVERY",
     desc: "AI matches faces across event photos, then instantly emails each guest their gallery.",
   },
 ];

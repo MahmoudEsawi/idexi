@@ -2,21 +2,20 @@
 
 import React from "react";
 import Link from "next/link";
-import { Activity, ShieldAlert, Compass, BarChart3, ArrowLeft, ArrowRight } from "lucide-react";
-import InteractiveWaves from "@/components/InteractiveWaves";
+import { Activity, ShieldAlert, Compass, BarChart3, ArrowLeft, ArrowUpRight } from "lucide-react";
 
 export default function FlowService() {
   const steps = [
-    { title: "Sensor Setup", desc: "Position compact edge-sensors at major doorways, narrow corridors, and exit gates." },
-    { title: "Passive Detection", desc: "Sensors passively track foot movement direction and crowd velocities without capturing PII." },
-    { title: "AI Density Diagnostics", desc: "Our engine maps velocity changes to alert organizers of congestion points before bottlenecks occur." },
-    { title: "Dynamic Rerouting", desc: "Dispatch staff to open auxiliary lanes or update digital signage automatically." }
+    { title: "SENSOR SETUP", desc: "Position compact edge-sensors at major doorways, narrow corridors, and exit gates." },
+    { title: "PASSIVE DETECTION", desc: "Sensors passively track foot movement direction and crowd velocities without capturing PII." },
+    { title: "AI DENSITY DIAGNOSTICS", desc: "Engine maps velocity changes to alert organizers of congestion points before bottlenecks occur." },
+    { title: "DYNAMIC REROUTING", desc: "Dispatch staff to open auxiliary lanes or update digital signage automatically." }
   ];
 
   const targetAudiences = [
-    { title: "Major Expositions & Trade Shows", desc: "Track which sponsor halls draw the highest density and optimize floor layout dynamically." },
-    { title: "Mass Concerts & Festivals", desc: "Maintain real-time egress control and monitor crowd flow safely near main stages." },
-    { title: "Stadiums & Arenas", desc: "Manage food court and restroom queue bottlenecks to improve fan concessions revenues." }
+    { title: "EXPOSITIONS & TRADE SHOWS", desc: "Track hall density and optimize floor layout dynamically." },
+    { title: "MASS CONCERTS & FESTIVALS", desc: "Maintain real-time egress control and monitor crowd flow safely near main stages." },
+    { title: "STADIUMS & ARENAS", desc: "Manage queue bottlenecks to improve venue concession throughput." }
   ];
 
   const progressInnerStyle = (width: string, color: string) => ({
@@ -26,9 +25,9 @@ export default function FlowService() {
 
   const zoneStatusStyle = (type: "high" | "normal" | "critical") => {
     const colors = {
-      high: "#ffbd2e",
-      normal: "#27c93f",
-      critical: "#ff5f56",
+      high: "#ffb800",
+      normal: "#00e676",
+      critical: "#ff4d4d",
     };
     return {
       color: colors[type],
@@ -37,67 +36,69 @@ export default function FlowService() {
 
   return (
     <div className="service-page-container">
-      <InteractiveWaves />
-      
       <div className="container service-page-content">
         {/* Back Link */}
         <Link href="/" className="service-back-link">
-          <ArrowLeft size={16} /> Back to Overview
+          <ArrowLeft size={16} /> BACK TO OVERVIEW
         </Link>
 
         {/* Hero Section */}
         <div className="service-hero-grid">
           <div className="service-info-col">
-            <div className="service-badge">
+            <div className="service-badge text-lime">
               <Activity size={14} />
-              <span>idexi Flow</span>
+              <span>IDEXI FLOW /// SYSTEM 02</span>
             </div>
-            <h1 className="service-title">Crowd Analytics <br /><span className="text-gradient">& Diagnostics telemetry</span></h1>
+            <h1 className="service-title">
+              CROWD TELEMETRY <br /><span className="text-lime">& DENSITY DIAGNOSTICS</span>
+            </h1>
             <p className="service-description">
-              Keep event operations moving smoothly and safely. Monitor crowd velocity, attendee density, and bottleneck indicators in real time using non-intrusive AI diagnostics.
+              Monitor crowd velocity, attendee density, and bottleneck indicators in real time using non-intrusive AI sensors.
             </p>
             <div className="service-cta-row">
-              <Link href="/#contact" className="btn btn-primary">Book a Demo <ArrowRight size={16} /></Link>
+              <Link href="/#contact" className="btn btn-lime">
+                BOOK DEMO <ArrowUpRight size={16} />
+              </Link>
             </div>
           </div>
 
-          {/* Interactive visual mockup */}
-          <div className="service-visual-col glass-card">
+          {/* Visual mockup */}
+          <div className="service-visual-col">
             <div className="service-mockup-container">
               <div className="service-mockup-header">
-                <span className="service-mockup-dot" style={{ background: "#ff5f56" }} />
-                <span className="service-mockup-dot" style={{ background: "#ffbd2e" }} />
-                <span className="service-mockup-dot" style={{ background: "#27c93f" }} />
-                <span className="service-mockup-title">Zone Load Analytics</span>
+                <span className="service-mockup-dot" style={{ background: "#ff4d4d" }} />
+                <span className="service-mockup-dot" style={{ background: "#ffb800" }} />
+                <span className="service-mockup-dot" style={{ background: "#00e676" }} />
+                <span className="service-mockup-title">ZONE LOAD TELEMETRY</span>
               </div>
               <div className="service-mockup-body">
                 <div className="service-zone-metric">
                   <div className="service-zone-label-row">
-                    <span className="service-zone-name">Gate A (Main Entry)</span>
-                    <span className="service-zone-status" style={zoneStatusStyle("high")}>92% Density (Heavy)</span>
+                    <span className="service-zone-name">GATE A (MAIN ENTRY)</span>
+                    <span className="service-zone-status" style={zoneStatusStyle("high")}>92% DENSITY</span>
                   </div>
                   <div className="service-progress-outer">
-                    <div className="service-progress-inner" style={progressInnerStyle("92%", "#ffbd2e")} />
+                    <div className="service-progress-inner" style={progressInnerStyle("92%", "#ffb800")} />
                   </div>
                 </div>
                 
                 <div className="service-zone-metric">
                   <div className="service-zone-label-row">
-                    <span className="service-zone-name">Hall B (Exhibitors)</span>
-                    <span className="service-zone-status" style={zoneStatusStyle("normal")}>45% Density (Optimal)</span>
+                    <span className="service-zone-name">HALL B (EXHIBITORS)</span>
+                    <span className="service-zone-status" style={zoneStatusStyle("normal")}>45% DENSITY</span>
                   </div>
                   <div className="service-progress-outer">
-                    <div className="service-progress-inner" style={progressInnerStyle("45%", "#27c93f")} />
+                    <div className="service-progress-inner" style={progressInnerStyle("45%", "#00e676")} />
                   </div>
                 </div>
 
                 <div className="service-zone-metric">
                   <div className="service-zone-label-row">
-                    <span className="service-zone-name">Concession North</span>
-                    <span className="service-zone-status" style={zoneStatusStyle("critical")}>98% Congested (Critical)</span>
+                    <span className="service-zone-name">CONCESSION NORTH</span>
+                    <span className="service-zone-status" style={zoneStatusStyle("critical")}>98% CONGESTED</span>
                   </div>
                   <div className="service-progress-outer">
-                    <div className="service-progress-inner" style={progressInnerStyle("98%", "#ff5f56")} />
+                    <div className="service-progress-inner" style={progressInnerStyle("98%", "#ff4d4d")} />
                   </div>
                 </div>
               </div>
@@ -107,11 +108,12 @@ export default function FlowService() {
 
         {/* How It Works Steps */}
         <div className="service-section">
-          <h2 className="service-subsection-title">How It Works</h2>
+          <span className="section-label">SYSTEM ARCHITECTURE</span>
+          <h2 className="service-subsection-title">PASSIVE SENSOR OPERATIONAL PIPELINE</h2>
           <div className="service-steps-grid">
             {steps.map((step, idx) => (
-              <div key={idx} className="service-step-card glass-card">
-                <div className="service-step-number">0{idx + 1}</div>
+              <div key={idx} className="service-step-card">
+                <div className="service-step-number text-lime">0{idx + 1}</div>
                 <h3 className="service-step-title">{step.title}</h3>
                 <p className="service-step-desc">{step.desc}</p>
               </div>
@@ -119,33 +121,34 @@ export default function FlowService() {
           </div>
         </div>
 
-        {/* Benefits & Value Proposition */}
+        {/* Benefits */}
         <div className="service-benefits-section">
           <div className="service-benefits-grid">
             <div className="service-benefit-item">
-              <ShieldAlert size={24} style={{ color: "var(--accent-cyan)", marginBottom: "1rem" }} />
-              <h3 className="service-benefit-title">Proactive Bottleneck Alert</h3>
-              <p className="service-benefit-desc">Our system flags slowdowns up to 15 minutes before they manifest into lines, allowing agile mitigation.</p>
+              <ShieldAlert size={24} className="text-lime" style={{ marginBottom: "1rem" }} />
+              <h3 className="service-benefit-title">PROACTIVE BOTTLENECK ALERTS</h3>
+              <p className="service-benefit-desc">Flags slowdowns up to 15 minutes before congestion manifests.</p>
             </div>
             <div className="service-benefit-item">
-              <Compass size={24} style={{ color: "var(--accent-cyan)", marginBottom: "1rem" }} />
-              <h3 className="service-benefit-title">Passive, GDPR Safe</h3>
-              <p className="service-benefit-desc">Tracks crowd movement vectors and speeds without registering facial matches or private devices, ensuring total privacy.</p>
+              <Compass size={24} className="text-lime" style={{ marginBottom: "1rem" }} />
+              <h3 className="service-benefit-title">PASSIVE METRICS</h3>
+              <p className="service-benefit-desc">Tracks crowd vectors and speeds without storing personal identifiable information.</p>
             </div>
             <div className="service-benefit-item">
-              <BarChart3 size={24} style={{ color: "var(--accent-cyan)", marginBottom: "1rem" }} />
-              <h3 className="service-benefit-title">Sponsor Value Reports</h3>
-              <p className="service-benefit-desc">Deliver robust dwell-time analytics to corporate sponsors showing exact exposure rates and traffic metrics.</p>
+              <BarChart3 size={24} className="text-lime" style={{ marginBottom: "1rem" }} />
+              <h3 className="service-benefit-title">ANALYTICS REPORTING</h3>
+              <p className="service-benefit-desc">Delivers dwell-time analytics and traffic exposure metrics.</p>
             </div>
           </div>
         </div>
 
         {/* Targets Column */}
         <div className="service-section">
-          <h2 className="service-subsection-title">Who Is It For?</h2>
+          <span className="section-label">TARGET DEPLOYMENTS</span>
+          <h2 className="service-subsection-title">VENUE CAPABILITIES</h2>
           <div className="service-targets-grid">
             {targetAudiences.map((aud, idx) => (
-              <div key={idx} className="service-target-card glass-card">
+              <div key={idx} className="service-target-card">
                 <h3 className="service-target-title">{aud.title}</h3>
                 <p className="service-target-desc">{aud.desc}</p>
               </div>

@@ -2,133 +2,77 @@
 
 import React from "react";
 import Image from "next/image";
-import { ArrowRight, Sparkles } from "lucide-react";
+import Link from "next/link";
+import { ArrowUpRight, Grid } from "lucide-react";
 
 export default function Hero() {
   return (
     <>
       <style>{heroCSS}</style>
-      <section className="premium-hero">
-        {/* --- LAYERED SVG BACKGROUND SYSTEM --- */}
-        <div className="hero-bg-layer bg-gradient-base" />
-
-        <svg className="hero-layered-waves" viewBox="0 0 1440 800" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            {/* Soft Shadow filter to create depth */}
-            <filter id="waveShadow" x="-10%" y="-10%" width="120%" height="120%">
-              <feDropShadow dx="0" dy="8" stdDeviation="16" floodColor="#000000" floodOpacity="0.55"/>
-            </filter>
-            
-            {/* Diagonal linear gradients matching brand guide */}
-            <linearGradient id="cyanBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#31c4f3" />
-              <stop offset="100%" stopColor="#29377b" />
-            </linearGradient>
-            
-            <linearGradient id="darkNavyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#141f54" />
-              <stop offset="100%" stopColor="#0b1130" />
-            </linearGradient>
-
-            <linearGradient id="midNavyGrad" x1="100%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#1c2d75" />
-              <stop offset="100%" stopColor="#0d163d" />
-            </linearGradient>
-          </defs>
-
-          {/* Layer 1: Base Dark Waves */}
-          <path d="M-100,300 C250,150 400,650 850,500 C1150,400 1300,700 1600,650 L1600,850 L-100,850 Z" fill="url(#darkNavyGrad)" opacity="0.9" />
-
-          {/* Layer 2: Mid Wave with drop shadow */}
-          <path d="M1600,150 C1150,80 1000,500 650,400 C350,300 150,750 -200,700 L-200,850 L1600,850 Z" fill="url(#midNavyGrad)" filter="url(#waveShadow)" />
-
-          {/* Layer 3: Thin overlay neon paths */}
-          <path
-            d="M -100,280 C 300,130 600,530 1100,230 C 1300,130 1500,180 1600,130"
-            fill="none"
-            stroke="var(--accent-cyan)"
-            strokeWidth="2"
-            opacity="0.15"
-            strokeDasharray="4 4"
-            className="hairline-dash-anim"
+      <section className="volt-hero">
+        {/* Background Overlay */}
+        <div className="hero-bg-container">
+          <Image
+            src="/hero_event_crowd.png"
+            alt="Idexi AI Event Intelligence Arena"
+            fill
+            priority
+            className="hero-bg-img"
           />
-          <path
-            d="M -100,380 C 400,280 500,720 1050,480 C 1250,380 1450,720 1600,670"
-            fill="none"
-            stroke="var(--accent-cyan)"
-            strokeWidth="1.5"
-            opacity="0.25"
-          />
+          <div className="hero-overlay" />
+        </div>
 
-          {/* Layer 4: Top-left vibrant organic accent wave (crisp boundary, gradient fill, drop shadow) */}
-          <path d="M-50,-50 C120,-50 240,60 220,170 C200,260 80,260 -50,230 Z" fill="url(#cyanBlueGrad)" filter="url(#waveShadow)" />
+        <div className="container hero-content">
+          {/* Top 3-Pillar Headline Row */}
+          <div className="pillar-grid">
+            <div className="pillar-col">
+              <h1 className="pillar-title">Precision<span className="dot-accent">.</span></h1>
+              <p className="pillar-desc">
+                Biometric face matching in milliseconds across high-density venue fields.
+              </p>
+            </div>
 
-          {/* Layer 5: Bottom-right vibrant organic accent wave (crisp boundary, gradient fill, drop shadow) */}
-          <path d="M1490,850 C1380,850 1200,760 1240,620 C1280,510 1420,510 1510,530 Z" fill="url(#cyanBlueGrad)" filter="url(#waveShadow)" />
-        </svg>
+            <div className="pillar-col">
+              <h1 className="pillar-title text-lime">Intelligence<span className="dot-accent">.</span></h1>
+              <p className="pillar-desc">
+                Enter the event space and claim zero entry queue friction.
+              </p>
+            </div>
 
-        <div className="container hero-container-grid">
-          {/* Left Column: Asymmetric Typography and CTAs */}
-          <div className="hero-text-block">
-            {/* Treatment 2: Bold Display Style */}
-            <h1 className="type-display">
-              Frictionless event flow, entry, and instant photo sorting.
-            </h1>
-
-            <div className="hero-actions-row">
-              {/* Only one CTA gets the gradient treatment */}
-              <a href="#contact" className="btn btn-primary cta-demo">
-                Book a Demo <ArrowRight size={16} />
-              </a>
-              <a href="#services" className="btn btn-glass cta-explore">
-                Explore Solutions
-              </a>
+            <div className="pillar-col">
+              <h1 className="pillar-title">Result<span className="dot-accent">.</span></h1>
+              <p className="pillar-desc">
+                Master crowd analytics and elevate operational performance limits.
+              </p>
             </div>
           </div>
 
-          {/* Right Column: Large Concentric Signal Arcs Signature Visual + Photo */}
-          <div className="hero-visual-block">
-            {/* Large Concentric Arcs container */}
-            <div className="large-signature-arcs-wrapper">
-              <svg viewBox="0 0 500 500" className="signature-arcs-svg">
-                {/* Outer pulsing arcs */}
-                {[220, 180, 140, 100].map((r, idx) => (
-                  <circle
-                    key={idx}
-                    cx="250"
-                    cy="250"
-                    r={r}
-                    fill="none"
-                    stroke="rgba(255, 255, 255, 0.9)"
-                    strokeWidth={idx === 0 ? "8" : idx === 1 ? "6.5" : idx === 2 ? "5" : "3.5"}
-                    strokeLinecap="round"
-                    strokeDasharray={`${2 * Math.PI * r * 0.3} ${2 * Math.PI * r * 0.7}`}
-                    className={`sig-arc-circle arc-delay-${idx}`}
-                  />
-                ))}
-                
-                {/* Solid decorative rings */}
-                {[200, 160, 120, 80].map((r, idx) => (
-                  <circle
-                    key={`dec-${idx}`}
-                    cx="250"
-                    cy="250"
-                    r={r}
-                    fill="none"
-                    stroke="rgba(49, 196, 243, 0.08)"
-                    strokeWidth="1.5"
-                  />
-                ))}
-                
-                {/* Central signal dot and core */}
-                <circle cx="250" cy="250" r="10" fill="var(--accent-cyan)" className="core-dot-pulse" />
-                <circle cx="250" cy="250" r="24" fill="none" stroke="rgba(49, 196, 243, 0.25)" strokeWidth="3" className="core-ring-pulse" />
-              </svg>
-
-              {/* Cyan Teardrop Graphic in top left matching logo */}
-              <div className="sig-cyan-splash" />
+          {/* Hero Bottom Bar */}
+          <div className="hero-bottom-bar">
+            {/* Left Floating Stat Card */}
+            <div className="hero-floating-card">
+              <div className="floating-card-header">
+                <span className="card-tag">YOUR EVENT HUB</span>
+                <Grid size={16} className="text-lime" />
+              </div>
+              <div className="floating-card-body">
+                <div className="metric-large">2.4M+</div>
+                <div className="metric-badge">
+                  <span className="star-rating">4.9 ★</span> POSITIVE METRICS
+                </div>
+              </div>
             </div>
 
+            {/* Right Signature & CTA */}
+            <div className="hero-action-right">
+              <div className="signature-box">
+                <span className="sig-name">Saif Alqdessi & Jafar Alkhadrawi</span>
+                <span className="sig-title">AI Engineers & Idexi Founders</span>
+              </div>
+              <Link href="/#contact" className="btn btn-lime cta-hero-btn">
+                BOOK A DEMO <ArrowUpRight size={18} />
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -137,263 +81,176 @@ export default function Hero() {
 }
 
 const heroCSS = `
-  .premium-hero {
+  .volt-hero {
     position: relative;
-    min-height: 98vh;
+    min-height: 88vh;
     display: flex;
-    align-items: center;
-    padding: 8rem 1.5rem 6rem 1.5rem;
+    align-items: flex-end;
+    padding: 8.5rem 0 3.5rem 0;
     overflow: hidden;
-    z-index: 1;
+    background: #07080b;
   }
 
-  /* --- LAYERED BACKGROUND SYSTEM --- */
-  .bg-gradient-base {
+  .hero-bg-container {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, var(--bg-gradient-start) 0%, var(--bg-deep) 100%);
-    z-index: -4;
+    z-index: 0;
   }
 
-  .hero-layered-waves {
+  .hero-bg-img {
+    object-fit: cover;
+    object-position: center 20%;
+    filter: grayscale(80%) contrast(120%) brightness(0.55);
+  }
+
+  .hero-overlay {
     position: absolute;
     inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -3;
-    pointer-events: none;
+    background: linear-gradient(180deg, rgba(7, 8, 11, 0.75) 0%, rgba(7, 8, 11, 0.5) 50%, #07080b 100%);
   }
 
-  .hairline-dash-anim {
-    stroke-dashoffset: 0;
-    animation: flowDash 30s linear infinite;
-  }
-
-  @keyframes flowDash {
-    to {
-      stroke-dashoffset: -1000;
-    }
-  }
-
-  /* --- HERO CONTAINER --- */
-  .hero-container-grid {
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 4rem;
-    align-items: center;
+  .hero-content {
     position: relative;
-    z-index: 5;
-  }
-
-  /* --- LEFT COLUMN: TYPOGRAPHY --- */
-  .hero-text-block {
-    display: flex;
-    flex-direction: column;
-    gap: 1.8rem;
-    max-width: 620px;
-  }
-
-  /* Treatment 1: Clean Utility Style */
-  .type-utility {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: var(--font-headings);
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    color: var(--accent-cyan);
-    background: rgba(49, 196, 243, 0.08);
-    border: 1.5px solid rgba(49, 196, 243, 0.2);
-    padding: 0.4rem 1rem;
-    border-radius: 9999px;
-    align-self: flex-start;
-  }
-
-  .utility-icon {
-    animation: pulse 2s infinite alternate;
-  }
-
-  /* Treatment 2: Bold Display Style */
-  .type-display {
-    font-family: var(--font-headings);
-    font-size: clamp(2.3rem, 4.5vw, 3.5rem);
-    font-weight: 800;
-    color: #ffffff;
-    line-height: 1.15;
-    letter-spacing: -0.03em;
-  }
-
-  /* Treatment 3: Italic Accent / Tagline Style */
-  .type-accent-italic {
-    font-family: var(--font-body);
-    font-style: italic;
-    font-size: 1.15rem;
-    color: var(--text-secondary);
-    line-height: 1.7;
-    border-left: 2px solid var(--accent-cyan);
-    padding-left: 1.2rem;
-    margin: 0;
-  }
-
-  .hero-actions-row {
-    display: flex;
-    gap: 1.2rem;
-    margin-top: 0.8rem;
-  }
-
-  .cta-demo {
-    box-shadow: 0 4px 20px rgba(49, 196, 243, 0.35);
-  }
-
-  .cta-explore {
-    /* Styles are handled by btn-glass class globally */
-  }
-
-  /* --- RIGHT COLUMN: VISUAL BLOCK --- */
-  .hero-visual-block {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* Large Concentric Signal Arcs Signature Visual */
-  .large-signature-arcs-wrapper {
-    position: relative;
-    width: 480px;
-    height: 480px;
     z-index: 2;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0.95;
-  }
-
-  .signature-arcs-svg {
+    flex-direction: column;
+    gap: 3.5rem;
     width: 100%;
-    height: 100%;
   }
 
-  .sig-arc-circle {
-    transform-origin: 250px 250px;
+  /* 3-Pillar Headline Grid — Zero Overflow */
+  .pillar-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+    width: 100%;
   }
 
-  .arc-delay-0 {
-    animation: rotateArc 12s linear infinite;
-    transform: rotate(0deg);
+  .pillar-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    min-width: 0;
   }
 
-  .arc-delay-1 {
-    animation: rotateArc 16s linear infinite reverse;
-    transform: rotate(45deg);
+  .pillar-title {
+    font-family: var(--font-headings);
+    font-size: clamp(1.3rem, 2.7vw, 3.2rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: #ffffff;
+    text-transform: uppercase;
+    white-space: nowrap;
   }
 
-  .arc-delay-2 {
-    animation: rotateArc 20s linear infinite;
-    transform: rotate(90deg);
+  .pillar-desc {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    max-width: 300px;
+    line-height: 1.5;
   }
 
-  .arc-delay-3 {
-    animation: rotateArc 24s linear infinite reverse;
-    transform: rotate(135deg);
+  /* Bottom Bar */
+  .hero-bottom-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+    width: 100%;
   }
 
-  @keyframes rotateArc {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+  .hero-floating-card {
+    background: rgba(13, 15, 20, 0.9);
+    border: 1px solid var(--grid-line);
+    border-radius: 8px;
+    padding: 1.2rem 1.6rem;
+    backdrop-filter: blur(12px);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 220px;
   }
 
-  .core-dot-pulse {
-    animation: pulseCore 3s ease-in-out infinite alternate;
+  .floating-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  .core-ring-pulse {
-    transform-origin: 250px 250px;
-    animation: scaleRing 3s ease-in-out infinite;
+  .card-tag {
+    font-family: var(--font-headings);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
   }
 
-  @keyframes pulseCore {
-    0% { r: 8px; fill: var(--accent-cyan); }
-    100% { r: 12px; fill: #ffffff; filter: drop-shadow(0 0 8px var(--accent-cyan)); }
+  .metric-large {
+    font-family: var(--font-headings);
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1;
   }
 
-  @keyframes scaleRing {
-    0% { transform: scale(0.9); opacity: 0.8; }
-    50% { opacity: 0.3; }
-    100% { transform: scale(1.4); opacity: 0; }
+  .metric-badge {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
   }
 
-  .sig-cyan-splash {
-    position: absolute;
-    top: 15%;
-    left: 15%;
-    width: 80px;
-    height: 100px;
-    background: radial-gradient(circle, rgba(49, 196, 243, 0.22) 0%, transparent 70%);
-    transform: rotate(-35deg);
-    pointer-events: none;
+  .star-rating {
+    color: var(--accent-purple-bright);
   }
 
-
-
-  /* --- RESPONSIVE ADJUSTMENTS --- */
-  @media (max-width: 1200px) {
-    .large-signature-arcs-wrapper {
-      width: 440px;
-      height: 440px;
-    }
+  /* Right Action Box */
+  .hero-action-right {
+    display: flex;
+    align-items: flex-end;
+    gap: 2rem;
   }
 
-  @media (max-width: 991px) {
-    .premium-hero {
-      padding-top: 7rem;
-      min-height: auto;
-    }
+  .signature-box {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+  }
 
-    .hero-container-grid {
-      grid-template-columns: 1fr;
-      gap: 3.5rem;
-      text-align: center;
-    }
+  .sig-name {
+    font-family: var(--font-headings);
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--accent-purple-bright);
+    letter-spacing: 0.04em;
+  }
 
-    .hero-text-block {
-      max-width: 100%;
-      align-items: center;
-    }
+  .sig-title {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
 
-    .type-accent-italic {
-      text-align: left;
-    }
+  .cta-hero-btn {
+    font-size: 0.88rem !important;
+    padding: 0.95rem 2rem !important;
+  }
 
-    .hero-actions-row {
-      justify-content: center;
-    }
-
-    .hero-visual-block {
-      margin-top: 1rem;
-    }
-
-    }
+  @media (max-width: 1050px) {
+    .volt-hero { padding-top: 7.5rem; min-height: auto; }
+    .pillar-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .pillar-title { font-size: clamp(2.2rem, 7vw, 4rem); }
+    .hero-bottom-bar { flex-direction: column; align-items: stretch; gap: 1.5rem; }
+    .hero-action-right { flex-direction: column; align-items: stretch; gap: 1rem; }
+    .signature-box { text-align: left; }
+    .hero-floating-card { width: 100%; }
+    .cta-hero-btn { width: 100%; justify-content: center; }
+  }
 
   @media (max-width: 480px) {
-    .hero-actions-row {
-      flex-direction: column;
-      width: 100%;
-      gap: 0.8rem;
-    }
-    
-    .btn {
-      width: 100%;
-      justify-content: center;
-    }
-  }
-
-  @media (max-width: 580px) {
-    .large-signature-arcs-wrapper {
-      width: 280px !important;
-      height: 280px !important;
-    }
+    .volt-hero { padding: 6.5rem 0 2.5rem 0; }
+    .pillar-desc { max-width: 100%; }
   }
 `;
