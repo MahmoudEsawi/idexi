@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "FAQs — idexi",
+  title: "FAQs | idexi",
   description:
-    "Answers about idexi's AI-powered event check-in, crowd intelligence, and photo delivery — how it works, what happens at the gate, and how attendee data is handled.",
+    "Answers about idexi's AI-powered event check-in, access control, and photo delivery: how it works, what happens at the gate, and how attendee data is handled.",
 };
 
 interface FaqItem {
@@ -18,7 +18,7 @@ interface FaqCategory {
 }
 
 const PRIVACY_NOTE =
-  "Our full privacy documentation — covering data retention and handling in detail — is being finalised and will be published here. For privacy questions in the meantime, contact hello@idexi.ai.";
+  "Our full privacy documentation, covering data retention and handling in detail, is being finalised and will be published here. For privacy questions in the meantime, contact hello@idexi.ai.";
 
 const categories: FaqCategory[] = [
   {
@@ -27,7 +27,7 @@ const categories: FaqCategory[] = [
       {
         question: "How do I receive my event photos?",
         answer: [
-          "At registration you opt in via a QR code and provide one reference selfie. Event photographers then capture photos throughout the venue as normal. idexi's matching engine scans the uploaded event photos, and any photo containing you is automatically compiled and sent straight to your email — no searching through a shared album.",
+          "At registration you opt in via a QR code and provide one reference selfie. Event photographers then capture photos throughout the venue as normal. idexi's matching engine scans the uploaded event photos, and any photo containing you is automatically compiled and sent straight to your email. No searching through a shared album.",
         ],
       },
       {
@@ -39,14 +39,14 @@ const categories: FaqCategory[] = [
       {
         question: "What happens if I'm not matched in any photo?",
         answer: [
-          "If the system doesn't find a confident match for your reference selfie in any of the event's photos, no gallery is generated for you — you simply won't receive a delivery email. This can happen if you weren't photographed, or if the reference selfie was low quality.",
+          "If the system doesn't find a confident match for your reference selfie in any of the event's photos, no gallery is generated for you. You simply won't receive a delivery email. This can happen if you weren't photographed, or if the reference selfie was low quality.",
           "If you believe you should have photos waiting and haven't received them, contact the event organiser or idexi support so it can be looked into manually.",
         ],
       },
       {
         question: "Can I ask to be removed from an event's photo gallery?",
         answer: [
-          "Yes — you can contact the event organiser or idexi to request that your photos be taken down from an event gallery.",
+          "Yes, you can contact the event organiser or idexi to request that your photos be taken down from an event gallery.",
           PRIVACY_NOTE,
         ],
       },
@@ -64,13 +64,13 @@ const categories: FaqCategory[] = [
       {
         question: "What happens if the venue's network connection drops?",
         answer: [
-          "idexi's check-in and crowd-sensing hardware is built to keep operating locally at the venue rather than depending on a live connection — check-in lanes are designed to keep scanning and verifying passes during a network blackout, and crowd-density sensors keep tracking movement locally too. Anything that needs to sync back to the organiser's dashboard catches up once connectivity returns.",
+          "idexi's check-in hardware is built to keep operating locally at the venue rather than depending on a live connection: check-in lanes are designed to keep scanning and verifying passes during a network blackout. idexi Flow's staff scanning app works the same way: scans at the gate, a workshop door, or a logistics point queue locally on the phone and sync to the shared dashboard once connectivity returns.",
         ],
       },
       {
         question: "What do organisers need to provide to get started?",
         answer: [
-          "The core things are your event and venue details and whatever ticketing or registration system you're already using, so idexi's team can build an integration around it rather than asking you to replace it. From there we put together a tailored walkthrough and integration plan — reach out through the \"Book a Demo\" link and the team will scope exactly what's needed for your event.",
+          "The core things are your event and venue details and whatever ticketing or registration system you're already using, so idexi's team can build an integration around it rather than asking you to replace it. From there we put together a tailored walkthrough and integration plan. Reach out through the \"Book Consultation\" link and the team will scope exactly what's needed for your event.",
         ],
       },
     ],
@@ -81,7 +81,7 @@ const categories: FaqCategory[] = [
       {
         question: "What information do I provide when I register or opt in?",
         answer: [
-          "You enter your own details directly — for check-in, that's typically your registration information; for photo delivery, that's a single reference selfie provided when you opt in via QR code. Event organisers control the data collected for their own event.",
+          "You enter your own details directly: for check-in, that's typically your registration information; for photo delivery, that's a single reference selfie provided when you opt in via QR code. Event organisers control the data collected for their own event.",
           PRIVACY_NOTE,
         ],
       },
@@ -112,11 +112,9 @@ export default function FaqsPage() {
           ← Back to idexi
         </Link>
 
-        <h1>
-          Frequently Asked <span className="text-gradient">Questions</span>
-        </h1>
+        <h1 className="faq-heading">Frequently Asked Questions</h1>
         <p className="faq-intro">
-          Answers about how idexi&apos;s check-in, crowd intelligence, and photo delivery products actually work.
+          Answers about how idexi&apos;s check-in, access control, and photo delivery products actually work.
         </p>
 
         {categories.map((category) => (
@@ -146,9 +144,19 @@ export default function FaqsPage() {
   );
 }
 
+/* Migrated off the legacy dark --accent-cyan/--glass-* system onto --st-*,
+   matching every other already-migrated page/section. Headings (h1, the
+   per-category h2) use var(--st-font-serif) at weight 500 — the same
+   declaration every other main section heading on the site now shares.
+   Individual question text (h3, inside the clickable <summary>) stays on
+   var(--st-font-display), matching how interactive list-item titles are
+   styled elsewhere (e.g. EventLifecycleSection's step titles), reserving
+   serif specifically for true section-level headings. */
 const faqCSS = `
   .faq-page {
     padding: 7rem 1.5rem;
+    background: var(--st-background);
+    transition: background 0.4s ease;
   }
   .faq-container {
     max-width: 70ch;
@@ -156,34 +164,42 @@ const faqCSS = `
   .faq-back-link {
     display: inline-block;
     margin-bottom: 2rem;
-    color: var(--text-secondary);
+    color: var(--st-on-surface-variant);
     font-size: 0.95rem;
     transition: color 0.25s ease;
   }
   .faq-back-link:hover {
-    color: var(--accent-cyan);
+    color: var(--st-secondary);
   }
   .faq-back-link:focus-visible {
-    outline: 2px solid var(--accent-cyan);
+    outline: 2px solid var(--st-secondary);
     outline-offset: 3px;
     border-radius: 4px;
   }
-  .faq-page h1 {
-    color: var(--text-primary);
+  .faq-heading {
+    font-family: var(--st-font-serif);
+    font-weight: 500;
+    font-size: clamp(2.25rem, 5vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--st-on-background);
     margin-bottom: 1rem;
   }
   .faq-intro {
     font-size: 1.05rem;
     line-height: 1.7;
-    color: var(--text-secondary);
+    color: var(--st-on-surface-variant);
     margin-bottom: 3.5rem;
   }
   .faq-category {
     margin-bottom: 3rem;
   }
   .faq-category h2 {
-    font-size: 1.5rem;
-    color: var(--text-primary);
+    font-family: var(--st-font-serif);
+    font-weight: 500;
+    font-size: 1.6rem;
+    letter-spacing: -0.01em;
+    color: var(--st-on-background);
     margin-bottom: 1.5rem;
   }
   .faq-list {
@@ -192,13 +208,15 @@ const faqCSS = `
     gap: 0.85rem;
   }
   .faq-item {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-xl);
+    background: var(--st-surface-container-lowest);
+    border: 1px solid var(--st-outline-variant);
+    border-radius: var(--st-radius-xl);
     padding: 1.25rem 1.5rem;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
   }
   .faq-item[open] {
-    border-color: var(--glass-border-hover);
+    border-color: var(--st-secondary);
+    box-shadow: 0 8px 24px rgba(11, 28, 48, 0.08);
   }
   .faq-question {
     display: flex;
@@ -213,14 +231,15 @@ const faqCSS = `
     display: none;
   }
   .faq-question:focus-visible {
-    outline: 2px solid var(--accent-cyan);
+    outline: 2px solid var(--st-secondary);
     outline-offset: 3px;
     border-radius: 4px;
   }
   .faq-question h3 {
+    font-family: var(--st-font-display);
     font-size: 1.02rem;
     font-weight: 700;
-    color: var(--text-primary);
+    color: var(--st-on-background);
     line-height: 1.4;
   }
   .faq-icon {
@@ -231,7 +250,7 @@ const faqCSS = `
     width: 24px;
     height: 24px;
     font-size: 1.2rem;
-    color: var(--accent-cyan);
+    color: var(--st-secondary);
     transition: transform 0.2s ease;
   }
   .faq-item[open] .faq-icon {
@@ -240,7 +259,7 @@ const faqCSS = `
   .faq-answer {
     margin-top: 1rem;
     padding-top: 1rem;
-    border-top: 1px solid var(--glass-border);
+    border-top: 1px solid var(--st-outline-variant);
     display: flex;
     flex-direction: column;
     gap: 0.85rem;
@@ -248,7 +267,7 @@ const faqCSS = `
   .faq-answer p {
     font-size: 0.95rem;
     line-height: 1.65;
-    color: var(--text-secondary);
+    color: var(--st-on-surface-variant);
   }
 
   @media (prefers-reduced-motion: reduce) {

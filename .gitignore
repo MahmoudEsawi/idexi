@@ -68,3 +68,5 @@ cost.json
 *.log
 tmp/
 temp/
+# Impeccable design-hook generated cache (config.json is intentionally tracked)
+.impeccable/hook.cache.json

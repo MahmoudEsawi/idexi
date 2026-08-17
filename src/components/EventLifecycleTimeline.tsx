@@ -22,13 +22,13 @@ const stages: Stage[] = [
     icon: ScanFace,
     badge: "idexi Pass",
     title: "Express Bio Check-In",
-    desc: "Guests scan and verify at access points — zero bottlenecks, millisecond check-in.",
+    desc: "Guests scan and verify at access points in milliseconds, so lines never form.",
   },
   {
     icon: Activity,
     badge: "idexi Flow",
-    title: "Crowd Analytics (Live)",
-    desc: "Sensors assess crowd density, movement, and exit patterns dynamically.",
+    title: "Access & Logistics Tracking",
+    desc: "Staff scan one universal QR code per guest to verify entry, workshop access, and logistics pickups from their own phones.",
   },
   {
     icon: Camera,

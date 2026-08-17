@@ -37,7 +37,7 @@ const footerColumns: FooterColumn[] = [
     links: [
       { label: "Our Story", href: "/#about" },
       { label: "Use Cases", href: "/#use-cases" },
-      { label: "Book a Demo", href: "/#contact" },
+      { label: "Book Consultation", href: "/#contact" },
     ],
   },
   {
@@ -95,14 +95,20 @@ export default function Footer() {
       <div className="container footer-grid">
         <div className="footer-brand-col" style={{ "--stagger-idx": 0 } as React.CSSProperties}>
           <Image
-            src="/logo-white-horizontal.png"
-            alt="idexi — Intelligent Event Solutions"
+            src="/logo-black-horizontal.png"
+            alt="idexi: Intelligent Event Solutions"
             width={160}
             height={41}
-            style={{ height: "auto" }}
-          />
+            className="footer-logo-img footer-logo-light"          />
+          <Image
+            src="/logo-white-horizontal.png"
+            alt=""
+            aria-hidden="true"
+            width={160}
+            height={41}
+            className="footer-logo-img footer-logo-dark"          />
           <p className="footer-tagline">
-            AI-powered check-in, crowd intelligence, and photo delivery for live events.
+            AI-powered check-in, access control, and photo delivery for live events.
           </p>
           <p className="footer-copyright">
             &copy; {currentYear} idexi. All rights reserved.
@@ -167,11 +173,10 @@ const footerCSS = `
        ~250px of grid content. flex-shrink:0 overrides that: never shrink below
        natural size, regardless of the overflow-disables-auto-min-size interaction. */
     flex-shrink: 0;
-    background: rgba(11, 18, 50, 0.45);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-top: 1px solid var(--glass-border);
-    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    background: var(--st-surface-container-low);
+    transition: background 0.4s ease, border-color 0.4s ease;
+    border-top: 1px solid var(--st-outline-variant);
+    border-radius: var(--st-radius-xl) var(--st-radius-xl) 0 0;
     padding: 4rem 1.5rem 2.5rem;
   }
   .footer-glow {
@@ -181,10 +186,22 @@ const footerCSS = `
     transform: translateX(-50%);
     width: 500px;
     height: 120px;
-    background: radial-gradient(ellipse at top, var(--accent-glow) 0%, transparent 70%);
-    opacity: 0.35;
+    background: radial-gradient(ellipse at top, var(--st-secondary) 0%, transparent 70%);
+    opacity: 0.12;
     filter: blur(12px);
     pointer-events: none;
+  }
+  .footer-logo-img {
+    display: block;
+  }
+  .footer-logo-dark {
+    display: none;
+  }
+  :root[data-theme='dark'] .footer-logo-light {
+    display: none;
+  }
+  :root[data-theme='dark'] .footer-logo-dark {
+    display: block;
   }
   .footer-grid {
     position: relative;
@@ -212,19 +229,20 @@ const footerCSS = `
     max-width: 300px;
     font-size: 0.92rem;
     line-height: 1.6;
-    color: var(--text-secondary);
+    color: var(--st-on-surface-variant);
   }
   .footer-copyright {
     margin-top: 1.5rem;
     font-size: 0.82rem;
-    color: var(--text-muted);
+    color: var(--st-on-surface-variant);
+    opacity: 0.75;
   }
   .footer-col-title {
-    font-family: var(--font-headings);
+    font-family: var(--st-font-display);
     font-size: 0.85rem;
     font-weight: 700;
     letter-spacing: 0.04em;
-    color: var(--text-primary);
+    color: var(--st-on-background);
     margin-bottom: 1rem;
   }
   .footer-link-list {
@@ -238,15 +256,15 @@ const footerCSS = `
     align-items: center;
     gap: 0.5rem;
     min-height: 44px;
-    color: var(--text-secondary);
+    color: var(--st-on-surface-variant);
     font-size: 0.92rem;
     transition: color 0.25s ease;
   }
   .footer-link:hover {
-    color: var(--accent-cyan);
+    color: var(--st-secondary);
   }
   .footer-link:focus-visible {
-    outline: 2px solid var(--accent-cyan);
+    outline: 2px solid var(--st-secondary);
     outline-offset: 3px;
     border-radius: 4px;
   }
@@ -273,13 +291,18 @@ const footerCSS = `
     }
   }
 
+  /* Two rows, not one long column: brand spans the full width as its own
+     row, then the 4 link columns (Product, Company, Resources, Social
+     Links) pair up 2-per-row underneath — same shape as the tablet
+     breakpoint above, just with a tighter gap so two columns fit
+     comfortably at phone widths. */
   @media (max-width: 767px) {
     .footer-grid {
-      grid-template-columns: 1fr;
-      gap: 2.25rem;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem 1.25rem;
     }
     .footer-brand-col {
-      grid-column: auto;
+      grid-column: 1 / -1;
     }
   }
 `;

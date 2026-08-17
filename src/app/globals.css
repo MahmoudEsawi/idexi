@@ -1,4 +1,281 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600;700;800&family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap');
+
+/* ════════════════════════════════════════════════════════════════
+   STITCH DESIGN SYSTEM — dual-theme tokens ("--st-" namespace)
+   Source: stitch_essential_ui_toolkit/DESIGN.md
+   Scoped under its own prefix so it can be adopted section-by-section
+   without touching the legacy --accent-cyan/--bg-deep system above,
+   which the navbar/footer/service pages still rely on.
+   Light values are verbatim from the toolkit. Dark values are derived
+   from the toolkit's own "fixed"/"inverse" M3 tokens (e.g. dark primary
+   = light's primary-fixed-dim / inverse-primary), not invented from
+   scratch — the toolkit already encodes a dark scheme, just flattened.
+   ════════════════════════════════════════════════════════════════ */
+:root {
+  --st-font-display: 'Outfit', sans-serif;
+  --st-font-ui: 'Inter', sans-serif;
+  /* Editorial display serif for hero-scale headlines only — pinned to the
+     Antimetal reference, not a default reach. Kept off the banned
+     Fraunces/Instrument_Serif defaults; every other text role stays sans. */
+  --st-font-serif: 'Playfair Display', Georgia, serif;
+
+  /* Spacing (8px base system) */
+  --st-space-base: 8px;
+  --st-space-xs: 4px;
+  --st-space-sm: 12px;
+  --st-space-md: 24px;
+  --st-space-lg: 48px;
+  --st-space-xl: 80px;
+  --st-space-gutter: 24px;
+  --st-space-margin-mobile: 16px;
+  --st-space-margin-desktop: 40px;
+
+  /* Radius */
+  --st-radius-sm: 0.25rem;
+  --st-radius: 0.5rem;
+  --st-radius-md: 0.75rem;
+  --st-radius-lg: 1rem;
+  --st-radius-xl: 1.5rem;
+  --st-radius-full: 9999px;
+
+  /* Color — LIGHT (default) */
+  --st-surface: #f8f9ff;
+  --st-surface-dim: #cbdbf5;
+  --st-surface-bright: #f8f9ff;
+  --st-surface-container-lowest: #ffffff;
+  --st-surface-container-low: #eff4ff;
+  --st-surface-container: #e5eeff;
+  --st-surface-container-high: #dce9ff;
+  --st-surface-container-highest: #d3e4fe;
+  --st-on-surface: #0b1c30;
+  --st-on-surface-variant: #45464e;
+  --st-outline: #76767f;
+  --st-outline-variant: #c6c6cf;
+  --st-surface-tint: #515d84;
+  --st-surface-variant: #d3e4fe;
+
+  --st-primary: #00020e;
+  --st-on-primary: #ffffff;
+  --st-primary-container: #0d1b3e;
+  --st-on-primary-container: #7784ad;
+
+  --st-secondary: #0058bc;
+  --st-on-secondary: #ffffff;
+  --st-secondary-container: #0070eb;
+  --st-on-secondary-container: #fefcff;
+
+  --st-tertiary: #000303;
+  --st-on-tertiary: #ffffff;
+  --st-tertiary-container: #002123;
+  --st-on-tertiary-container: #00939b;
+  /* "Data visualization peak" accent — DESIGN.md's tertiary/cyan role,
+     resolved to whichever tertiary tone is actually legible per theme. */
+  --st-accent-data: #00939b;
+
+  --st-error: #ba1a1a;
+  --st-on-error: #ffffff;
+  --st-error-container: #ffdad6;
+  --st-on-error-container: #93000a;
+
+  --st-background: #edf0ff;
+  --st-on-background: #0b1c30;
+
+  --st-inverse-surface: #213145;
+  --st-inverse-on-surface: #eaf1ff;
+  --st-inverse-primary: #b9c5f2;
+}
+
+:root[data-theme='dark'] {
+  --st-surface: #0b1c30;
+  --st-surface-dim: #070d18;
+  --st-surface-bright: #213145;
+  --st-surface-container-lowest: #05070d;
+  --st-surface-container-low: #101f38;
+  --st-surface-container: #16273f;
+  --st-surface-container-high: #1c2f4a;
+  --st-surface-container-highest: #223655;
+  --st-on-surface: #eaf1ff;
+  --st-on-surface-variant: #c6c6cf;
+  --st-outline: #8f95a3;
+  --st-outline-variant: #45464e;
+  --st-surface-tint: #b9c5f2;
+  --st-surface-variant: #223655;
+
+  --st-primary: #b9c5f2;
+  --st-on-primary: #0b1a3d;
+  --st-primary-container: #39456b;
+  --st-on-primary-container: #dbe1ff;
+
+  --st-secondary: #adc6ff;
+  --st-on-secondary: #001a41;
+  --st-secondary-container: #004493;
+  --st-on-secondary-container: #d8e2ff;
+
+  --st-tertiary: #00dbe7;
+  --st-on-tertiary: #002022;
+  --st-tertiary-container: #004f54;
+  --st-on-tertiary-container: #74f5ff;
+  --st-accent-data: #00dbe7;
+
+  --st-error: #ba1a1a;
+  --st-on-error: #ffffff;
+  --st-error-container: #93000a;
+  --st-on-error-container: #ffdad6;
+
+  --st-background: #0d1b3e;
+  --st-on-background: #eaf1ff;
+
+  --st-inverse-surface: #f8f9ff;
+  --st-inverse-on-surface: #0b1c30;
+  --st-inverse-primary: #00020e;
+}
+
+/* ── Typography scale ── */
+.st-headline-xl {
+  font-family: var(--st-font-serif);
+  font-weight: 500;
+  font-size: clamp(2.75rem, 5.5vw + 1rem, 4.75rem);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--st-on-background);
+}
+.st-headline-lg {
+  font-family: var(--st-font-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  color: var(--st-on-background);
+}
+@media (min-width: 768px) {
+  .st-headline-lg {
+    font-size: 2rem;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+}
+.st-headline-md {
+  font-family: var(--st-font-display);
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 1.4;
+  color: var(--st-on-background);
+}
+.st-body-lg {
+  font-family: var(--st-font-display);
+  font-weight: 400;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--st-on-surface-variant);
+}
+.st-body-md {
+  font-family: var(--st-font-display);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--st-on-surface-variant);
+}
+.st-label-md {
+  font-family: var(--st-font-ui);
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+}
+.st-label-sm {
+  font-family: var(--st-font-ui);
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+
+/* ── Buttons ── */
+.st-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--st-font-ui);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: var(--st-space-sm) var(--st-space-md);
+  border-radius: var(--st-radius-full);
+  border: none;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  min-height: 44px;
+}
+.st-btn-primary {
+  background: var(--st-primary);
+  color: var(--st-on-primary);
+  box-shadow: 0 0 0 rgba(11, 28, 48, 0);
+}
+.st-btn-primary:hover {
+  filter: brightness(1.15);
+  transform: scale(1.05);
+  box-shadow: 0 10px 28px rgba(11, 28, 48, 0.2);
+}
+:root[data-theme='dark'] .st-btn-primary:hover {
+  filter: brightness(0.9);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+}
+.st-btn-primary:active {
+  transform: scale(0.98);
+}
+.st-btn-outline {
+  background: transparent;
+  color: var(--st-secondary);
+  border: 1.5px solid var(--st-secondary);
+  padding: calc(var(--st-space-sm) - 1.5px) calc(var(--st-space-md) - 1.5px);
+}
+.st-btn-outline:hover {
+  background: var(--st-surface-container-low);
+}
+
+/* Minimal corner-bracket secondary button — four short L-shaped marks at
+   each corner instead of a full border, transparent otherwise. Pinned to
+   the Antimetal reference's "Explore the research" treatment. */
+.st-btn-bracket {
+  position: relative;
+  background-color: transparent;
+  color: var(--st-on-surface-variant);
+  border-radius: 0;
+  padding: var(--st-space-sm) var(--st-space-lg);
+  background-image:
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-size:
+    14px 1.5px, 1.5px 14px,
+    14px 1.5px, 1.5px 14px,
+    14px 1.5px, 1.5px 14px,
+    14px 1.5px, 1.5px 14px;
+  background-position:
+    0px 0px, 0px 0px,
+    100% 0px, 100% 0px,
+    0px 100%, 0px 100%,
+    100% 100%, 100% 100%;
+}
+.st-btn-bracket:hover {
+  /* Stays fully transparent — no background fill on hover. Only the
+     brackets themselves move, clamping inward toward the text (left-side
+     marks slide right, right-side marks slide left); size and vertical
+     position are untouched. background-position is natively animatable
+     per-layer, so this transitions smoothly off the shared .st-btn rule's
+     `transition: var(--transition-smooth)` alone. */
+  color: var(--st-on-background);
+  background-position:
+    8px 0px, 8px 0px,
+    calc(100% - 8px) 0px, calc(100% - 8px) 0px,
+    8px 100%, 8px 100%,
+    calc(100% - 8px) 100%, calc(100% - 8px) 100%;
+}
 
 :root {
   /* Color Palette — brand colors */
@@ -49,25 +326,52 @@
   margin: 0;
 }
 
-html, body {
+/* overflow-x: hidden and height live on <html> ONLY, deliberately not on
+   <body>. When <html> is not `overflow: visible`, its overflow propagates
+   to the viewport and <body>'s own overflow stops being propagated — so a
+   body with `overflow-x: hidden` computes to `overflow-y: auto` (one axis
+   hidden forces the other from visible to auto) and, pinned to
+   height: 100%, silently becomes the real scroll container instead of the
+   window. That breaks every window-based scroll measurement on the page:
+   window.scrollY stays 0 and documentElement.scrollHeight - innerHeight
+   measures 0. Keep horizontal clipping on <html>, where it still clips at
+   the viewport, and leave <body> as a normal auto-height, overflow-visible
+   element that grows with content. */
+html {
   max-width: 100vw;
   overflow-x: hidden;
   height: 100%;
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
+  max-width: 100vw;
   min-height: 100%;
   color: var(--text-primary);
-  background: var(--bg-deep);
-  background-image: 
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(30, 111, 224, 0.15) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(49, 196, 243, 0.08) 0%, transparent 50%),
-    linear-gradient(180deg, var(--bg-gradient-start) 0%, var(--bg-deep) 40%, var(--bg-mid) 70%, var(--bg-gradient-start) 100%);
-  background-attachment: fixed;
+  /* Theme-aware base: flat --st-background in light mode (so the fixed,
+     transparent Navbar has nothing dark to show through above the Hero),
+     with the legacy ambient glow layered back on only in dark mode below —
+     the glow was tuned for the old always-dark body and looks wrong as a
+     flat light-mode wash. */
+  background: var(--st-background);
+  transition: background 0.4s ease;
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.65;
+}
+
+:root[data-theme='dark'] body {
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(30, 111, 224, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(49, 196, 243, 0.08) 0%, transparent 50%),
+    linear-gradient(180deg, var(--bg-gradient-start) 0%, var(--bg-deep) 40%, var(--bg-mid) 70%, var(--bg-gradient-start) 100%);
+  background-attachment: fixed;
 }
 
 a {
@@ -360,7 +664,24 @@ section {
   transform: translateY(-3px);
 }
 
-/* ======= SERVICE PAGE LAYOUTS ======= */
+/* ======= SERVICE PAGE LAYOUTS =======
+   Migrated off the legacy dark --accent-cyan/--glass-* system onto --st-*,
+   matching every other already-migrated section (Navbar, VenueAccordion,
+   CtaSection, OurStorySection, AIEnginesSection, EventLifecycleSection).
+   Card recipe (border-radius: var(--st-radius-xl); border: 1px solid
+   var(--st-outline-variant); background: var(--st-surface-container-lowest))
+   is copied verbatim from AIEnginesSection's .ai-engine-card, the
+   established base card style, rather than inventing a new one.
+   Headings use var(--st-font-serif) at weight 500 — the same declaration
+   every other main section heading on the site now shares, per this
+   session's standardization pass.
+   One deliberate exception: .service-mockup-container stays a fixed dark
+   navy "device screen" (matching EventLifecycleSection's own disclosed
+   fixed-dark panel, the one other place on the site that keeps a
+   non-theme-reactive dark surface on purpose) rather than going flat
+   white — it's presented as a live app/terminal screenshot, a framing
+   device that reads correctly dark regardless of page theme, not a
+   leftover of the old always-dark design. */
 .service-page-container {
   position: relative;
   padding-bottom: 5rem;
@@ -369,19 +690,45 @@ section {
   position: relative;
   z-index: 1;
   padding-top: 2rem;
+  padding-left: var(--st-space-margin-mobile);
+  padding-right: var(--st-space-margin-mobile);
+}
+/* Breadcrumb row: replaces the old isolated eyebrow-pill badge above each
+   service H1 (a "hero eyebrow chip" — one of the most recognizable
+   generated-UI tells) with the same "idexi Face/Flow/Pass" identity
+   folded into the top navigation row instead, per the standard fix for
+   that pattern: run it as a breadcrumb, not a decorative kicker. */
+.service-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 3rem;
 }
 .service-back-link {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  color: var(--text-secondary);
+  color: var(--st-on-surface-variant);
   font-size: 0.95rem;
-  margin-bottom: 3rem;
   transition: var(--transition-smooth);
 }
 .service-back-link:hover {
-  color: var(--accent-cyan);
+  color: var(--st-secondary);
   transform: translateX(-4px);
+}
+.service-breadcrumb-sep {
+  color: var(--st-outline-variant);
+  font-size: 0.9rem;
+}
+.service-breadcrumb-current {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--st-on-surface-variant);
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: var(--st-font-ui);
 }
 .service-hero-grid {
   display: grid;
@@ -395,31 +742,17 @@ section {
   flex-direction: column;
   gap: 1.5rem;
 }
-.service-badge {
-  background: rgba(49, 196, 243, 0.08);
-  border: 1px solid rgba(49, 196, 243, 0.2);
-  border-radius: 9999px;
-  padding: 0.45rem 1.25rem;
-  color: var(--accent-cyan);
-  font-size: 0.82rem;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  align-self: flex-start;
-  font-family: var(--font-headings);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
 .service-title {
+  font-family: var(--st-font-serif);
+  font-weight: 500;
   font-size: clamp(2.2rem, 5vw, 3.5rem);
-  font-weight: 800;
   line-height: 1.1;
-  color: #ffffff;
+  letter-spacing: -0.01em;
+  color: var(--st-on-background);
 }
 .service-description {
   font-size: 1.15rem;
-  color: var(--text-secondary);
+  color: var(--st-on-surface-variant);
   line-height: 1.7;
 }
 .service-cta-row {
@@ -429,11 +762,14 @@ section {
 }
 .service-visual-col {
   padding: 1.5rem;
-  border-radius: 20px;
+  border-radius: var(--st-radius-xl);
+  border: 1px solid var(--st-outline-variant);
+  background: var(--st-surface-container-lowest);
+  box-shadow: 0 20px 48px -16px rgba(13, 27, 62, 0.16);
 }
 .service-mockup-container {
-  background: #090e29;
-  border-radius: 12px;
+  background: #0d1b3e;
+  border-radius: var(--st-radius-lg);
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
@@ -454,8 +790,8 @@ section {
   margin-left: 0.8rem;
   font-size: 0.78rem;
   font-weight: 700;
-  color: var(--text-secondary);
-  font-family: var(--font-headings);
+  color: rgba(255, 255, 255, 0.55);
+  font-family: var(--st-font-ui);
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
@@ -470,9 +806,9 @@ section {
   align-items: center;
   justify-content: space-between;
   padding: 0.85rem 1.1rem;
-  background: rgba(255, 255, 255, 0.01);
-  border: 1px solid rgba(255, 255, 255, 0.03);
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--st-radius-md);
 }
 .service-match-avatar {
   font-size: 1.3rem;
@@ -481,7 +817,7 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.06);
   border-radius: 50%;
 }
 .service-match-details {
@@ -497,110 +833,180 @@ section {
 }
 .service-match-time {
   font-size: 0.7rem;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.45);
 }
 .service-status-badge {
   font-size: 0.72rem;
   font-weight: 600;
   padding: 0.25rem 0.6rem;
   border-radius: 6px;
-  background: rgba(39, 201, 63, 0.1);
+  background: rgba(39, 201, 63, 0.14);
   color: var(--status-success);
 }
 .service-section {
   margin-bottom: 6rem;
 }
 .service-subsection-title {
+  font-family: var(--st-font-serif);
+  font-weight: 500;
   font-size: clamp(1.8rem, 4vw, 2.4rem);
-  font-weight: 800;
-  color: #ffffff;
+  letter-spacing: -0.01em;
+  color: var(--st-on-background);
   text-align: center;
   margin-bottom: 3.5rem;
 }
-.service-steps-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 2rem;
+/* ── Process rail: a connected vertical rail with each step as a
+   full-width row, replacing the old equal-width step-card grid. Real
+   paragraph copy gets room, and the connected line reads as one
+   continuous journey rather than N interchangeable tiles. Same
+   rail-drawn-once-as-pseudo-element technique as the homepage's
+   EventLifecycleSection stepper. ── */
+.service-process {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  padding-left: 2.75rem;
 }
-.service-step-card {
-  padding: 2.25rem 2rem;
-  border-radius: 16px;
+.service-process::before {
+  content: '';
+  position: absolute;
+  left: 0.9rem;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 2px;
+  background: var(--st-outline-variant);
 }
-.service-step-number {
-  font-size: 2.5rem;
-  font-weight: 800;
-  font-family: var(--font-headings);
-  color: rgba(49, 196, 243, 0.12);
-  margin-bottom: 0.25rem;
-  line-height: 1;
+.service-process-step {
+  position: relative;
 }
-.service-step-title {
-  font-size: 1.22rem;
+.service-process-number {
+  position: absolute;
+  left: -2.75rem;
+  top: 0;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--st-surface-container-lowest);
+  border: 2px solid var(--st-secondary);
+  color: var(--st-secondary);
+  font-family: var(--st-font-display);
   font-weight: 700;
-  color: #ffffff;
-  font-family: var(--font-headings);
+  font-size: 0.85rem;
+}
+.service-process-title {
+  font-family: var(--st-font-display);
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--st-on-background);
   margin-bottom: 0.5rem;
 }
-.service-step-desc {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
+.service-process-desc {
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: var(--st-on-surface-variant);
+  max-width: 56ch;
 }
-.service-benefits-section {
-  background: rgba(6, 9, 30, 0.4);
-  border-top: 1px solid rgba(49, 196, 243, 0.08);
-  border-bottom: 1px solid rgba(49, 196, 243, 0.08);
+
+/* ── Proof bento: one featured tile carrying the page's single strongest,
+   sourced claim, plus smaller supporting tiles — replaces the 3-equal-card
+   benefits grid so the strongest fact gets visual weight instead of being
+   flattened to the same size as everything else. ── */
+.service-bento-section {
+  background: var(--st-surface-container-low);
+  border-top: 1px solid var(--st-outline-variant);
+  border-bottom: 1px solid var(--st-outline-variant);
   padding: 5rem 1.5rem;
   margin-bottom: 6rem;
 }
-.service-benefits-grid {
+.service-bento {
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 3.5rem;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 1.5rem;
 }
-.service-benefit-item {
+.service-bento-feature {
+  grid-row: 1 / 3;
+  padding: 3rem 2.5rem;
+  border-radius: var(--st-radius-xl);
+  background: var(--st-primary);
+  color: var(--st-on-primary);
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
-.service-benefit-title {
-  font-size: 1.25rem;
+.service-bento-feature-stat {
+  font-family: var(--st-font-serif);
+  font-weight: 500;
+  font-size: clamp(2.25rem, 4vw, 3.25rem);
+  line-height: 1.08;
+  margin-bottom: 1rem;
+}
+.service-bento-feature-desc {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  /* A fully opaque mixed color, not text-opacity: alpha-blended text over
+     a solid card background is unambiguous to the eye at this ratio, but
+     leaves the actual composited pixel color dependent on whatever sits
+     beneath the element at render time. Mixing toward the card's own
+     background color instead produces the same muted look as a solid,
+     directly-computable value. */
+  color: color-mix(in srgb, var(--st-on-primary) 82%, var(--st-primary));
+  max-width: 32ch;
+}
+
+/* Plain visual frame for hero demo widgets that already carry their own
+   card-like chrome (a phone bezel, a ticket, a device screen) — no
+   border/background/shadow of its own, so the widget isn't nested inside
+   a second, redundant card. */
+.service-visual-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.service-bento-card {
+  padding: 2rem;
+  border-radius: var(--st-radius-xl);
+  border: 1px solid var(--st-outline-variant);
+  background: var(--st-surface-container-lowest);
+}
+.service-bento-card-title {
+  font-family: var(--st-font-display);
   font-weight: 700;
-  color: #ffffff;
+  font-size: 1.1rem;
+  color: var(--st-on-background);
   margin-bottom: 0.5rem;
-  font-family: var(--font-headings);
 }
-.service-benefit-desc {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
+.service-bento-card-desc {
+  font-size: 0.92rem;
   line-height: 1.6;
+  color: var(--st-on-surface-variant);
 }
-.service-targets-grid {
+
+/* ── Audience bento: same asymmetric logic applied to "who it's for" —
+   three real-but-different audiences don't default to three identical
+   cards, one of the most recognizable generated-UI tells. ── */
+.service-audience-bento {
+  max-width: 1200px;
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: 1.2fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 1.5rem;
 }
-.service-target-card {
-  padding: 2.5rem;
-  border-radius: 16px;
-}
-.service-target-title {
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 0.75rem;
-  font-family: var(--font-headings);
-}
-.service-target-desc {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
+.service-audience-feature {
+  grid-row: 1 / 3;
 }
 
 /* Compact "who is it for" treatment — a chip row instead of a full card grid,
    for pages where a fuller venue-type breakdown already exists elsewhere
-   (e.g. the homepage's Venue Accordion). Reuses .service-badge's pill styling. */
+   (e.g. the homepage's Venue Accordion). */
 .service-audience-compact .service-subsection-title {
   margin-bottom: 1.5rem;
 }
@@ -612,56 +1018,26 @@ section {
 .service-audience-chip {
   display: inline-flex;
   align-items: center;
-  background: rgba(49, 196, 243, 0.08);
-  border: 1px solid rgba(49, 196, 243, 0.2);
+  background: color-mix(in srgb, var(--st-secondary) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--st-secondary) 25%, transparent);
   border-radius: 9999px;
   padding: 0.55rem 1.25rem;
-  color: var(--text-secondary);
+  color: var(--st-on-surface-variant);
   font-size: 0.9rem;
   font-weight: 600;
-  font-family: var(--font-headings);
+  font-family: var(--st-font-ui);
 }
 
-/* FLOW SERVICE telemetries */
-.service-zone-metric {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  padding: 0.2rem 0;
-}
-.service-zone-label-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.service-zone-name {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #ffffff;
-}
-.service-zone-status {
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-.service-progress-outer {
-  width: 100%;
-  height: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 99px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.02);
-}
-.service-progress-inner {
-  height: 100%;
-  border-radius: 99px;
-  transition: width 0.8s ease;
-}
-
-/* PASS SERVICE smart pass mockup */
+/* PASS SERVICE smart pass mockup — lives inside the always-dark
+   .service-mockup-container "device screen", so its own tones are fixed
+   light-on-navy literals (not --st-* tokens, which flip per theme) rather
+   than legacy --text-secondary/--text-muted references — same reasoning
+   as .service-mockup-title/.service-match-time above, and it keeps this
+   panel from depending on the legacy tokens continuing to exist at all. */
 .pass-mockup {
-  background: linear-gradient(135deg, rgba(20, 30, 80, 0.85), rgba(11, 18, 50, 0.95));
-  border: 1.5px solid rgba(49, 196, 243, 0.2);
-  border-radius: 16px;
+  background: linear-gradient(135deg, #14224a, #0d1b3e);
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--st-radius-lg);
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
@@ -688,8 +1064,8 @@ section {
   align-items: center;
   gap: 0.5rem;
   padding: 1rem 0;
-  background: rgba(255, 255, 255, 0.01);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 8px;
 }
 .pass-barcode-lines {
@@ -701,7 +1077,7 @@ section {
 .pass-barcode-num {
   font-family: monospace;
   font-size: 0.75rem;
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.55);
   letter-spacing: 0.1em;
 }
 .pass-footer {
@@ -710,9 +1086,9 @@ section {
   gap: 1rem;
 }
 .pass-label {
-  font-size: 0.65rem;
+  font-size: 0.6875rem;
   font-weight: 700;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.66);
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
@@ -726,9 +1102,9 @@ section {
   flex-direction: column;
   gap: 0.2rem;
   padding: 0.85rem 1rem;
-  background: rgba(39, 201, 63, 0.05);
-  border: 1px solid rgba(39, 201, 63, 0.15);
-  border-radius: 10px;
+  background: rgba(39, 201, 63, 0.1);
+  border: 1px solid rgba(39, 201, 63, 0.25);
+  border-radius: var(--st-radius-md);
 }
 .scan-indicator {
   font-size: 0.78rem;
@@ -767,11 +1143,17 @@ section {
   .service-cta-row {
     justify-content: center;
   }
-  .service-back-link {
+  .service-breadcrumb {
     margin-bottom: 2rem;
+    justify-content: center;
   }
-  .service-badge {
-    align-self: center;
+  .service-bento,
+  .service-audience-bento {
+    grid-template-columns: 1fr;
+  }
+  .service-bento-feature,
+  .service-audience-feature {
+    grid-row: auto;
   }
   .footer-grid-responsive {
     grid-template-columns: 1fr 1fr;
@@ -780,6 +1162,12 @@ section {
 }
 
 @media (max-width: 640px) {
+  .service-process {
+    padding-left: 2.25rem;
+  }
+  .service-process-number {
+    left: -2.25rem;
+  }
   .footer-grid-responsive {
     grid-template-columns: 1fr;
     gap: 2rem;
