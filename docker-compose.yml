@@ -1,0 +1,52 @@
+# Runs the idexi site in a container so nothing needs installing locally: no
+# Node, no npm, no OS-specific native binaries.
+#
+#   docker compose up --build              production build on http://localhost:3000
+#   docker compose --profile dev up --build development server with hot reload
+#
+# Secrets come from .env.local, the same file used for `npm run dev` locally.
+# It is git-ignored, so each person keeps their own copy. If it does not exist
+# the container still starts; the contact form will simply report that it could
+# not send, which is its normal missing-key behaviour.
+
+services:
+  web:
+    build:
+      context: .
+      target: runner
+    ports:
+      - "3000:3000"
+    env_file:
+      - path: .env.local
+        required: false
+    environment:
+      NODE_ENV: production
+    restart: unless-stopped
+
+  dev:
+    profiles: ["dev"]
+    build:
+      context: .
+      target: dev
+    ports:
+      - "3000:3000"
+    env_file:
+      - path: .env.local
+        required: false
+    environment:
+      NODE_ENV: development
+      # Bind-mounted source on Windows and macOS does not always deliver inotify
+      # events into the container, so file watching is set to polling. It costs
+      # a little CPU and is the difference between hot reload working and
+      # silently not working.
+      WATCHPACK_POLLING: "true"
+      CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      # Source is mounted so edits on the host appear in the container.
+      - .:/app
+      # These two are anonymous volumes that deliberately shadow the mount
+      # above. node_modules must stay the container's Linux build rather than
+      # the host's Windows/macOS one, and .next must not be shared with a local
+      # `npm run dev` or the two builds corrupt each other's cache.
+      - /app/node_modules
+      - /app/.next
