@@ -70,3 +70,7 @@ tmp/
 temp/
 # Impeccable design-hook generated cache (config.json is intentionally tracked)
 .impeccable/hook.cache.json
+
+# Local stray files, kept on disk but not tracked
+Moody B&W Headshot Prompt for Nano Banana.jfif
+skills-lock.json
