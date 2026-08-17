@@ -42,3 +42,35 @@ next-env.d.ts
 
 # local agents configs
 .agents/
+
+# =========================
+# AI Tools & Local Settings
+# =========================
+.claude/
+.cursor/
+.vscode/
+
+# =========================
+# Graphify & Analysis Logs
+# =========================
+graphify-out/
+*.graphify*
+GRAPH_REPORT.md
+cost.json
+
+# =========================
+# Temporary, Debug & Fix Scripts
+# =========================
+*fix*.py
+*test*.py
+*debug*.py
+*scratchpad*
+*.log
+tmp/
+temp/
+# Impeccable design-hook generated cache (config.json is intentionally tracked)
+.impeccable/hook.cache.json
+
+# Local stray files, kept on disk but not tracked
+Moody B&W Headshot Prompt for Nano Banana.jfif
+skills-lock.json

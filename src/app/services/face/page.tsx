@@ -1,133 +1,159 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
-import { Camera, Shield, Zap, ArrowLeft, ArrowRight, UserCheck } from "lucide-react";
-import InteractiveWaves from "@/components/InteractiveWaves";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowLeft, ArrowRight, Camera, CheckCircle2, Mail, ShieldCheck, Workflow } from "lucide-react";
+
+// Copy grounded in "idexi - Intelligent Event Solutions.md" (Face's own
+// 3-step brief: selfie -> photographer upload & match -> email delivery)
+// plus the already-vetted Privacy/Integration language this page shipped
+// with previously — carried forward rather than dropped, since the new
+// brief is additive framing, not a replacement of those facts. No claim
+// here that isn't in one of those two sources; PRODUCT.md's ban on
+// unverified retention/compliance claims still applies.
+const steps = [
+  {
+    title: "The Selfie",
+    desc: "At registration, each guest takes a quick selfie and leaves an email address. That's the only thing they do differently, and it takes a few seconds.",
+  },
+  {
+    title: "The Match",
+    desc: "Your photographers keep shooting the way they always do. The moment the photos land in our system, idexi Face scans every face in every image and works out who's in which shot.",
+  },
+  {
+    title: "The Delivery",
+    desc: "Each guest gets one email with a link to their own gallery, not the whole shared album. Nothing to download, nothing to install.",
+  },
+];
+
+const targetAudiences = ["Gala Dinners & Weddings", "Corporate Summits", "Concerts & Sports"];
+
+// Deterministic muted tones for the 9 demo grid tiles, not randomized —
+// matches this project's established convention (see EventLifecycleSection)
+// so the widget renders identically on every load.
+const GRID_TONES = [0.55, 0.4, 0.7, 0.3, 0.85, 0.45, 0.6, 0.35, 0.5];
+const MATCHED_TILE_INDEX = 4;
+
+function MatchDemo() {
+  return (
+    <div className="face-demo" aria-hidden="true">
+      <span className="face-demo-header">idexi Face &middot; Live Matching</span>
+      <div className="face-demo-grid">
+        {GRID_TONES.map((tone, i) => (
+          <span
+            key={i}
+            className={`face-demo-tile${i === MATCHED_TILE_INDEX ? " face-demo-tile-matched" : ""}`}
+            style={{ "--tile-tone": tone } as React.CSSProperties}
+          >
+            {i === MATCHED_TILE_INDEX && <CheckCircle2 size={16} className="face-demo-tile-check" />}
+          </span>
+        ))}
+        <span className="face-demo-scan-line" />
+      </div>
+      <div className="face-demo-toast">
+        <Mail size={15} />
+        <span>Gallery sent to guest</span>
+      </div>
+    </div>
+  );
+}
 
 export default function FaceService() {
-  const steps = [
-    { title: "Opt-In & Snapshot", desc: "Attendees scan a QR code at registration to opt-in and provide a single reference selfie." },
-    { title: "Event Capture", desc: "Your professional event photographers capture high-res snaps throughout the venue." },
-    { title: "Real-Time Processing", desc: "Our AI engine scans uploaded images, identifies matches in milliseconds, and indexes tags." },
-    { title: "Instant Inbox Delivery", desc: "Photos containing the attendee are automatically compiled and delivered directly to their email/SMS." }
-  ];
-
-  const targetAudiences = [
-    { title: "Gala Dinners & Weddings", desc: "Give guests high-quality candid pictures of themselves from their special night." },
-    { title: "Corporate Summits", desc: "Increase sponsor engagement and social shares by getting photos to executives instantly." },
-    { title: "Concerts & Sports", desc: "Scale photo delivery to tens of thousands of fans without manual searching." }
-  ];
+  const prefersReducedMotion = useReducedMotion();
 
   return (
     <div className="service-page-container">
-      <InteractiveWaves />
-      
+      <style>{faceCSS}</style>
       <div className="container service-page-content">
-        {/* Back Link */}
-        <Link href="/" className="service-back-link">
-          <ArrowLeft size={16} /> Back to Overview
-        </Link>
-
-        {/* Hero Section */}
-        <div className="service-hero-grid">
-          <div className="service-info-col">
-            <div className="service-badge">
-              <Camera size={14} />
-              <span>idexi Face</span>
-            </div>
-            <h1 className="service-title">AI Photo Delivery <br /><span className="text-gradient">For Happy Attendees</span></h1>
-            <p className="service-description">
-              Stop making your event guests search through massive folders of photos. Our facial recognition software maps candid event photos and sends them directly to attendees' inboxes in real-time.
-            </p>
-            <div className="service-cta-row">
-              <Link href="/#contact" className="btn btn-primary">Book a Demo <ArrowRight size={16} /></Link>
-            </div>
-          </div>
-
-          {/* Interactive visual mockup */}
-          <div className="service-visual-col glass-card">
-            <div className="service-mockup-container">
-              <div className="service-mockup-header">
-                <span className="service-mockup-dot" style={{ background: "#ff5f56" }} />
-                <span className="service-mockup-dot" style={{ background: "#ffbd2e" }} />
-                <span className="service-mockup-dot" style={{ background: "#27c93f" }} />
-                <span className="service-mockup-title">Live Photo Pipeline</span>
-              </div>
-              <div className="service-mockup-body">
-                <div className="service-match-item">
-                  <div className="service-match-avatar">👩‍💼</div>
-                  <div className="service-match-details">
-                    <span className="service-match-label">Sarah Jenkins matched in **IMG_4821.jpg**</span>
-                    <span className="service-match-time">Processed 0.2s ago</span>
-                  </div>
-                  <span className="service-status-badge">Delivered 📬</span>
-                </div>
-                <div className="service-match-item">
-                  <div className="service-match-avatar">👨‍💻</div>
-                  <div className="service-match-details">
-                    <span className="service-match-label">Marcus Chen matched in **IMG_4902.jpg**</span>
-                    <span className="service-match-time">Processed 0.5s ago</span>
-                  </div>
-                  <span className="service-status-badge">Delivered 📬</span>
-                </div>
-                <div className="service-match-item">
-                  <div className="service-match-avatar">👩‍🎨</div>
-                  <div className="service-match-details">
-                    <span className="service-match-label">Elena Rostova matched in **IMG_4981.jpg**</span>
-                    <span className="service-match-time">Processing...</span>
-                  </div>
-                  <span className="service-status-badge" style={{ background: "rgba(49, 196, 243, 0.1)", color: "var(--accent-cyan)" }}>In Progress ⚡</span>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="service-breadcrumb">
+          <Link href="/" className="service-back-link">
+            <ArrowLeft size={16} /> Back to Overview
+          </Link>
+          <span className="service-breadcrumb-sep" aria-hidden="true">/</span>
+          <span className="service-breadcrumb-current">
+            <Camera size={14} /> idexi Face
+          </span>
         </div>
 
-        {/* How It Works Steps */}
+        {/* Hero */}
+        <div className="service-hero-grid face-hero">
+          <div className="service-info-col">
+            <h1 className="service-title">Your Event Photos, Delivered Instantly</h1>
+            <p className="service-description">
+              Guests take a selfie at registration. Once your photographers upload the event photos, idexi Face
+              matches every face and emails each guest a link to their own gallery, so nobody has to dig through a
+              shared folder to find themselves.
+            </p>
+            <div className="service-cta-row">
+              <Link href="/#contact" className="st-btn st-btn-primary">Book Consultation <ArrowRight size={16} /></Link>
+            </div>
+          </div>
+
+          <motion.div
+            className="service-visual-frame"
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <MatchDemo />
+          </motion.div>
+        </div>
+
+        {/* How it works */}
         <div className="service-section">
           <h2 className="service-subsection-title">How It Works</h2>
-          <div className="service-steps-grid">
+          <div className="service-process">
             {steps.map((step, idx) => (
-              <div key={idx} className="service-step-card glass-card">
-                <div className="service-step-number">0{idx + 1}</div>
-                <h3 className="service-step-title">{step.title}</h3>
-                <p className="service-step-desc">{step.desc}</p>
-              </div>
+              <motion.div
+                key={step.title}
+                className="service-process-step"
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 0.5, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <span className="service-process-number">0{idx + 1}</span>
+                <h3 className="service-process-title">{step.title}</h3>
+                <p className="service-process-desc">{step.desc}</p>
+              </motion.div>
             ))}
           </div>
         </div>
 
-        {/* Benefits & Value Proposition */}
-        <div className="service-benefits-section">
-          <div className="service-benefits-grid">
-            <div className="service-benefit-item">
-              <Zap size={24} style={{ color: "var(--accent-cyan)", marginBottom: "1rem" }} />
-              <h3 className="service-benefit-title">Ultra-Fast Processing</h3>
-              <p className="service-benefit-desc">Photos are indexed and processed within seconds of being uploaded by your photography team.</p>
+        {/* Proof */}
+        <div className="service-bento-section">
+          <div className="service-bento">
+            <div className="service-bento-feature">
+              <span className="service-bento-feature-stat">One selfie. One email.</span>
+              <p className="service-bento-feature-desc">
+                That covers the guest&apos;s entire experience, from registration to the photos landing in their inbox.
+              </p>
             </div>
-            <div className="service-benefit-item">
-              <Shield size={24} style={{ color: "var(--accent-cyan)", marginBottom: "1rem" }} />
-              <h3 className="service-benefit-title">Privacy-First Approach</h3>
-              <p className="service-benefit-desc">GDPR-compliant double opt-in. Biometric face profiles are fully deleted 48 hours after the event.</p>
+            <div className="service-bento-card">
+              <ShieldCheck size={22} style={{ color: "var(--st-secondary)", marginBottom: "0.75rem" }} />
+              <h3 className="service-bento-card-title">Privacy by Design</h3>
+              <p className="service-bento-card-desc">
+                Matching runs on idexi&apos;s infrastructure for your event, and you stay in control of your own
+                event&apos;s data.
+              </p>
             </div>
-            <div className="service-benefit-item">
-              <UserCheck size={24} style={{ color: "var(--accent-cyan)", marginBottom: "1rem" }} />
-              <h3 className="service-benefit-title">Branded Deliveries</h3>
-              <p className="service-benefit-desc">Customize emails and delivery portals with sponsors' logos and social share integrations.</p>
+            <div className="service-bento-card">
+              <Workflow size={22} style={{ color: "var(--st-secondary)", marginBottom: "0.75rem" }} />
+              <h3 className="service-bento-card-title">Built Around Your Event</h3>
+              <p className="service-bento-card-desc">
+                Share your ticketing or registration setup and our team builds the integration around what you
+                already use.
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Targets Column */}
-        <div className="service-section">
+        {/* Who is it for */}
+        <div className="service-section service-audience-compact">
           <h2 className="service-subsection-title">Who Is It For?</h2>
-          <div className="service-targets-grid">
+          <div className="service-audience-chips">
             {targetAudiences.map((aud, idx) => (
-              <div key={idx} className="service-target-card glass-card">
-                <h3 className="service-target-title">{aud.title}</h3>
-                <p className="service-target-desc">{aud.desc}</p>
-              </div>
+              <span key={idx} className="service-audience-chip">{aud}</span>
             ))}
           </div>
         </div>
@@ -135,3 +161,135 @@ export default function FaceService() {
     </div>
   );
 }
+
+const faceCSS = `
+  .face-hero {
+    align-items: center;
+  }
+
+  /* ── Live matching demo: a photo grid, a scan sweep, one match, one
+     delivery toast. Single 7s CSS-only loop (no JS timers), matching this
+     project's established widget convention. ── */
+  .face-demo {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .face-demo-header {
+    font-family: var(--st-font-display);
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--st-on-surface-variant);
+  }
+  .face-demo-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+    padding: 1.25rem;
+    border-radius: var(--st-radius-lg);
+    background: var(--st-surface-container-low);
+    overflow: hidden;
+  }
+  .face-demo-tile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+    border-radius: var(--st-radius-md);
+    background: color-mix(in srgb, var(--st-secondary) calc(var(--tile-tone) * 55%), var(--st-surface-container-high));
+    opacity: 0;
+    animation: face-tile-in 0.5s ease both;
+    animation-delay: calc(var(--tile-tone) * 0.4s);
+  }
+  @keyframes face-tile-in {
+    to { opacity: 1; }
+  }
+  .face-demo-tile-matched {
+    animation: face-tile-in 0.5s ease both, face-tile-pulse 3.5s ease-in-out 1.2s infinite;
+  }
+  .face-demo-tile-check {
+    color: #ffffff;
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
+    opacity: 0;
+    animation: face-check-in 3.5s ease-in-out 1.2s infinite;
+  }
+  @keyframes face-tile-pulse {
+    0%, 30% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--st-secondary) 55%, transparent); }
+    45% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--st-secondary) 0%, transparent); }
+    100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--st-secondary) 0%, transparent); }
+  }
+  @keyframes face-check-in {
+    0%, 28% { opacity: 0; transform: scale(0.7); }
+    38%, 85% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0.7); }
+  }
+  .face-demo-scan-line {
+    position: absolute;
+    left: 0.6rem;
+    right: 0.6rem;
+    height: 2px;
+    top: 1.25rem;
+    border-radius: var(--st-radius-full);
+    background: linear-gradient(90deg, transparent, var(--st-secondary), transparent);
+    box-shadow: 0 0 8px 1px color-mix(in srgb, var(--st-secondary) 60%, transparent);
+    animation: face-scan-sweep 3.5s ease-in-out infinite;
+  }
+  @keyframes face-scan-sweep {
+    0% { top: 1.25rem; opacity: 0; }
+    8% { opacity: 1; }
+    32% { top: calc(100% - 1.5rem); opacity: 1; }
+    40%, 100% { opacity: 0; }
+  }
+  .face-demo-toast {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    border-radius: var(--st-radius-full);
+    background: color-mix(in srgb, var(--status-success) 14%, transparent);
+    color: var(--status-success);
+    font-family: var(--st-font-ui);
+    font-weight: 600;
+    font-size: 0.85rem;
+    opacity: 0;
+    transform: translateY(6px);
+    animation: face-toast-in 3.5s ease-in-out 1.2s infinite;
+  }
+  @keyframes face-toast-in {
+    0%, 34% { opacity: 0; transform: translateY(6px); }
+    46%, 85% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-4px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .face-demo-tile {
+      opacity: 1;
+      animation: none;
+    }
+    .face-demo-tile-matched {
+      animation: none;
+    }
+    .face-demo-tile-check {
+      opacity: 1;
+      animation: none;
+      transform: none;
+    }
+    .face-demo-scan-line {
+      display: none;
+    }
+    .face-demo-toast {
+      opacity: 1;
+      animation: none;
+      transform: none;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .face-hero {
+      align-items: stretch;
+    }
+  }
+`;

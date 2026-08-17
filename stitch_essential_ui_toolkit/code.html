@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Idexi UI Kit &amp; Design System</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;family=Inter:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-surface": "#213145",
+                      "surface-container": "#e5eeff",
+                      "on-secondary": "#ffffff",
+                      "on-secondary-fixed-variant": "#004493",
+                      "surface-variant": "#d3e4fe",
+                      "background": "#f8f9ff",
+                      "primary-fixed-dim": "#b9c5f2",
+                      "on-primary-container": "#7784ad",
+                      "on-primary-fixed": "#0b1a3d",
+                      "surface-dim": "#cbdbf5",
+                      "tertiary-fixed": "#74f5ff",
+                      "surface-container-highest": "#d3e4fe",
+                      "surface": "#f8f9ff",
+                      "inverse-on-surface": "#eaf1ff",
+                      "on-tertiary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "on-tertiary-fixed": "#002022",
+                      "secondary-container": "#0070eb",
+                      "primary-container": "#0d1b3e",
+                      "on-primary": "#ffffff",
+                      "surface-bright": "#f8f9ff",
+                      "on-error": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "secondary": "#0058bc",
+                      "on-surface": "#0b1c30",
+                      "tertiary": "#000303",
+                      "primary": "#00020e",
+                      "on-tertiary-fixed-variant": "#004f54",
+                      "surface-tint": "#515d84",
+                      "tertiary-container": "#002123",
+                      "inverse-primary": "#b9c5f2",
+                      "secondary-fixed": "#d8e2ff",
+                      "secondary-fixed-dim": "#adc6ff",
+                      "outline-variant": "#c6c6cf",
+                      "on-surface-variant": "#45464e",
+                      "on-secondary-fixed": "#001a41",
+                      "tertiary-fixed-dim": "#00dbe7",
+                      "on-secondary-container": "#fefcff",
+                      "error": "#ba1a1a",
+                      "on-background": "#0b1c30",
+                      "on-primary-fixed-variant": "#39456b",
+                      "primary-fixed": "#dbe1ff",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary-container": "#00939b",
+                      "surface-container-high": "#dce9ff",
+                      "surface-container-low": "#eff4ff",
+                      "outline": "#76767f"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xl": "80px",
+                      "md": "24px",
+                      "margin-mobile": "16px",
+                      "margin-desktop": "40px",
+                      "base": "8px",
+                      "lg": "48px",
+                      "gutter": "24px",
+                      "sm": "12px",
+                      "xs": "4px"
+              },
+              "fontFamily": {
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "headline-xl": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-lg-mobile": [
+                              "Plus Jakarta Sans"
+                      ]
+              },
+              "fontSize": {
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.25",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-xl": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .card-shadow {
+            box-shadow: 0px 4px 20px rgba(13, 27, 62, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- TopNavBar (Suppressed as this is a documentation screen, but keeping a simple header) -->
+<header class="bg-surface/80 backdrop-blur-md fixed top-0 w-full z-50 border-b border-surface-container shadow-sm flex justify-between items-center h-20 px-margin-desktop max-w-[1440px] mx-auto">
+<div class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary fill">design_services</span>
+            Idexi UI Kit
+        </div>
+<div class="text-on-surface-variant font-label-md text-label-md">
+            v1.0.0
+        </div>
+</header>
+<main class="pt-24 px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto pb-xl">
+<div class="mb-lg">
+<h1 class="font-headline-xl text-headline-xl text-primary mb-xs">Design System</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl">Visual documentation for Idexi Intelligent Event Solutions. This kit defines the core tokens, components, and structural patterns used to build our high-end, data-driven interfaces.</p>
+</div>
+<!-- 1. Logo & Identity Section -->
+<section class="mb-xl">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-md pb-sm border-b border-surface-variant">1. Brand Identity</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="bg-surface rounded-lg p-lg flex items-center justify-center card-shadow h-64 border border-outline-variant/30">
+<img alt="Idexi Logo" class="h-32 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_ZZJyU2-EUvtMPZJC_vJGViF9EQr9pU_5QBd-KK5TBKbacW-in3Jad-vGv1h6M4kO2gKBC1lhbv5Mod3ejXHW8G7wUwtJAY2pyLuKXPeCahvg32nwfrCw-ZP1OBxB77Lsg3wAn5OeyfxYfFge1BjDE-6YKhH8DuBxIQdKflrFlDTaIKr-4p_ivqAfFPMQ2UbW4XptCeCF7DZdUWrTUjDmlxMl6fd3cVpjPEvGvaT9sCcQTkDGILmXVuzVEhDOkOPYCg"/>
+</div>
+<div class="bg-primary rounded-lg p-lg flex items-center justify-center card-shadow h-64">
+<img alt="Idexi Logo Light" class="h-32 object-contain brightness-0 invert" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtiyqfJ3bu33KF8d7S2XtrwfqXA-wO0gTliXkDFemhNNdytCfbZqsdC4mVsvNIG-5k7hNXZbKc2M39hmIcqcdATD8XBnYO3nWHA9tLnXh9vFHhkuRHJGQEpUTeXR9gsC8_D9ajdZJnvaOIONREv1iakhTEVCi9vA0SwZj6aa6nyJZjw5QvAZ-N5cSGcnJy5gLAl_vB8M_t_EYRCl7qcCssjRnUxVm04qREv3Uqe8vVBwA104WZa49iyzT-XH9UjjT08g"/>
+</div>
+</div>
+</section>
+<!-- 2. Typography Scale -->
+<section class="mb-xl">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-md pb-sm border-b border-surface-variant">2. Typography</h2>
+<div class="bg-surface rounded-lg p-lg card-shadow border border-outline-variant/30">
+<div class="flex flex-col gap-md">
+<div class="grid grid-cols-1 md:grid-cols-4 items-baseline border-b border-surface-container pb-sm">
+<div class="font-label-sm text-label-sm text-on-surface-variant md:col-span-1">Headline XL</div>
+<div class="md:col-span-3">
+<h1 class="font-headline-xl text-headline-xl text-primary">The quick brown fox</h1>
+<p class="font-label-sm text-label-sm text-outline mt-1">Plus Jakarta Sans - 48px / Bold</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 items-baseline border-b border-surface-container pb-sm">
+<div class="font-label-sm text-label-sm text-on-surface-variant md:col-span-1">Headline L</div>
+<div class="md:col-span-3">
+<h2 class="font-headline-lg text-headline-lg text-primary">The quick brown fox</h2>
+<p class="font-label-sm text-label-sm text-outline mt-1">Plus Jakarta Sans - 32px / Bold</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 items-baseline border-b border-surface-container pb-sm">
+<div class="font-label-sm text-label-sm text-on-surface-variant md:col-span-1">Headline M</div>
+<div class="md:col-span-3">
+<h3 class="font-headline-md text-headline-md text-primary">The quick brown fox</h3>
+<p class="font-label-sm text-label-sm text-outline mt-1">Plus Jakarta Sans - 24px / SemiBold</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 items-baseline border-b border-surface-container pb-sm">
+<div class="font-label-sm text-label-sm text-on-surface-variant md:col-span-1">Body L</div>
+<div class="md:col-span-3">
+<p class="font-body-lg text-body-lg text-on-surface">The quick brown fox jumps over the lazy dog.</p>
+<p class="font-label-sm text-label-sm text-outline mt-1">Plus Jakarta Sans - 18px / Regular</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 items-baseline border-b border-surface-container pb-sm">
+<div class="font-label-sm text-label-sm text-on-surface-variant md:col-span-1">Body M</div>
+<div class="md:col-span-3">
+<p class="font-body-md text-body-md text-on-surface">The quick brown fox jumps over the lazy dog.</p>
+<p class="font-label-sm text-label-sm text-outline mt-1">Plus Jakarta Sans - 16px / Regular</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 items-baseline border-b border-surface-container pb-sm">
+<div class="font-label-sm text-label-sm text-on-surface-variant md:col-span-1">Label M</div>
+<div class="md:col-span-3">
+<span class="font-label-md text-label-md text-on-surface">Label Medium</span>
+<p class="font-label-sm text-label-sm text-outline mt-1">Inter - 14px / SemiBold</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 items-baseline">
+<div class="font-label-sm text-label-sm text-on-surface-variant md:col-span-1">Label S</div>
+<div class="md:col-span-3">
+<span class="font-label-sm text-label-sm text-on-surface">Label Small</span>
+<p class="font-label-sm text-label-sm text-outline mt-1">Inter - 12px / Medium</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. Color Swatches -->
+<section class="mb-xl">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-md pb-sm border-b border-surface-variant">3. Color Palette</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-gutter">
+<!-- Primary Group -->
+<div class="flex flex-col gap-sm">
+<div class="h-24 rounded-lg bg-primary card-shadow"></div>
+<div>
+<div class="font-label-md text-label-md text-primary">Primary (Navy)</div>
+<div class="font-label-sm text-label-sm text-outline">bg-primary</div>
+</div>
+</div>
+<div class="flex flex-col gap-sm">
+<div class="h-24 rounded-lg bg-secondary card-shadow"></div>
+<div>
+<div class="font-label-md text-label-md text-primary">Secondary (Azure)</div>
+<div class="font-label-sm text-label-sm text-outline">bg-secondary</div>
+</div>
+</div>
+<!-- Surface Group -->
+<div class="flex flex-col gap-sm">
+<div class="h-24 rounded-lg bg-surface border border-outline-variant/30 card-shadow"></div>
+<div>
+<div class="font-label-md text-label-md text-primary">Surface Base</div>
+<div class="font-label-sm text-label-sm text-outline">bg-surface</div>
+</div>
+</div>
+<div class="flex flex-col gap-sm">
+<div class="h-24 rounded-lg bg-background border border-outline-variant/30 card-shadow"></div>
+<div>
+<div class="font-label-md text-label-md text-primary">Background</div>
+<div class="font-label-sm text-label-sm text-outline">bg-background</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. Button Library -->
+<section class="mb-xl">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-md pb-sm border-b border-surface-variant">4. Buttons</h2>
+<div class="bg-surface rounded-lg p-lg card-shadow border border-outline-variant/30">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<!-- Primary Solid -->
+<div class="flex flex-col items-start gap-md">
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Primary Solid</div>
+<button class="bg-secondary text-on-secondary font-label-md text-label-md px-md py-sm rounded-lg hover:bg-on-secondary-fixed-variant transition-colors">
+                            Default State
+                        </button>
+<button class="bg-on-secondary-fixed-variant text-on-secondary font-label-md text-label-md px-md py-sm rounded-lg cursor-not-allowed">
+                            Hover State (Simulated)
+                        </button>
+</div>
+<!-- Secondary Outline -->
+<div class="flex flex-col items-start gap-md">
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Secondary Outline</div>
+<button class="bg-transparent text-secondary border-[1.5px] border-secondary font-label-md text-label-md px-md py-sm rounded-lg hover:bg-surface-container-low transition-colors">
+                            Default State
+                        </button>
+<button class="bg-surface-container-low text-secondary border-[1.5px] border-secondary font-label-md text-label-md px-md py-sm rounded-lg cursor-not-allowed">
+                            Hover State (Simulated)
+                        </button>
+</div>
+<!-- Ghost -->
+<div class="flex flex-col items-start gap-md">
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Ghost Action</div>
+<button class="bg-transparent text-secondary font-label-md text-label-md px-md py-sm rounded-lg hover:bg-surface-container-low transition-colors">
+                            Default State
+                        </button>
+<button class="bg-surface-container-low text-secondary font-label-md text-label-md px-md py-sm rounded-lg cursor-not-allowed">
+                            Hover State (Simulated)
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. Form Controls -->
+<section class="mb-xl">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-md pb-sm border-b border-surface-variant">5. Inputs &amp; Controls</h2>
+<div class="bg-surface rounded-lg p-lg card-shadow border border-outline-variant/30">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+<!-- Standard Input -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Full Name</label>
+<input class="w-full bg-surface-container-lowest border-[1.5px] border-outline-variant rounded-lg px-sm py-sm font-body-md text-body-md text-on-surface placeholder:text-outline focus:border-secondary focus:ring-2 focus:ring-secondary/20 outline-none transition-all" placeholder="Enter your name..." type="text"/>
+</div>
+<!-- Search Bar -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Global Search</label>
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full bg-surface-container-lowest border-[1.5px] border-outline-variant rounded-full pl-xl pr-sm py-sm font-body-md text-body-md text-on-surface placeholder:text-outline focus:border-secondary focus:ring-2 focus:ring-secondary/20 outline-none transition-all" placeholder="Search events..." type="text"/>
+</div>
+</div>
+<!-- Dropdown -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Event Type</label>
+<div class="relative w-full">
+<select class="w-full bg-surface-container-lowest border-[1.5px] border-outline-variant rounded-lg px-sm py-sm font-body-md text-body-md text-on-surface focus:border-secondary focus:ring-2 focus:ring-secondary/20 outline-none appearance-none transition-all">
+<option>Corporate Conference</option>
+<option>Gala Dinner</option>
+<option>Workshop</option>
+</select>
+<span class="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 text-outline pointer-events-none">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 6. Icons & Assets -->
+<section>
+<h2 class="font-headline-lg text-headline-lg text-primary mb-md pb-sm border-b border-surface-variant">6. Core Iconography</h2>
+<div class="bg-surface rounded-lg p-lg card-shadow border border-outline-variant/30">
+<div class="grid grid-cols-4 md:grid-cols-8 gap-md">
+<div class="flex flex-col items-center justify-center gap-xs p-sm bg-surface-container-low rounded-lg">
+<span class="material-symbols-outlined text-secondary" style="font-size: 32px;">calendar_today</span>
+<span class="font-label-sm text-label-sm text-outline text-center">calendar_today</span>
+</div>
+<div class="flex flex-col items-center justify-center gap-xs p-sm bg-surface-container-low rounded-lg">
+<span class="material-symbols-outlined text-secondary" style="font-size: 32px;">map</span>
+<span class="font-label-sm text-label-sm text-outline text-center">map</span>
+</div>
+<div class="flex flex-col items-center justify-center gap-xs p-sm bg-surface-container-low rounded-lg">
+<span class="material-symbols-outlined text-secondary" style="font-size: 32px;">check_circle</span>
+<span class="font-label-sm text-label-sm text-outline text-center">check_circle</span>
+</div>
+<div class="flex flex-col items-center justify-center gap-xs p-sm bg-surface-container-low rounded-lg">
+<span class="material-symbols-outlined text-secondary" style="font-size: 32px;">arrow_forward</span>
+<span class="font-label-sm text-label-sm text-outline text-center">arrow_forward</span>
+</div>
+<div class="flex flex-col items-center justify-center gap-xs p-sm bg-surface-container-low rounded-lg">
+<span class="material-symbols-outlined text-secondary" style="font-size: 32px;">dashboard</span>
+<span class="font-label-sm text-label-sm text-outline text-center">dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center gap-xs p-sm bg-surface-container-low rounded-lg">
+<span class="material-symbols-outlined text-secondary" style="font-size: 32px;">settings</span>
+<span class="font-label-sm text-label-sm text-outline text-center">settings</span>
+</div>
+<div class="flex flex-col items-center justify-center gap-xs p-sm bg-surface-container-low rounded-lg">
+<span class="material-symbols-outlined text-secondary" style="font-size: 32px;">groups</span>
+<span class="font-label-sm text-label-sm text-outline text-center">groups</span>
+</div>
+<div class="flex flex-col items-center justify-center gap-xs p-sm bg-surface-container-low rounded-lg">
+<span class="material-symbols-outlined text-secondary" style="font-size: 32px;">monitoring</span>
+<span class="font-label-sm text-label-sm text-outline text-center">monitoring</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+</body></html>

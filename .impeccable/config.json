@@ -1,0 +1,50 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-08-15T19:37:42.862Z",
+        "reason": "Inter is the Stitch design system toolkit's own baked-in font token (stitch_essential_ui_toolkit/DESIGN.md), not an ad hoc AI-default font choice"
+      },
+      {
+        "rule": "codex-grid-background",
+        "value": "*",
+        "files": [
+          "src/components/AIEnginesSection.tsx"
+        ],
+        "createdAt": "2026-08-16T02:58:52.312Z",
+        "reason": "user explicitly requested a grid background matching the pinned Chatbase reference screenshot (image_e4cf25.png) for the AI Engines card default state"
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/components/EventLifecycleSection.tsx"
+        ],
+        "createdAt": "2026-08-16T22:22:39.935Z",
+        "reason": "User explicitly requested this exact thickened left-border stepper line (w-px -> w-[3px] equivalent); sanctioned design choice, not an accidental AI pattern. Value is '*' because side-tab is not in the detector's directValueRules set, so a literal value string can never match."
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "src/app/globals.css"
+        ],
+        "createdAt": "2026-08-16T23:48:19.278Z",
+        "reason": "Legacy .text-gradient class (animated cyan/blue/purple) used only by the pre-redesign dark-theme pages: faqs and the three /services/* pages. Out of scope for the homepage --st-* redesign and not worth restyling 4 untouched pages mid-session. REVISIT when those pages are redesigned onto the new token system, at which point the gradient should be replaced with a solid color rather than re-ignored."
+      },
+      {
+        "rule": "codex-grid-background",
+        "value": "*",
+        "files": [
+          "src/app/services/pass/page.tsx"
+        ],
+        "createdAt": "2026-08-17T15:05:34.176Z",
+        "reason": "domain-appropriate: this is a CSS-art QR/barcode representation on a ticket demo widget (finder-pattern corner squares + data-cell stripes), not decorative texture"
+      }
+    ]
+  }
+}
