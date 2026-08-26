@@ -35,15 +35,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // data-scroll-behavior="smooth" is what Next.js checks for before
-  // trusting the CSS scroll-behavior: smooth on <html> (globals.css) —
-  // without it, Next.js's own scroll-to-top-on-route-change logic can
-  // fight the CSS smooth-scroll during navigation.
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
-        {/* Sets data-theme before paint so the new dual-theme sections
-            (see globals.css --st-* tokens) never flash the wrong theme. */}
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body style={bodyStyle}>

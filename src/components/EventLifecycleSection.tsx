@@ -95,7 +95,7 @@ type WidgetProps = {
   active: boolean;
 };
 
-function PassWidget(_props: WidgetProps) {
+function PassWidget() {
   return (
     <div className="ticket-scene">
       <div className="ticket-flip">
@@ -198,7 +198,7 @@ function PassWidget(_props: WidgetProps) {
 // One shared 6s cycle drives every layer below via CSS keyframes only (see
 // scan-cycle-css). No JS timers/state — each layer's animation-duration is
 // identical, so they stay in sync purely by starting together on mount.
-function ScanWidget(_props: WidgetProps) {
+function ScanWidget() {
   return (
     <div className="widget-card widget-scan-cycle">
       <span className="scan-cycle-header">idexi Pass &middot; Express Check-In</span>
@@ -295,7 +295,7 @@ const GALLERY_PARTICLES = [
   { top: 68, delay: 1.4 },
 ];
 
-function GalleryWidget(_props: WidgetProps) {
+function GalleryWidget() {
   return (
     <div className="widget-card widget-gallery">
       <span className="gallery-header">idexi Face &middot; Instant Delivery</span>
@@ -366,60 +366,64 @@ export default function EventLifecycleSection() {
     <section id="how-it-works" className="lifecycle" ref={sectionRef}>
       <style>{lifecycleCSS}</style>
 
-      <div className="lifecycle-grid">
-        <div className="lifecycle-left">
-          <div className="lifecycle-header">
-            <h2 className="lifecycle-heading">Integrated Event Lifecycle</h2>
-            <p className="lifecycle-subtext">Watch how our products connect to create a seamless attendee journey.</p>
-          </div>
+      <div className="container lifecycle-container">
+        <div className="lifecycle-grid">
+          <div className="lifecycle-left">
+            <div className="lifecycle-header">
+              <h2 className="lifecycle-heading">Integrated Event Lifecycle</h2>
+              <p className="lifecycle-subtext">Watch how our products connect to create a seamless attendee journey.</p>
+            </div>
 
-          <div className="lifecycle-stepper" role="tablist" aria-orientation="vertical">
-            {steps.map((step, i) => {
-              const active = i === activeIndex;
-              return (
-                <button
-                  key={step.title}
-                  type="button"
-                  role="tab"
-                  aria-selected={active}
-                  className={`lifecycle-step${active ? " lifecycle-step-active" : ""}`}
-                  onClick={() => setActiveIndex(i)}
-                >
-                  {active && (
-                    <span className="lifecycle-progress-track" aria-hidden="true">
-                      <span
-                        className={`lifecycle-progress-fill${inView ? " lifecycle-progress-animating" : ""}`}
-                        style={{ "--progress-duration": `${AUTO_ADVANCE_MS}ms` } as React.CSSProperties}
-                      />
+            <div className="lifecycle-stepper" role="tablist" aria-orientation="vertical">
+              {steps.map((step, i) => {
+                const active = i === activeIndex;
+                return (
+                  <button
+                    key={step.title}
+                    type="button"
+                    role="tab"
+                    aria-selected={active}
+                    className={`lifecycle-step${active ? " lifecycle-step-active" : ""}`}
+                    onClick={() => setActiveIndex(i)}
+                  >
+                    {active && (
+                      <span className="lifecycle-progress-track" aria-hidden="true">
+                        <span
+                          className={`lifecycle-progress-fill${inView ? " lifecycle-progress-animating" : ""}`}
+                          style={{ "--progress-duration": `${AUTO_ADVANCE_MS}ms` } as React.CSSProperties}
+                        />
+                      </span>
+                    )}
+                    <span className="lifecycle-step-head">
+                      <span className="lifecycle-step-number">{step.number}</span>
+                      <span className="lifecycle-step-title">{step.title}</span>
                     </span>
-                  )}
-                  <span className="lifecycle-step-head">
-                    <span className="lifecycle-step-number">{step.number}</span>
-                    <span className="lifecycle-step-title">{step.title}</span>
-                  </span>
-                  <span className="lifecycle-step-desc-wrap">
-                    <span className="lifecycle-step-desc">{step.description}</span>
-                  </span>
-                </button>
-              );
-            })}
+                    <span className="lifecycle-step-desc-wrap">
+                      <span className="lifecycle-step-desc">{step.description}</span>
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
 
-        <div className="lifecycle-panel">
-          <WireframeCubesBg stroke="rgba(255, 255, 255, 0.18)" />
-          {steps.map((step, i) => {
-            const Widget = widgets[i];
-            return (
-              <div
-                key={step.title}
-                className={`lifecycle-widget-wrap${i === activeIndex ? " lifecycle-widget-wrap-active" : ""}`}
-                aria-hidden={i !== activeIndex}
-              >
-                <Widget active={i === activeIndex} />
-              </div>
-            );
-          })}
+          <div className="lifecycle-panel-wrap">
+            <div className="lifecycle-panel">
+              <WireframeCubesBg stroke="rgba(255, 255, 255, 0.18)" />
+              {steps.map((step, i) => {
+                const Widget = widgets[i];
+                return (
+                  <div
+                    key={step.title}
+                    className={`lifecycle-widget-wrap${i === activeIndex ? " lifecycle-widget-wrap-active" : ""}`}
+                    aria-hidden={i !== activeIndex}
+                  >
+                    <Widget active={i === activeIndex} />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -427,31 +431,29 @@ export default function EventLifecycleSection() {
 }
 
 const lifecycleCSS = `
-  /* Full-bleed split screen: no section-level padding and no max-width on
-     the grid itself, so the right (panel) column can actually reach the
-     viewport's right edge and stretch the section's full height — the
-     "boxy floating" look before this was max-width:1200px + margin:auto
-     centering a padded, rounded, height-capped card instead of a true
-     split. Left-side breathing room now lives on .lifecycle-left alone. */
   .lifecycle {
     position: relative;
+    padding: var(--st-space-2xl) 0;
     background: var(--st-background);
     transition: background 0.4s ease;
-    /* Clears the fixed Navbar pill when landed on via a #how-it-works
-       anchor jump, so the heading isn't tucked under it. */
     scroll-margin-top: 96px;
+  }
+  .lifecycle-container {
+    width: 100%;
   }
   .lifecycle-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    min-height: 640px;
+    grid-template-columns: 1.05fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+    width: 100%;
   }
   .lifecycle-left {
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: var(--st-space-lg);
-    padding: var(--st-space-xl) clamp(1.5rem, 5vw, 4.5rem);
+    padding: 0;
   }
   .lifecycle-header {
     max-width: 460px;
@@ -633,20 +635,24 @@ const lifecycleCSS = `
     transition: opacity 0.3s ease 0.1s;
   }
 
-  /* ── Right panel: fixed deep-blue brand panel (not theme-driven — this is
-     a deliberate brand-color surface, same reasoning as the hero CTAs,
-     not a bug that it doesn't invert in light mode) with the shared
-     wireframe cube background, holding one of 4 cross-fading mini widgets. ── */
+  .lifecycle-panel-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
   .lifecycle-panel {
     position: relative;
+    width: 100%;
+    max-width: 440px;
+    height: 440px;
+    margin: 0 auto;
+    border-radius: var(--st-radius-xl);
     overflow: hidden;
-    /* No border-radius, no min-height of its own: this column fills its
-       grid cell exactly (grid's default align-items: stretch), which is
-       what makes it span the section's full height edge to edge instead
-       of floating as a rounded card. Its children (WireframeCubesBg, each
-       .lifecycle-widget-wrap) are all position: absolute and center
-       themselves, so the panel itself needs no flex centering of its own. */
-    background: #0D1B3E;
+    background: #0B1528;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 24px 60px -15px rgba(0, 0, 0, 0.45);
   }
   .lifecycle-widget-wrap {
     position: absolute;
@@ -1323,19 +1329,15 @@ const lifecycleCSS = `
   @media (max-width: 900px) {
     .lifecycle-grid {
       grid-template-columns: 1fr;
-      /* Stacked single-column now, so the two cells no longer share one
-         stretched row — the 640px floor from desktop would just leave a
-         large empty gap under short content instead of a full-height
-         panel, so it's dropped here in favor of the panel's own explicit
-         mobile height below. */
-      min-height: 0;
+      gap: 2.5rem;
     }
     .lifecycle-left {
-      padding: var(--st-space-lg) var(--st-space-margin-mobile);
+      padding: 0 var(--st-space-margin-mobile);
     }
     .lifecycle-panel {
-      min-height: 340px;
-      order: -1;
+      max-width: 360px;
+      height: 380px;
+      order: 0;
     }
   }
 `;

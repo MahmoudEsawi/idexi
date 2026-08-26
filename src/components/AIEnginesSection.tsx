@@ -113,6 +113,7 @@ export default function AIEnginesSection() {
           <Link
             key={engine.name}
             href={engine.href}
+            prefetch={true}
             className="ai-engine-card"
             style={{
               "--accent": engine.accent,

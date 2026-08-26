@@ -98,38 +98,36 @@ export default function OurStorySection() {
         <div className="team-panel">
           <div className="team-grid">
             <div className="team-photo-stack">
-              <AnimatePresence>
-                {TEAM.map((member, index) => (
-                  <motion.div
-                    key={member.name}
-                    initial={{ opacity: 0, scale: 0.9, z: -100, rotate: INACTIVE_TILT }}
-                    animate={{
-                      opacity: isActive(index) ? 1 : 0.85,
-                      scale: isActive(index) ? 1 : 0.95,
-                      z: isActive(index) ? 0 : -100,
-                      x: isActive(index) ? 0 : INACTIVE_OFFSET.x,
-                      y: isActive(index)
-                        ? !prefersReducedMotion
-                          ? [0, -20, 0]
-                          : 0
-                        : INACTIVE_OFFSET.y,
-                      rotate: isActive(index) ? 0 : INACTIVE_TILT,
-                      zIndex: isActive(index) ? TEAM.length + 2 : TEAM.length + 2 - index,
-                    }}
-                    exit={{ opacity: 0, scale: 0.9, z: 100, rotate: INACTIVE_TILT }}
-                    transition={{ duration: prefersReducedMotion ? 0 : 0.4, ease: "easeInOut" }}
-                    className="team-photo-frame"
-                  >
-                    <Image
-                      src={member.image}
-                      alt={`${member.name}, ${member.role}`}
-                      fill
-                      sizes="260px"
-                      priority={index === 0}
-                      className="team-photo"
-                    />
-                  </motion.div>
-                ))}
+              <AnimatePresence mode="sync">
+                {TEAM.map((member, index) => {
+                  const isCurrent = isActive(index);
+                  return (
+                    <motion.div
+                      key={member.name}
+                      initial={{ opacity: 0, scale: 0.9, rotate: INACTIVE_TILT }}
+                      animate={{
+                        opacity: isCurrent ? 1 : 0.75,
+                        scale: isCurrent ? 1 : 0.94,
+                        x: isCurrent ? 0 : INACTIVE_OFFSET.x,
+                        y: isCurrent ? 0 : INACTIVE_OFFSET.y,
+                        rotate: isCurrent ? 0 : INACTIVE_TILT,
+                        zIndex: isCurrent ? 10 : 1,
+                      }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: prefersReducedMotion ? 0 : 0.4, ease: "easeInOut" }}
+                      className="team-photo-frame"
+                    >
+                      <Image
+                        src={member.image}
+                        alt={`${member.name}, ${member.role}`}
+                        fill
+                        sizes="280px"
+                        priority
+                        className="team-photo"
+                      />
+                    </motion.div>
+                  );
+                })}
               </AnimatePresence>
             </div>
 

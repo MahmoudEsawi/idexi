@@ -222,6 +222,33 @@ export default function Navbar() {
     };
   }, []);
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith("/#")) {
+      const targetId = href.replace("/#", "");
+      if (pathname === "/") {
+        e.preventDefault();
+        const elem = document.getElementById(targetId);
+        if (elem) {
+          elem.scrollIntoView({ behavior: "smooth", block: "start" });
+          setIsOpen(false);
+          window.history.pushState(null, "", href);
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (pathname === "/" && typeof window !== "undefined" && window.location.hash) {
+      const id = window.location.hash.replace("#", "");
+      const elem = document.getElementById(id);
+      if (elem) {
+        setTimeout(() => {
+          elem.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 150);
+      }
+    }
+  }, [pathname]);
+
   const services = [
     { name: "idexi Face", desc: "AI photo sorting & delivery", href: "/services/face" },
     { name: "idexi Flow", desc: "Access control & event logistics", href: "/services/flow" },
@@ -253,17 +280,10 @@ export default function Navbar() {
                 Services <ChevronDown size={14} className={`chevron ${servicesOpen ? "open" : ""}`} />
               </button>
 
-              {/* nav-dropdown-menu-bridge sits flush at top:100% against the
-                  trigger (zero real gap) and its own top padding is what
-                  creates the visual spacing before the actual card — so the
-                  gap is INSIDE this element's hoverable box, not empty space
-                  between two separate boxes. The card's background/border/
-                  shadow live on the nested nav-dropdown-menu instead of on
-                  this element, so the invisible bridge stays invisible. */}
               <div className={`nav-dropdown-menu-bridge ${servicesOpen ? "show" : ""}`}>
                 <div className="nav-dropdown-menu">
                   {services.map((s) => (
-                    <Link key={s.href} href={s.href} className="nav-dropdown-item">
+                    <Link key={s.href} href={s.href} prefetch={true} className="nav-dropdown-item">
                       <span className="dropdown-name">{s.name}</span>
                       <span className="dropdown-desc">{s.desc}</span>
                     </Link>
@@ -272,9 +292,9 @@ export default function Navbar() {
               </div>
             </div>
 
-            <Link href="/#how-it-works" className="nav-link">How It Works</Link>
-            <Link href="/#use-cases" className="nav-link">Use Cases</Link>
-            <Link href="/#about" className="nav-link">About</Link>
+            <Link href="/#how-it-works" className="nav-link" onClick={(e) => handleNavClick(e, "/#how-it-works")}>How It Works</Link>
+            <Link href="/#use-cases" className="nav-link" onClick={(e) => handleNavClick(e, "/#use-cases")}>Use Cases</Link>
+            <Link href="/#about" className="nav-link" onClick={(e) => handleNavClick(e, "/#about")}>About</Link>
           </div>
 
           {/* Center pill — logo, floats independent of the side pills' widths.
@@ -322,7 +342,11 @@ export default function Navbar() {
           {/* Right — theme toggle + CTA, no wrapping pill */}
           <div className="nav-right">
             <ThemeToggle />
-            <Link href="/#contact" className="st-btn nav-cta">
+            <Link
+              href="/#contact"
+              className="st-btn nav-cta"
+              onClick={(e) => handleNavClick(e, "/#contact")}
+            >
               Book Consultation
             </Link>
           </div>
@@ -341,28 +365,24 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile drawer. Every link closes it on click: pathname-based
-            auto-close (above) only fires on a real route change, but a
-            same-page hash link like /#about never changes the pathname —
-            so without this, tapping a section link left the drawer open,
-            overlapping the very section it just scrolled to. */}
+        {/* Mobile drawer */}
         <div className={`nav-mobile-drawer ${isOpen ? "open" : ""}`}>
           <Link href="/" className={`mobile-link ${pathname === "/" ? "active" : ""}`} onClick={() => setIsOpen(false)}>Home</Link>
           <div className="mobile-section-title">Solutions</div>
           {services.map((s) => (
-            <Link key={s.href} href={s.href} className="mobile-service-link" onClick={() => setIsOpen(false)}>
+            <Link key={s.href} href={s.href} prefetch={true} className="mobile-service-link" onClick={() => setIsOpen(false)}>
               <span className="dropdown-name">{s.name}</span>
               <span className="dropdown-desc">{s.desc}</span>
             </Link>
           ))}
-          <Link href="/#how-it-works" className="mobile-link" onClick={() => setIsOpen(false)}>How It Works</Link>
-          <Link href="/#use-cases" className="mobile-link" onClick={() => setIsOpen(false)}>Use Cases</Link>
-          <Link href="/#about" className="mobile-link" onClick={() => setIsOpen(false)}>About</Link>
+          <Link href="/#how-it-works" className="mobile-link" onClick={(e) => handleNavClick(e, "/#how-it-works")}>How It Works</Link>
+          <Link href="/#use-cases" className="mobile-link" onClick={(e) => handleNavClick(e, "/#use-cases")}>Use Cases</Link>
+          <Link href="/#about" className="mobile-link" onClick={(e) => handleNavClick(e, "/#about")}>About</Link>
           <Link
             href="/#contact"
             className="st-btn nav-cta"
             style={{ justifyContent: "center", marginTop: "1rem" }}
-            onClick={() => setIsOpen(false)}
+            onClick={(e) => handleNavClick(e, "/#contact")}
           >
             Book Consultation
           </Link>
@@ -511,25 +531,37 @@ const navCSS = `
     align-items: center;
     gap: 0.6rem;
   }
-  /* Distinct from the plain .st-btn-primary (near-black) used elsewhere —
-     the brand blue (--st-secondary) with a subtle gradient, so this
-     always-visible nav CTA reads as the site's primary action rather than a
-     flat utility button. Glow is reserved for :hover only (interaction
-     feedback) rather than sitting on permanently — a plain neutral
-     elevation shadow at rest instead. */
   .nav-cta {
-    padding: 0.75rem 1.4rem;
-    font-size: 0.85rem;
-    min-height: 40px;
-    color: var(--st-on-secondary);
-    background: linear-gradient(135deg, var(--st-secondary), color-mix(in srgb, var(--st-secondary) 70%, #00c2ff));
-    box-shadow: 0 4px 14px rgba(11, 28, 48, 0.16);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem 1.4rem;
+    font-family: var(--st-font-ui);
+    font-size: 0.88rem;
+    font-weight: 600;
+    min-height: 42px;
+    border-radius: var(--st-radius-full);
+    background: #000000;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: var(--transition-smooth);
+  }
+  :root[data-theme='dark'] .nav-cta {
+    background: #ffffff;
+    color: #000000;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2);
   }
   .nav-cta:hover {
-    filter: brightness(1.08);
-    transform: scale(1.05);
-    box-shadow: 0 6px 24px color-mix(in srgb, var(--st-secondary) 60%, transparent),
-      0 0 22px color-mix(in srgb, var(--st-secondary) 45%, transparent);
+    transform: scale(1.04);
+    opacity: 0.92;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
+  }
+  :root[data-theme='dark'] .nav-cta:hover {
+    box-shadow: 0 6px 22px rgba(255, 255, 255, 0.35);
   }
   .nav-cta:active {
     transform: scale(0.98);
