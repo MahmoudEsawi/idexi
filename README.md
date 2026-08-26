@@ -22,9 +22,9 @@
   <p>
     <a href="#-core-ai-services">Core Services</a> •
     <a href="#-interactive-features">Interactive Features</a> •
+    <a href="#-engineered-for-every-venue">Venues</a> •
     <a href="#-tech-stack">Tech Stack</a> •
     <a href="#-getting-started">Getting Started</a> •
-    <a href="#-repository-topics">Topics</a> •
     <a href="#-our-story">Our Story</a>
   </p>
 
@@ -34,7 +34,7 @@
 
 ## 📖 Overview
 
-**idexi** bridges the physical and digital friction in high-density live events. Built by event management veterans and AI engineers, idexi transforms corporate summits, music festivals, expos, and galas from chaotic logistical hurdles into seamless, magical experiences.
+**idexi** bridges physical and digital friction in live event environments. Built by event management veterans and AI engineers, idexi transforms corporate summits, music festivals, expos, and galas from chaotic logistical hurdles into seamless, intelligent experiences.
 
 ```
                   ┌─────────────────────────────────────────────────┐
@@ -56,11 +56,11 @@
 ### 1. 📷 [idexi Face](http://localhost:3000/services/face) — *Attendee Delight*
 > **Instant AI photo sorting & private gallery delivery.**
 
-<div align="center">
-  <img src="./public/face-portrait-scan.jpg" alt="idexi Face AI Scanning" width="600" style="border-radius: 12px;" />
-</div>
+<p align="center">
+  <img src="./public/face-portrait-scan.jpg" alt="idexi Face AI Scanning" width="700" style="border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.3);" />
+</p>
 
-- **3-Second Guest Registration**: Attendees take a single selfie upon signup or entry.
+- **3-Second Guest Registration**: Attendees take a quick selfie upon signup or entry.
 - **Real-Time Photo Indexing**: As event photographers capture moments, the AI engine indexes and matches faces within seconds.
 - **Private Automated Inbox Delivery**: Attendees receive their personal branded gallery via email while still at the event.
 
@@ -69,9 +69,9 @@
 ### 2. ⚡ [idexi Flow](http://localhost:3000/services/flow) — *Operational Intelligence*
 > **Zero-hardware staff access control and event flow logistics.**
 
-<div align="center">
-  <img src="./public/flow-vip-hospitality.jpg" alt="idexi Flow Event Logistics" width="600" style="border-radius: 12px;" />
-</div>
+<p align="center">
+  <img src="./public/flow-vip-hospitality.jpg" alt="idexi Flow Event Logistics" width="700" style="border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.3);" />
+</p>
 
 - **Turn Any Phone into a Scanner**: Zero expensive proprietary handheld scanners needed. Staff and volunteers scan using their personal smartphones.
 - **0.3s Instant Verification**: Ultra-fast camera check-ins with visual VIP status, session access, and meal ticket verification.
@@ -82,9 +82,9 @@
 ### 3. 🎟️ [idexi Pass](http://localhost:3000/services/pass) — *Frictionless Entry*
 > **Smart encrypted digital ticketing and express check-in.**
 
-<div align="center">
-  <img src="./public/pass-arena-expo.jpg" alt="idexi Pass Smart Ticketing" width="600" style="border-radius: 12px;" />
-</div>
+<p align="center">
+  <img src="./public/pass-arena-expo.jpg" alt="idexi Pass Smart Ticketing" width="700" style="border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.3);" />
+</p>
 
 - **Dynamic Encrypted QR Passes**: Anti-screenshot, rotating QR credentials that prevent fraud and gate delays.
 - **Multi-Tier Credentialing**: Custom access rules for Speakers, VIPs, Media, General Admission, and Crew.
@@ -92,12 +92,35 @@
 
 ---
 
-## ✨ Interactive Features & Design System
+## ✨ Interactive Features & Hero Showcase
+
+<p align="center">
+  <img src="./public/editorial-red-coat.jpg" width="220" style="border-radius: 8px; margin: 4px;" />
+  <img src="./public/editorial-knit-hood.jpg" width="220" style="border-radius: 8px; margin: 4px;" />
+  <img src="./public/editorial-orange-jacket.jpg" width="220" style="border-radius: 8px; margin: 4px;" />
+</p>
 
 - 🎬 **Kinetic Photo Cluster & Marquee Hero**: Snappy 25fps kinetic typography with floating editorial photography and seamless scrolling ticker wordmarks.
 - 📱 **Integrated Event Lifecycle Stage**: Interactive 4-step accordion timeline featuring 3D flip passes, laser scanner cycles, and live photo particle delivery.
-- 🏛️ **Engineered For Every Venue**: Dynamic accordion showcase for Corporate Summits, Music Festivals, Expos, Galas, and Universities.
 - 🌗 **Dual-Theme Glassmorphism**: High-contrast floating pill navigation with fluid dark and light modes, backdrop saturation blurs, and scroll progress indicators.
+
+---
+
+## 🏛️ Engineered For Every Venue
+
+<p align="center">
+  <img src="./public/venue-summits.webp" width="135" style="border-radius: 6px;" alt="Summits" />
+  <img src="./public/venue-festivals.webp" width="135" style="border-radius: 6px;" alt="Festivals" />
+  <img src="./public/venue-expos.webp" width="135" style="border-radius: 6px;" alt="Expos" />
+  <img src="./public/venue-galas.webp" width="135" style="border-radius: 6px;" alt="Galas" />
+  <img src="./public/venue-graduations.webp" width="135" style="border-radius: 6px;" alt="Graduations" />
+</p>
+
+- **Corporate Summits**: Express check-ins and live intelligence for high-profile keynotes.
+- **Music Festivals**: Manage high-density gates and monitor safety in real-time.
+- **Conferences & Expos**: Automate lead capture and attendee journey tracking.
+- **Gala & Private Events**: Automatic private photo albums delivered to each guest.
+- **Universities & Graduations**: Handle graduation crowds and get every graduate their memories.
 
 ---
 
@@ -158,7 +181,12 @@ npm start
 
 ## 👥 Our Story
 
-Born from 8 years of frontline event management and media coverage experience, **idexi** was founded by AI graduates **Saif Alqdessi** and **Jafar Alkhadrawi** to solve the industry's biggest friction points and put intelligence back into physical spaces.
+<p align="center">
+  <img src="./public/saif.webp" width="160" style="border-radius: 12px; margin: 8px;" alt="Saif Alqdessi" />
+  <img src="./public/jafar.webp" width="160" style="border-radius: 12px; margin: 8px;" alt="Jafar Alkhadrawi" />
+</p>
+
+Born from 8 years of frontline event management and media coverage experience, **idexi** was founded by AI graduates **Saif Alqdessi** *(Co-Founder, Tech Lead)* and **Jafar Alkhadrawi** *(Co-Founder, Business Lead)* to eliminate ticketing errors, automate photo delivery, and put intelligence back into physical spaces.
 
 ---
 
