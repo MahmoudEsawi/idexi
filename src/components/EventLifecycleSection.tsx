@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CheckCircle2, Mail, XCircle, Loader2, Image as ImageIcon } from "lucide-react";
-import WireframeCubesBg from "@/components/WireframeCubesBg";
 import IdexiMark from "@/components/IdexiMark";
 
 type Step = {
@@ -409,7 +408,6 @@ export default function EventLifecycleSection() {
 
           <div className="lifecycle-panel-wrap">
             <div className="lifecycle-panel">
-              <WireframeCubesBg stroke="rgba(255, 255, 255, 0.18)" />
               {steps.map((step, i) => {
                 const Widget = widgets[i];
                 return (
