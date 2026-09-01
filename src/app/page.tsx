@@ -7,7 +7,11 @@ import AIEnginesSection from "@/components/AIEnginesSection";
 import EventLifecycleSection from "@/components/EventLifecycleSection";
 import VenueAccordion from "@/components/VenueAccordion";
 import OurStorySection from "@/components/OurStorySection";
-import CtaSection from "@/components/CtaSection";
+import CtaSection from "@/components/CtaSection";
+import EventProofSection from "@/components/EventProofSection";
+
+import ProblemSection from "@/components/ProblemSection";
+import SponsorsSection from "@/components/SponsorsSection";
 
 export default function Home() {
   return (
@@ -19,19 +23,26 @@ export default function Home() {
       <section className="st-hero">
         <div className="st-hero-content">
           <h1 className="st-hero-title st-headline-xl">
-            Intelligent Event Solutions.
+            Tickets Sent. Guests Scanned. Photos Delivered.
           </h1>
           <p className="st-hero-subtitle">
-            Frictionless event flow, entry, and instant photo sorting.
+            One system, three moments, handled automatically from the first click to the
+            last photo.
           </p>
           <div className="st-hero-actions">
             <Link href="/#contact" className="st-btn st-btn-primary">
-              Book Consultation
+              Book a Demo
             </Link>
-            <Link href="/#services" className="st-btn st-btn-bracket">
-              Explore Solutions
+            <Link href="/how-it-works" className="st-btn st-btn-bracket">
+              See How It Works
             </Link>
           </div>
+          {/* Price anchor sits under the CTAs rather than in the headline: it
+              qualifies traffic before anyone fills the form, and answers the
+              first question most organizers actually have. */}
+          <p className="st-hero-price">
+            Plans start at <strong>$199 per event</strong>. No hardware to buy.
+          </p>
         </div>
 
         {/* Right Column: Transparent Kinetic Photo Moodboard */}
@@ -40,8 +51,11 @@ export default function Home() {
         </div>
       </section>
 
+      <EventProofSection />
+      <ProblemSection />
       <AIEnginesSection />
       <EventLifecycleSection />
+      <SponsorsSection />
       <VenueAccordion />
       <OurStorySection />
       <CtaSection />
@@ -72,6 +86,17 @@ const pageCSS = `
     justify-content: center;
     gap: var(--st-space-sm);
     max-width: 580px;
+  }
+
+  .st-hero-price {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--st-on-surface-variant);
+  }
+  .st-hero-price strong {
+    font-weight: 600;
+    color: var(--st-on-background);
   }
 
   .st-hero-title {

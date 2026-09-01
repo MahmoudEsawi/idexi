@@ -15,6 +15,8 @@ const SOCIAL_LINKS = {
 interface FooterLink {
   label: string;
   href: string;
+  /** Highlighted: the attendee-facing link, the spec's second visual cue. */
+  accent?: boolean;
 }
 
 interface FooterColumn {
@@ -22,33 +24,44 @@ interface FooterColumn {
   links: FooterLink[];
 }
 
+/* Four columns per the master spec. The two privacy destinations sit apart on
+   purpose and must not be merged: "Privacy & Security" is the plain-language
+   trust page and belongs in Support, while "Privacy Policy" is the formal legal
+   document and belongs in the bottom bar. */
 const footerColumns: FooterColumn[] = [
   {
-    title: "Product",
+    title: "Products",
     links: [
       { label: "idexi Pass", href: "/services/pass" },
       { label: "idexi Flow", href: "/services/flow" },
       { label: "idexi Face", href: "/services/face" },
-      { label: "How It Works", href: "/#how-it-works" },
     ],
   },
   {
     title: "Company",
     links: [
-      { label: "Our Story", href: "/#about" },
-      { label: "Use Cases", href: "/#use-cases" },
-      { label: "Book Consultation", href: "/#contact" },
+      { label: "About", href: "/about" },
+      { label: "How It Works", href: "/how-it-works" },
+      { label: "Use Cases", href: "/use-cases" },
+      { label: "Pricing", href: "/pricing" },
     ],
   },
   {
-    title: "Resources",
+    title: "Support",
     links: [
-      { label: "FAQs", href: "/faqs" },
-      // Privacy Policy and Terms of Service slot in here once attorney-drafted
-      // biometric-compliance text exists — do not add /privacy or /terms yet.
+      { label: "Common Questions", href: "/faqs" },
+      { label: "Privacy & Security", href: "/privacy-security" },
+      { label: "Where's My Photo?", href: "/services/face", accent: true },
+      { label: "Book a Demo", href: "/#contact" },
     ],
   },
 ];
+
+const CONTACT = {
+  phone: "+962 78 544 7506",
+  email: "info@idexi.tech",
+  location: "Amman, Jordan",
+} as const;
 
 function LinkedInIcon() {
   return (
@@ -125,7 +138,10 @@ export default function Footer() {
             <ul className="footer-link-list">
               {column.links.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="footer-link">
+                  <Link
+                    href={link.href}
+                    className={link.accent ? "footer-link footer-link-accent" : "footer-link"}
+                  >
                     {link.label}
                   </Link>
                 </li>
@@ -156,11 +172,78 @@ export default function Footer() {
           </ul>
         </div>
       </div>
+
+      <div className="footer-bottom">
+        <p className="footer-bottom-legal">
+          <Link href="/privacy-policy" className="footer-bottom-link">Privacy Policy</Link>
+          <span className="footer-bottom-sep" aria-hidden="true">&middot;</span>
+          <Link href="/terms" className="footer-bottom-link">Terms of Service</Link>
+        </p>
+        <p className="footer-bottom-contact">
+          <a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`} className="footer-bottom-link">
+            {CONTACT.phone}
+          </a>
+          <span className="footer-bottom-sep" aria-hidden="true">&middot;</span>
+          <a href={`mailto:${CONTACT.email}`} className="footer-bottom-link">{CONTACT.email}</a>
+          <span className="footer-bottom-sep" aria-hidden="true">&middot;</span>
+          <span>{CONTACT.location}</span>
+        </p>
+      </div>
     </footer>
   );
 }
 
 const footerCSS = `
+  .footer-link-accent {
+    color: var(--st-secondary);
+    font-weight: 600;
+  }
+
+  .footer-bottom {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+    max-width: 1200px;
+    margin: 2.5rem auto 0;
+    padding: 1.5rem var(--st-space-margin-mobile) 0;
+    border-top: 1px solid var(--st-outline-variant);
+  }
+  .footer-bottom p {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.86rem;
+    line-height: 1.5;
+    color: var(--st-on-surface-variant);
+  }
+  .footer-bottom-link {
+    color: inherit;
+    transition: color 0.2s ease;
+  }
+  .footer-bottom-link:hover {
+    color: var(--st-secondary);
+  }
+  .footer-bottom-link:focus-visible {
+    outline: 2px solid var(--st-secondary);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+  .footer-bottom-sep {
+    opacity: 0.45;
+  }
+
+  @media (max-width: 767px) {
+    .footer-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
   .idexi-footer {
     position: relative;
     overflow: hidden;

@@ -3,6 +3,8 @@
 import { Resend } from "resend";
 import { z } from "zod";
 
+import { EVENT_TYPES, SOLUTIONS } from "./lead-options";
+
 // Where consultation requests land, and who they appear to come from.
 // Both sit on idexi.tech, so that is the single domain that has to be
 // verified in Resend (SPF + DKIM records on its DNS) before sends succeed.
@@ -18,15 +20,20 @@ const FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? "idexi Website <noreply@idex
 // has a way to reach us instead of silently evaporating.
 const FALLBACK_EMAIL = "info@idexi.tech";
 
-const SOLUTIONS = ["idexi Face", "idexi Flow", "idexi Pass", "All Services"] as const;
+// Field set per the master spec's section 11. The previous `company` and
+// free-text `event` fields were removed and `eventType` added by explicit
+// decision; both dropdowns are required, so a submission always says what kind
+// of event it is and which product prompted it.
+//
+// The option arrays are imported rather than declared here because this is a
+// "use server" module and may only export async functions at runtime.
 
 const leadSchema = z.object({
   name: z.string().trim().min(1, "Please enter your name.").max(100, "That name is too long."),
   email: z.email("Please enter a valid email address.").max(200),
   phone: z.string().trim().min(1, "Please enter a phone number.").max(40, "That phone number is too long."),
-  company: z.string().trim().max(120, "That company name is too long.").optional(),
+  eventType: z.enum(EVENT_TYPES, { message: "Please choose the kind of event you're running." }),
   solution: z.enum(SOLUTIONS, { message: "Please choose which solution you're interested in." }),
-  event: z.string().trim().max(2000, "Please keep this under 2000 characters.").optional(),
 });
 
 type LeadField = keyof z.infer<typeof leadSchema>;
@@ -66,9 +73,8 @@ export async function submitLead(
     name: (formData.get("name") as string) ?? "",
     email: (formData.get("email") as string) ?? "",
     phone: (formData.get("phone") as string) ?? "",
-    company: (formData.get("company") as string) ?? "",
+    eventType: (formData.get("eventType") as string) ?? "",
     solution: (formData.get("solution") as string) ?? "",
-    event: (formData.get("event") as string) ?? "",
   };
 
   // Client-side HTML5 validation is a convenience, not a guarantee: this
@@ -102,14 +108,11 @@ export async function submitLead(
   }
 
   const lines = [
-    `Name:     ${lead.name}`,
-    `Email:    ${lead.email}`,
-    `Phone:    ${lead.phone}`,
-    `Company:  ${lead.company || "(not provided)"}`,
-    `Interest: ${lead.solution}`,
-    "",
-    "About the event:",
-    lead.event || "(not provided)",
+    `Name:       ${lead.name}`,
+    `Email:      ${lead.email}`,
+    `Phone:      ${lead.phone}`,
+    `Event type: ${lead.eventType}`,
+    `Interest:   ${lead.solution}`,
   ];
 
   try {
@@ -121,19 +124,17 @@ export async function submitLead(
       // deliberately NOT used as `from`: sending as a domain we don't control
       // fails SPF/DMARC and hurts deliverability.
       replyTo: lead.email,
-      subject: `New consultation request: ${lead.name}${lead.company ? ` (${lead.company})` : ""}`,
+      subject: `New demo request: ${lead.name} (${lead.eventType})`,
       text: lines.join("\n"),
       html: `
-        <h2 style="margin:0 0 16px;font-family:sans-serif;">New consultation request</h2>
+        <h2 style="margin:0 0 16px;font-family:sans-serif;">New demo request</h2>
         <table cellpadding="6" style="border-collapse:collapse;font-family:sans-serif;font-size:14px;">
           <tr><td><strong>Name</strong></td><td>${escapeHtml(lead.name)}</td></tr>
           <tr><td><strong>Email</strong></td><td><a href="mailto:${escapeHtml(lead.email)}">${escapeHtml(lead.email)}</a></td></tr>
           <tr><td><strong>Phone</strong></td><td>${escapeHtml(lead.phone)}</td></tr>
-          <tr><td><strong>Company</strong></td><td>${escapeHtml(lead.company || "(not provided)")}</td></tr>
+          <tr><td><strong>Event type</strong></td><td>${escapeHtml(lead.eventType)}</td></tr>
           <tr><td><strong>Interest</strong></td><td>${escapeHtml(lead.solution)}</td></tr>
         </table>
-        <h3 style="margin:20px 0 6px;font-family:sans-serif;">About the event</h3>
-        <p style="white-space:pre-wrap;font-family:sans-serif;font-size:14px;">${escapeHtml(lead.event || "(not provided)")}</p>
       `,
     });
 

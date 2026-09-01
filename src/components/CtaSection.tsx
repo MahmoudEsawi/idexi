@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { submitLead, type LeadFormState } from "@/app/actions/submit-lead";
+import { EVENT_TYPES, SOLUTIONS } from "@/app/actions/lead-options";
 
 // This project has no Tailwind CSS anywhere (confirmed in CLAUDE.md and
 // every other component) — the reference brief asked for it, but built
@@ -9,8 +10,6 @@ import { submitLead, type LeadFormState } from "@/app/actions/submit-lead";
 // uses instead, so it stays consistent with the rest of the codebase.
 // Copy (heading, bullets) is pulled from page.md's "Optimize Your Next
 // Event" section, the site's only existing CTA content — not invented.
-
-const SOLUTIONS = ["idexi Face", "idexi Flow", "idexi Pass", "All Services"];
 
 const INITIAL_FORM_STATE: LeadFormState = { status: "idle" };
 
@@ -30,18 +29,21 @@ export default function CtaSection() {
       <div className="cta-row">
         {/* Left Side: Text Content */}
         <div className="cta-text">
-          <h2 className="cta-heading">Optimize Your Next Event</h2>
+          <h2 className="cta-heading">Your next event doesn&apos;t have to be chaos</h2>
           <p className="cta-subtext">
-            Have an upcoming conference, festival, or summit? Schedule a walkthrough with our team to:
+            Tell us about your event. We&apos;ll show you exactly how idexi fits, with no
+            commitment and no pressure.
           </p>
+          {/* The "Why organizers choose idexi" checklist used to be its own
+              section immediately above this one. Merged in here because the
+              two were one closing beat already: the recap and the ask belong
+              in the same field of view, not stacked as separate scrolls. */}
           <ul className="cta-bullets">
-            <li>
-              <strong>Personalized Walkthrough:</strong> see idexi Face and Pass diagnostics live in action.
-            </li>
-            <li>
-              <strong>Tailored Integration Plan:</strong> custom workflows matching your ticketing engine and
-              venues.
-            </li>
+            <li>All your tickets delivered in under 5 minutes</li>
+            <li>No scanning hardware to buy or maintain</li>
+            <li>Every guest gets their photos, automatically</li>
+            <li>Sponsor branding on every ticket, email, and photo</li>
+            <li>Plans starting at $199 per event</li>
           </ul>
         </div>
 
@@ -127,19 +129,36 @@ export default function CtaSection() {
               </div>
 
               <div className="cta-field">
-                <label htmlFor="cta-company">Company</label>
-                <input
-                  id="cta-company"
-                  name="company"
-                  type="text"
-                  placeholder="Enter your company's name"
-                  defaultValue={values.company}
-                />
+                <label htmlFor="cta-event-type">
+                  Event type <span className="cta-required">*</span>
+                </label>
+                {/* Keyed for the same reason as the solution select below. */}
+                <select
+                  key={values.eventType ?? "empty"}
+                  id="cta-event-type"
+                  name="eventType"
+                  defaultValue={values.eventType ?? ""}
+                  required
+                  aria-invalid={Boolean(fieldErrors.eventType)}
+                  aria-describedby={fieldErrors.eventType ? "cta-event-type-error" : undefined}
+                >
+                  <option value="" disabled>
+                    Select an event type
+                  </option>
+                  {EVENT_TYPES.map((eventType) => (
+                    <option key={eventType} value={eventType}>
+                      {eventType}
+                    </option>
+                  ))}
+                </select>
+                {fieldErrors.eventType && (
+                  <span id="cta-event-type-error" className="cta-field-error">{fieldErrors.eventType}</span>
+                )}
               </div>
 
               <div className="cta-field cta-field-full">
                 <label htmlFor="cta-solution">
-                  Solution Interest <span className="cta-required">*</span>
+                  What interests you most? <span className="cta-required">*</span>
                 </label>
                 {/* Keyed on the echoed value so an error re-render remounts
                     the select with the previous choice applied. Text inputs
@@ -169,19 +188,8 @@ export default function CtaSection() {
                 )}
               </div>
 
-              <div className="cta-field cta-field-full">
-                <label htmlFor="cta-event">About Your Event</label>
-                <textarea
-                  id="cta-event"
-                  name="event"
-                  rows={3}
-                  placeholder="attendee count, venue, special needs..."
-                  defaultValue={values.event}
-                />
-              </div>
-
               <button type="submit" className="cta-submit cta-field-full" disabled={isPending}>
-                {isPending ? "Sending..." : "Book Consultation"}
+                {isPending ? "Sending..." : "Book a Demo"}
               </button>
             </form>
           )}

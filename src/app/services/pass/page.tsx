@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import ServiceComparison from "@/components/ServiceComparison";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowLeft,
@@ -39,7 +40,7 @@ const passAudiences = [
     id: "expos",
     title: "High-Volume Expos",
     image: "/pass-arena-expo.jpg",
-    desc: "Instant bulk generation of offline-ready barcodes capable of scanning thousands per minute.",
+    desc: "Instant bulk generation of offline-ready barcodes that scan thousands per minute.",
   },
   {
     id: "conferences",
@@ -121,7 +122,7 @@ export default function PassService() {
               No manual approvals, no generic PDFs.
             </p>
             <div className="service-cta-row">
-              <Link href="/#contact" className="st-btn st-btn-primary">Book Consultation <ArrowRight size={16} /></Link>
+              <Link href="/#contact" className="st-btn st-btn-primary">Book a Demo <ArrowRight size={16} /></Link>
             </div>
           </div>
 
@@ -137,7 +138,7 @@ export default function PassService() {
 
         {/* How it works */}
         <div className="service-section">
-          <h2 className="service-subsection-title">How It Works</h2>
+          <h2 className="service-subsection-title">How it works</h2>
           <div className="service-process">
             {steps.map((step, idx) => (
               <motion.div
@@ -167,14 +168,14 @@ export default function PassService() {
             </div>
             <div className="service-bento-card">
               <WifiOff size={22} style={{ color: "var(--st-secondary)", marginBottom: "0.75rem" }} />
-              <h3 className="service-bento-card-title">Works Offline</h3>
+              <h3 className="service-bento-card-title">Works offline</h3>
               <p className="service-bento-card-desc">
                 Verifies instantly at venue gates even with zero cellular signal.
               </p>
             </div>
             <div className="service-bento-card">
               <ShieldCheck size={22} style={{ color: "var(--st-secondary)", marginBottom: "0.75rem" }} />
-              <h3 className="service-bento-card-title">Fraud Protected</h3>
+              <h3 className="service-bento-card-title">Fraud protected</h3>
               <p className="service-bento-card-desc">
                 Dynamic encrypted barcodes prevent duplicate or forwarded scans.
               </p>
@@ -183,8 +184,10 @@ export default function PassService() {
         </div>
 
         {/* Clean, Visual Who Is It For */}
+        <ServiceComparison product="pass" />
+
         <div className="service-section">
-          <h2 className="service-subsection-title">Who Is It For?</h2>
+          <h2 className="service-subsection-title">Who is it for?</h2>
           <div className="pass-audience-grid">
             {passAudiences.map((aud) => (
               <div key={aud.id} className="pass-audience-card">

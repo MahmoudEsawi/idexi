@@ -24,41 +24,52 @@ interface VenueItem {
   description: string;
   image: string;
   alt: string;
+  /** Deep link into the matching panel of the /use-cases reel. */
+  href: string;
 }
 
 const accordionItems: VenueItem[] = [
   {
     id: 1,
     title: "Corporate Summits",
-    description: "Express check-ins and live intelligence for high-profile events.",
+    href: "/use-cases#summits",
+    description: "Your VIPs recognized the second they walk in, your sponsors seen everywhere else.",
     image: "/venue-summits.webp",
     alt: "Executives networking on stage at a corporate conference",
   },
   {
     id: 2,
-    title: "Music Festivals",
-    description: "Manage high-density gates and monitor safety in real-time.",
-    image: "/venue-festivals.webp",
-    alt: "A dense festival crowd facing a brightly lit stage at night",
+    title: "Trade Shows & Exhibitions",
+    href: "/use-cases#tradeshows",
+    description: "Thousands of badges scanned in seconds, with no scanners to buy and no lines to manage.",
+    /* Not venue-expos.webp, which the Conferences card below already uses:
+       two identical photographs in a five-card accordion reads as a bug. This
+       is the same photograph the /use-cases trade shows panel uses, so the
+       card and the page it links to now show the same room. */
+    image: "/flow-trade-expo.jpg",
+    alt: "Visitors moving between exhibitor stands on a trade show floor",
   },
   {
     id: 3,
     title: "Conferences & Expos",
-    description: "Automate lead capture and attendee journey tracking.",
+    href: "/use-cases#conferences",
+    description: "One QR code covers every session, so guests always end up exactly where they belong.",
     image: "/venue-expos.webp",
     alt: "Attendees browsing exhibitor booths on a busy expo floor",
   },
   {
     id: 4,
     title: "Gala & Private Events",
-    description: "Automatic private photo albums delivered to each guest.",
+    href: "/use-cases#weddings",
+    description: "Private photo albums reach every guest before they have left the venue.",
     image: "/venue-galas.webp",
     alt: "Guests in formal attire mingling at an elegant evening gala",
   },
   {
     id: 5,
     title: "Universities & Graduations",
-    description: "Handle graduation crowds and get every student their photos.",
+    href: "/use-cases#graduations",
+    description: "Graduates get their photos the moment they walk off stage.",
     image: "/venue-graduations.webp",
     alt: "Graduates in caps and gowns celebrating at a commencement ceremony",
   },
@@ -74,18 +85,23 @@ function AccordionItem({
   onActivate: () => void;
 }) {
   return (
-    <button
-      type="button"
+    <Link
+      href={item.href}
       className={`venue-item${isActive ? " venue-item-active" : ""}`}
       onMouseEnter={onActivate}
       onFocus={onActivate}
-      aria-pressed={isActive}
-      aria-label={item.title}
+      aria-current={isActive ? "true" : undefined}
     >
       <Image src={item.image} alt={item.alt} fill sizes="400px" className="venue-item-img" />
       <div className="venue-item-overlay" aria-hidden="true" />
       <span className="venue-item-caption">{item.title}</span>
-    </button>
+      {/* These cards route somewhere now, so the active one has to look like
+          it does. Shown only when expanded, where there is room for it. */}
+      <span className="venue-item-go" aria-hidden="true">
+        See use case
+        <span className="venue-item-go-arrow"> &rarr;</span>
+      </span>
+    </Link>
   );
 }
 
@@ -100,11 +116,11 @@ export default function VenueAccordion() {
         <div className="venue-row">
           {/* Left Side: Text Content */}
           <div className="venue-text">
-            <h1 className="venue-heading">{activeItem.title}</h1>
+            <h2 className="venue-heading">{activeItem.title}</h2>
             <p className="venue-subtext">{activeItem.description}</p>
             <div className="venue-cta-wrap">
               <Link href="/#contact" className="st-btn st-btn-primary">
-                Book Consultation
+                Book a Demo
               </Link>
             </div>
           </div>
@@ -207,7 +223,7 @@ const venueCSS = `
     gap: 1rem;
     width: 100%;
     padding: 1rem;
-    transition: grid-template-columns 0.7s ease-in-out;
+    transition: grid-template-columns 0.55s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .venue-item {
@@ -233,6 +249,35 @@ const venueCSS = `
     inset: 0;
     background: rgba(0, 0, 0, 0.4);
   }
+  .venue-item-go {
+    position: absolute;
+    left: 50%;
+    bottom: 1.4rem;
+    transform: translateX(-50%) translateY(6px);
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    font-family: var(--st-font-ui);
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+    color: #ffffff;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+  .venue-item-active .venue-item-go {
+    opacity: 0.92;
+    transform: translateX(-50%) translateY(0);
+  }
+  .venue-item-go-arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+  .venue-item:hover .venue-item-go-arrow {
+    transform: translateX(3px);
+  }
+
   .venue-item-caption {
     position: absolute;
     left: 50%;
@@ -248,11 +293,17 @@ const venueCSS = `
     transition: all 0.3s ease-in-out;
   }
   .venue-item-active .venue-item-caption {
-    bottom: 1.5rem;
+    bottom: 3.5rem;
     transform: translateX(-50%) rotate(0deg);
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .venue-accordion,
+    .venue-item-go,
+    .venue-item-go-arrow {
+      transition: none !important;
+    }
+
     .venue-accordion,
     .venue-item-caption {
       transition: none !important;
@@ -273,6 +324,10 @@ const venueCSS = `
       bottom: 4.5rem;
       font-size: 1rem;
     }
+    .venue-item-go {
+      bottom: 1.1rem;
+      font-size: 0.78rem;
+    }
     /* The active item's caption goes horizontal at the card's actual width
        (a fraction of the viewport via the grid-template-columns fr split),
        which on a narrow phone can be less than the longest venue name's
@@ -280,7 +335,7 @@ const venueCSS = `
        wrapping. Letting it wrap to two lines and centering it reads far
        better than either the clip or forcing the card wider. */
     .venue-item-active .venue-item-caption {
-      bottom: 1.25rem;
+      bottom: 3rem;
       white-space: normal;
       text-align: center;
       max-width: calc(100% - 2rem);

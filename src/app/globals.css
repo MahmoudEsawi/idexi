@@ -80,6 +80,45 @@
   --st-background: #edf0ff;
   --st-on-background: #0b1c30;
 
+  /* ── Product color scale (master spec) ────────────────────────────
+     Blue = Pass, Teal = Flow, Coral = Face. Purple is reserved for the
+     Sponsors section and appears nowhere else on the site, which is what
+     makes that one band read as distinct the moment it scrolls into view.
+
+     Each product has three roles, mirroring the M3 pattern the rest of
+     this file already uses:
+       --st-product-X            readable tone, AA on --st-background
+       --st-product-X-container  tinted fill
+       --st-on-product-X-container  text on that fill
+
+     Pass reuses --st-secondary and Flow derives from --st-accent-data so
+     the scale reads as part of the existing system. Flow is darkened from
+     #00939b, which only reaches 3.7:1 on white and fails AA as text.
+
+     Contrast measured against --st-background (#edf0ff), not white:
+       pass 6.3:1 · flow 5.1:1 · face 4.9:1 · sponsor 6.0:1
+     These supersede the legacy --accent-pass/--accent-flow/--accent-face
+     triplet below, which maps green/purple/cyan and contradicts the spec
+     on all three. Nothing reads the legacy names any more; they are left
+     in place because removing them is a separate cleanup. */
+  --st-product-pass: #0058bc;
+  --st-product-pass-container: #d8e2ff;
+  --st-on-product-pass-container: #001a41;
+
+  --st-product-flow: #00767d;
+  --st-product-flow-container: #b3f1f6;
+  --st-on-product-flow-container: #00363a;
+
+  --st-product-face: #c0402a;
+  --st-product-face-container: #ffdad2;
+  --st-on-product-face-container: #7a2411;
+
+  --st-sponsor: #6b3fd4;
+  --st-sponsor-container: #ebddff;
+  --st-on-sponsor-container: #2b0a63;
+  /* Full-bleed tint for the Sponsors band only. */
+  --st-sponsor-surface: #f2ecff;
+
   --st-inverse-surface: #213145;
   --st-inverse-on-surface: #eaf1ff;
   --st-inverse-primary: #b9c5f2;
@@ -124,6 +163,26 @@
 
   --st-background: #0d1b3e;
   --st-on-background: #eaf1ff;
+
+  /* Product scale, dark. Same roles as light. Every tone here measures
+     ~9.9:1 against --st-background (#0d1b3e), well clear of AA, because a
+     mid-tone that works on white goes unreadable on navy. */
+  --st-product-pass: #adc6ff;
+  --st-product-pass-container: #004493;
+  --st-on-product-pass-container: #d8e2ff;
+
+  --st-product-flow: #00dbe7;
+  --st-product-flow-container: #004f54;
+  --st-on-product-flow-container: #74f5ff;
+
+  --st-product-face: #ffb4a1;
+  --st-product-face-container: #7a2411;
+  --st-on-product-face-container: #ffdad2;
+
+  --st-sponsor: #cfbcff;
+  --st-sponsor-container: #422b7a;
+  --st-on-sponsor-container: #ebddff;
+  --st-sponsor-surface: #1a1442;
 
   --st-inverse-surface: #f8f9ff;
   --st-inverse-on-surface: #0b1c30;

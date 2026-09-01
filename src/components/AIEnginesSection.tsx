@@ -50,47 +50,47 @@ type Engine = {
 const engines: Engine[] = [
   {
     name: "idexi Face",
-    tagline: "Attendee Delight",
+    tagline: "Instant photo delivery",
     description:
-      "AI face recognition scans event photography in real-time, matching and auto-emailing attendees their personal gallery instantly.",
+      "Uses facial recognition to find every guest in every event photo, then automatically builds them a private gallery and delivers it to their inbox.",
     href: "/services/face",
     icon: <ScanFace size={30} strokeWidth={1.5} />,
     accent: "#0D1B3E",
     iconColor: "#ffffff",
     gridLineColor: "rgba(255, 255, 255, 0.65)",
     chat: {
-      user: "Where do I find my photos from tonight?",
-      ai: "Already in your inbox. We matched it to your selfie and sent it the moment you left the dance floor.",
+      user: "Our guests are scrolling through hundreds of strangers' photos trying to find themselves.",
+      ai: "They won't have to. We find every guest in seconds and send each one a private gallery that only their own code opens.",
     },
   },
   {
     name: "idexi Flow",
-    tagline: "Access & Logistics",
+    tagline: "Unified operations hub",
     description:
-      "Turns any staff smartphone into a check-in station. One universal QR code per guest controls entry, workshops, and logistics across the whole event.",
+      "Turns any staff phone into a full check-in station, handling entry, hospitality, and session access from a single QR code per guest.",
     href: "/services/flow",
     icon: <Activity size={30} strokeWidth={1.5} />,
     accent: "#007AFF",
     iconColor: "#ffffff",
     gridLineColor: "rgba(255, 255, 255, 0.65)",
     chat: {
-      user: "Is Marcus cleared for the 2pm workshop?",
-      ai: "He scanned into Workshop B two minutes ago and is already seated.",
+      user: "We're renting scanners again and the queue is already out the door.",
+      ai: "Any staff phone is a scanner. One tap confirms entry in under a second, and every kit and meal pickup logs itself.",
     },
   },
   {
     name: "idexi Pass",
-    tagline: "Seamless Access",
+    tagline: "Smart digital ticketing",
     description:
-      "Digital registration and express check-in replaces ticketing lines with secure biometric scans and offline smart verification.",
+      "Every guest gets a personalized, fraud-proof QR ticket in their inbox within minutes, without anyone approving registrations by hand.",
     href: "/services/pass",
     icon: <Ticket size={30} strokeWidth={1.5} />,
     accent: "#00F2FF",
     iconColor: "#0D1B3E",
     gridLineColor: "rgba(13, 27, 62, 0.35)",
     chat: {
-      user: "Can you get 1,200 guests their tickets by tonight?",
-      ai: "Upload the guest list, and every branded QR ticket goes out within five minutes without a manual approval step.",
+      user: "Someone screenshotted their ticket and walked two people in on it.",
+      ai: "One encrypted QR, one entry. Every ticket is branded and personalized, and it goes out in minutes with nobody approving anything by hand.",
     },
   },
 ];
@@ -102,9 +102,9 @@ export default function AIEnginesSection() {
     <section id="services" ref={ref} className={`ai-engines ${inView ? "ai-engines-in-view" : ""}`}>
       <style>{aiEnginesCSS}</style>
       <div className="ai-engines-header">
-        <h2 className="ai-engines-heading">Explore Our AI Engines</h2>
+        <h2 className="ai-engines-heading">Three products, one guest record</h2>
         <p className="ai-engines-subtext">
-          Three integrated products for photography delivery, queue reduction, and access control.
+          Choose a product to see exactly what changes.
         </p>
       </div>
 
@@ -153,17 +153,41 @@ export default function AIEnginesSection() {
               <p className="ai-engine-tagline">{engine.tagline}</p>
               <p className="ai-engine-description">{engine.description}</p>
               <span className="ai-engine-explore">
-                Explore More <span aria-hidden="true">→</span>
+                See what changes <span aria-hidden="true">→</span>
               </span>
             </div>
           </Link>
         ))}
+      </div>
+
+      <div className="ai-engines-cta">
+        <p className="ai-engines-cta-text">
+          Not sure which pieces you need? That is what the call is for.
+        </p>
+        <Link href="/#contact" className="st-btn st-btn-primary">
+          Book a Demo
+        </Link>
       </div>
     </section>
   );
 }
 
 const aiEnginesCSS = `
+  .ai-engines-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--st-space-md);
+    margin-top: var(--st-space-lg);
+    text-align: center;
+  }
+  .ai-engines-cta-text {
+    font-size: 1.02rem;
+    line-height: 1.5;
+    color: var(--st-on-surface-variant);
+  }
+
   .ai-engines {
     position: relative;
     padding: var(--st-space-xl) var(--st-space-margin-mobile);

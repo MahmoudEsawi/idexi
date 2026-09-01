@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "FAQs | idexi",
   description:
-    "Answers about idexi's AI-powered event check-in, access control, and photo delivery: how it works, what happens at the gate, and how attendee data is handled.",
+    "Answers about idexi: where to find your event photos, how check-in works offline, what happens at the door, and how guest data is protected and deleted.",
 };
 
 interface FaqItem {
@@ -17,86 +17,84 @@ interface FaqCategory {
   questions: FaqItem[];
 }
 
-const PRIVACY_NOTE =
-  "Our full privacy documentation, covering data retention and handling in detail, is being finalised and will be published here. For privacy questions in the meantime, contact hello@idexi.ai.";
-
 const categories: FaqCategory[] = [
   {
-    title: "Photo Delivery",
+    title: "Photos & privacy",
     questions: [
       {
-        question: "How do I receive my event photos?",
+        question: "Where can I find my event photos?",
         answer: [
-          "At registration you opt in via a QR code and provide one reference selfie. Event photographers then capture photos throughout the venue as normal. idexi's matching engine scans the uploaded event photos, and any photo containing you is automatically compiled and sent straight to your email. No searching through a shared album.",
+          "Use the \"Where's My Photo?\" link at the top of any page, or head straight to idexi Face. Your gallery arrives by email once your event's photos have been matched, and it opens with a one-time code sent only to you. If you can't find it, email info@idexi.tech and we'll resend your secure link.",
         ],
       },
       {
-        question: "How does the face matching actually work, in practical terms?",
+        question: "What if the AI matches the wrong photo to someone?",
         answer: [
-          "It compares the one reference selfie you provided at opt-in against faces detected across the event photography. Matching runs on idexi's infrastructure for that event and typically resolves in milliseconds per image, which is what makes near-instant delivery possible once photographers upload their shots.",
+          "We built our own facial recognition model, trained specifically for crowded event photos, and it is accurate 99% of the time. If anything still looks off, guests can flag it and our team corrects it manually.",
         ],
       },
       {
-        question: "What happens if I'm not matched in any photo?",
+        question: "Will my guests' photos be public for anyone to see?",
         answer: [
-          "If the system doesn't find a confident match for your reference selfie in any of the event's photos, no gallery is generated for you. You simply won't receive a delivery email. This can happen if you weren't photographed, or if the reference selfie was low quality.",
-          "If you believe you should have photos waiting and haven't received them, contact the event organiser or idexi support so it can be looked into manually.",
+          "No. Every gallery is locked behind a private OTP code sent only to that guest. There are no public links, so only they can open their own photos.",
         ],
       },
       {
-        question: "Can I ask to be removed from an event's photo gallery?",
+        question: "What happens to our data after the event ends?",
         answer: [
-          "Yes, you can contact the event organiser or idexi to request that your photos be taken down from an event gallery.",
-          PRIVACY_NOTE,
+          "We don't keep it. Every event's photos are stored on a dedicated, secured server and automatically deleted 30 days after the event ends.",
         ],
       },
     ],
   },
   {
-    title: "Check-In & Reliability",
+    title: "Running your event",
     questions: [
       {
-        question: "How does gate check-in work?",
+        question: "Our venue has terrible WiFi.",
         answer: [
-          "Attendees register online or through the event's app and receive an encrypted smart-pass, which can be added to Apple Wallet or Google Wallet. At the gate, that pass is scanned and verified in milliseconds; some events layer on optional facial verification for an extra express lane. Once verified, connected badge printers can issue a physical credential on the spot.",
+          "idexi Flow works offline and syncs the moment you're back online.",
         ],
       },
       {
-        question: "What happens if the venue's network connection drops?",
+        question: "Can it handle a sudden rush at the door?",
         answer: [
-          "idexi's check-in hardware is built to keep operating locally at the venue rather than depending on a live connection: check-in lanes are designed to keep scanning and verifying passes during a network blackout. idexi Flow's staff scanning app works the same way: scans at the gate, a workshop door, or a logistics point queue locally on the phone and sync to the shared dashboard once connectivity returns.",
+          "Any number of staff phones can scan in parallel, so there is no single bottleneck.",
         ],
       },
       {
-        question: "What do organisers need to provide to get started?",
+        question: "Will it work for a multi-day event?",
         answer: [
-          "The core things are your event and venue details and whatever ticketing or registration system you're already using, so idexi's team can build an integration around it rather than asking you to replace it. From there we put together a tailored walkthrough and integration plan. Reach out through the \"Book Consultation\" link and the team will scope exactly what's needed for your event.",
+          "Yes. Guest data and photo galleries persist across all days of the event.",
+        ],
+      },
+      {
+        question: "What if a guest doesn't have a smartphone?",
+        answer: [
+          "Staff can look up and verify guests manually from the dashboard as a backup.",
+        ],
+      },
+      {
+        question: "Is there support if something goes wrong during the event itself?",
+        answer: [
+          "Yes. Our team is reachable throughout your event, not just before it.",
         ],
       },
     ],
   },
   {
-    title: "Privacy",
+    title: "Getting started",
     questions: [
       {
-        question: "What information do I provide when I register or opt in?",
+        question: "My guests won't download an app.",
         answer: [
-          "You enter your own details directly: for check-in, that's typically your registration information; for photo delivery, that's a single reference selfie provided when you opt in via QR code. Event organisers control the data collected for their own event.",
-          PRIVACY_NOTE,
+          "Everything works through email and a QR code, so there is nothing to install.",
         ],
       },
       {
-        question: "How is the reference selfie and matching data handled?",
+        question: "We already use a ticketing tool.",
         answer: [
-          "The reference selfie you provide is used to run matching against event photography, and that processing happens on idexi's infrastructure for the event you opted into. Organisers control their own event's data.",
-          PRIVACY_NOTE,
-        ],
-      },
-      {
-        question: "Is idexi's data handling compliant with privacy regulations like GDPR or BIPA?",
-        answer: [
-          "Biometric data handling is something we take seriously, and we're finalising formal privacy documentation to address it properly rather than make informal claims here.",
-          PRIVACY_NOTE,
+          "Use idexi Face or Flow on their own, alongside what you already have.",
         ],
       },
     ],
@@ -112,7 +110,7 @@ export default function FaqsPage() {
           ← Back to idexi
         </Link>
 
-        <h1 className="faq-heading">Frequently Asked Questions</h1>
+        <h1 className="faq-heading">Frequently asked questions</h1>
         <p className="faq-intro">
           Answers about how idexi&apos;s check-in, access control, and photo delivery products actually work.
         </p>

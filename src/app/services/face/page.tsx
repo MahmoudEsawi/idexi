@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import ServiceComparison from "@/components/ServiceComparison";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowLeft,
@@ -44,7 +45,7 @@ const faceAudiences = [
     id: "sports",
     title: "Concerts, Festivals & Sports",
     image: "/face-music-festival.jpg",
-    desc: "Fast facial indexing across dynamic arena crowds, delivering instant high-energy action shots.",
+    desc: "Fast facial indexing across dynamic arena crowds, so action shots reach guests while the event is still running.",
   },
 ];
 
@@ -111,7 +112,7 @@ export default function FaceService() {
               every face and delivers each guest a private link to their own gallery.
             </p>
             <div className="service-cta-row">
-              <Link href="/#contact" className="st-btn st-btn-primary">Book Consultation <ArrowRight size={16} /></Link>
+              <Link href="/#contact" className="st-btn st-btn-primary">Book a Demo <ArrowRight size={16} /></Link>
             </div>
           </div>
 
@@ -127,7 +128,7 @@ export default function FaceService() {
 
         {/* How it works */}
         <div className="service-section">
-          <h2 className="service-subsection-title">How It Works</h2>
+          <h2 className="service-subsection-title">How it works</h2>
           <div className="service-process">
             {steps.map((step, idx) => (
               <motion.div
@@ -157,14 +158,14 @@ export default function FaceService() {
             </div>
             <div className="service-bento-card">
               <ShieldCheck size={22} style={{ color: "var(--st-secondary)", marginBottom: "0.75rem" }} />
-              <h3 className="service-bento-card-title">Privacy by Design</h3>
+              <h3 className="service-bento-card-title">Privacy by design</h3>
               <p className="service-bento-card-desc">
                 Matching runs on dedicated event infrastructure. You stay in full control.
               </p>
             </div>
             <div className="service-bento-card">
               <Workflow size={22} style={{ color: "var(--st-secondary)", marginBottom: "0.75rem" }} />
-              <h3 className="service-bento-card-title">Zero App Downloads</h3>
+              <h3 className="service-bento-card-title">Zero app downloads</h3>
               <p className="service-bento-card-desc">
                 Delivered via email link. Guests never have to install an app.
               </p>
@@ -173,8 +174,10 @@ export default function FaceService() {
         </div>
 
         {/* Clean, Visual Who Is It For */}
+        <ServiceComparison product="face" />
+
         <div className="service-section">
-          <h2 className="service-subsection-title">Who Is It For?</h2>
+          <h2 className="service-subsection-title">Who is it for?</h2>
           <div className="face-audience-grid">
             {faceAudiences.map((aud) => (
               <div key={aud.id} className="face-audience-card">

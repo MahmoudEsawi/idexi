@@ -150,9 +150,13 @@ export default function IntroStrobeLoader() {
 
       {/* Bold, Solid, Static Centerpiece Wordmark */}
       <div className="intro-centerpiece">
-        <h1 className="intro-logo-text">
+        {/* A splash wordmark, not the page's heading. It was an h1, which
+            gave the home page two h1s for the life of the intro and made
+            screen readers announce a heading that then vanished. Styling is
+            by class, so the tag change is cosmetic-free. */}
+        <p className="intro-logo-text">
           IDEXI<span className="intro-trademark">&trade;</span>
-        </h1>
+        </p>
       </div>
     </div>
   );

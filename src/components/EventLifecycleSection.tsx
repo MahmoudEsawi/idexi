@@ -1,44 +1,60 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { CheckCircle2, Mail, XCircle, Loader2, Image as ImageIcon } from "lucide-react";
+import Link from "next/link";
+import { CheckCircle2, Mail, Image as ImageIcon } from "lucide-react";
 import IdexiMark from "@/components/IdexiMark";
 
 type Step = {
   number: string;
+  /** Spec column "Sublabel". */
   product: string;
+  /** Spec column "Label". */
   title: string;
+  /** Spec column "Caption when active". */
   description: string;
+  /** Spec column "Color". */
+  color: "pass" | "flow" | "face" | "sponsor";
 };
 
-// Copy pulled verbatim from page.md's "Integrated Event Lifecycle" section —
-// already run through the humanizer.md pass when that section was last
-// touched (no em dashes, no AI-vocabulary tells), so it's used as-is here.
+/* Verbatim from idexi-MASTER-SPEC.md, section 6. Labels, sublabels, captions
+   and the colour mapping are the partner's exact wording and are not to be
+   rewritten, including the capitalised "Idexi", which differs from the site's
+   own conventions elsewhere. If this copy is ever
+   revised, revise it in the spec first.
+
+   One deliberate departure: the spec's em dashes are removed per rule 14 of
+   .claude/skills/humanizer.md, which bans them outright. The H2 becomes two
+   sentences and the stage 3 sublabel takes a comma. Wording is otherwise
+   untouched. */
 const steps: Step[] = [
   {
     number: "01",
-    product: "idexi Pass",
-    title: "Smart Pass Issuance",
-    description: "Attendees register and receive encrypted smart-passes with biometric profiles.",
+    title: "Ticket sent",
+    product: "Idexi Pass",
+    description: "Guest receives a QR ticket",
+    color: "pass",
   },
   {
     number: "02",
-    product: "idexi Pass",
-    title: "Express Bio Check-In",
-    description: "Guests scan and verify at access points in milliseconds, so lines never form.",
+    title: "Checked in",
+    product: "Idexi Flow",
+    description: "Staff scan it with their own phone",
+    color: "flow",
   },
   {
     number: "03",
-    product: "idexi Flow",
-    title: "Access & Logistics Tracking",
-    description:
-      "Staff scan one universal QR code per guest to verify entry, workshop access, and logistics pickups from their own phones.",
+    title: "Photos matched",
+    product: "Idexi Face, AI",
+    description: "AI finds every face, every photo",
+    color: "face",
   },
   {
     number: "04",
-    product: "idexi Face",
-    title: "Instant Photo Delivery",
-    description: "AI matches faces across event photos, then instantly emails each guest their gallery.",
+    title: "Delivered",
+    product: "To their inbox",
+    description: "A private gallery lands in their inbox",
+    color: "sponsor",
   },
 ];
 
@@ -87,8 +103,8 @@ function TicketNotches() {
 
 type WidgetProps = {
   /** Whether this widget's step is the currently active one. Only
-   * LogisticsWidget uses it (to key its list and replay the stagger-in
-   * animation each time the user navigates back to this step) — the other
+   * FaceMatchWidget uses it (to key its grid and replay the detection
+   * stagger each time the user navigates back to this step) — the other
    * three ignore it, but share the signature so the `widgets` array below
    * stays a single consistent component type. */
   active: boolean;
@@ -230,56 +246,6 @@ function ScanWidget() {
   );
 }
 
-type LogisticsStatus = "success" | "missed" | "pending";
-
-const LOGISTICS_STOPS: { label: string; time: string; status: LogisticsStatus }[] = [
-  { label: "Main Gates", time: "08:45 AM", status: "success" },
-  { label: "Workshop A", time: "No-show", status: "missed" },
-  { label: "VIP Catering", time: "12:30 PM", status: "success" },
-  { label: "Workshop B", time: "02:15 PM", status: "success" },
-  { label: "Departure", time: "Pending", status: "pending" },
-];
-
-function LogisticsStatusIcon({ status }: { status: LogisticsStatus }) {
-  if (status === "success") return <CheckCircle2 size={16} className="logistics-icon logistics-icon-success" />;
-  if (status === "missed") return <XCircle size={16} className="logistics-icon logistics-icon-missed" />;
-  return <Loader2 size={16} className="logistics-icon logistics-icon-pending logistics-spin" />;
-}
-
-function LogisticsWidget({ active }: WidgetProps) {
-  return (
-    <div className="widget-card widget-logistics-timeline">
-      <div className="logistics-header">
-        <span className="logistics-avatar">EA</span>
-        <div className="logistics-header-info">
-          <span className="logistics-name">Ezekiel Adewumi</span>
-          <span className="logistics-live">
-            <span className="logistics-live-dot" aria-hidden="true" />
-            Live Status
-          </span>
-        </div>
-      </div>
-
-      {/* Keyed on `active` so the list remounts (and the stagger-in
-          animation replays) every time the user navigates back to this
-          step, rather than only once on page load when this widget was
-          still hidden behind step 1. */}
-      <ul className="logistics-timeline" key={String(active)}>
-        {LOGISTICS_STOPS.map((stop, i) => (
-          <li
-            key={stop.label}
-            className={`logistics-row logistics-row-${stop.status}`}
-            style={{ "--stagger-idx": i } as React.CSSProperties}
-          >
-            <LogisticsStatusIcon status={stop.status} />
-            <span className="logistics-row-label">{stop.label}</span>
-            <span className="logistics-row-time">{stop.time}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
 
 // Scattered starting positions + per-particle delay (within the shared 6s
 // loop) for the "chaos" photo icons on the left — fixed, not random, same
@@ -324,7 +290,40 @@ function GalleryWidget() {
   );
 }
 
-const widgets = [PassWidget, ScanWidget, LogisticsWidget, GalleryWidget];
+/* Six deterministic tiles; the middle four resolve to a match, matching the
+   determinism convention used by the QR and barcode patterns above. */
+const FACE_TILES = [0, 1, 2, 3, 4, 5];
+
+/* Stage 3 is "Photos matched" in the master spec, so this visual has to show
+   the AI finding faces across the event photography. Detection frames lock
+   onto the tiles in sequence and settle on a found state. */
+function FaceMatchWidget({ active }: WidgetProps) {
+  return (
+    <div className="widget-card widget-facematch">
+      <span className="facematch-header">idexi Face &middot; AI Matching</span>
+
+      <div className="facematch-grid" key={String(active)}>
+        {FACE_TILES.map((i) => (
+          <span
+            key={i}
+            className="facematch-tile"
+            style={{ "--stagger-idx": i } as React.CSSProperties}
+          >
+            <ImageIcon size={15} className="facematch-tile-icon" />
+            <span className="facematch-frame" aria-hidden="true" />
+          </span>
+        ))}
+      </div>
+
+      <span className="facematch-footer">
+        <CheckCircle2 size={13} />
+        Every face found
+      </span>
+    </div>
+  );
+}
+
+const widgets = [PassWidget, ScanWidget, FaceMatchWidget, GalleryWidget];
 
 const AUTO_ADVANCE_MS = 5500;
 
@@ -369,8 +368,10 @@ export default function EventLifecycleSection() {
         <div className="lifecycle-grid">
           <div className="lifecycle-left">
             <div className="lifecycle-header">
-              <h2 className="lifecycle-heading">Integrated Event Lifecycle</h2>
-              <p className="lifecycle-subtext">Watch how our products connect to create a seamless attendee journey.</p>
+              <p className="lifecycle-eyebrow">HOW IT WORKS</p>
+              <h2 className="lifecycle-heading">
+                From ticket to photo. Under 5 minutes, start to finish
+              </h2>
             </div>
 
             <div className="lifecycle-stepper" role="tablist" aria-orientation="vertical">
@@ -383,6 +384,7 @@ export default function EventLifecycleSection() {
                     role="tab"
                     aria-selected={active}
                     className={`lifecycle-step${active ? " lifecycle-step-active" : ""}`}
+                    data-color={step.color}
                     onClick={() => setActiveIndex(i)}
                   >
                     {active && (
@@ -397,12 +399,25 @@ export default function EventLifecycleSection() {
                       <span className="lifecycle-step-number">{step.number}</span>
                       <span className="lifecycle-step-title">{step.title}</span>
                     </span>
+                    <span className="lifecycle-step-sub">{step.product}</span>
                     <span className="lifecycle-step-desc-wrap">
                       <span className="lifecycle-step-desc">{step.description}</span>
                     </span>
                   </button>
                 );
               })}
+            </div>
+
+            {/* Closing lines, verbatim from the spec. The link is the
+                partner's, kept as specified. */}
+            <div className="lifecycle-close">
+              <p className="lifecycle-close-lines">
+                Guests never search. Staff never guess. You never lose control.
+              </p>
+              <Link href="/how-it-works" className="lifecycle-close-link">
+                Watch the full journey
+                <span aria-hidden="true"> &rarr;</span>
+              </Link>
             </div>
           </div>
 
@@ -460,6 +475,126 @@ const lifecycleCSS = `
   /* Brand serif display heading — matches OurStorySection/CtaSection's
      heading declaration (family + weight), the shared look every main
      section heading on the page uses. */
+  .lifecycle-eyebrow {
+    margin-bottom: 0.75rem;
+    font-family: var(--st-font-display);
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    color: var(--st-secondary);
+  }
+
+  .lifecycle-step-sub {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+    color: var(--st-on-surface-variant);
+  }
+
+  /* Per-stage colour, exactly as the spec maps it: blue Pass, teal Flow,
+     coral Face, purple Delivered. */
+  .lifecycle-step[data-color='pass'] .lifecycle-step-number { color: var(--st-product-pass); }
+  .lifecycle-step[data-color='flow'] .lifecycle-step-number { color: var(--st-product-flow); }
+  .lifecycle-step[data-color='face'] .lifecycle-step-number { color: var(--st-product-face); }
+  .lifecycle-step[data-color='sponsor'] .lifecycle-step-number { color: var(--st-sponsor); }
+
+  .lifecycle-step[data-color='pass'] .lifecycle-progress-fill { background: var(--st-product-pass); }
+  .lifecycle-step[data-color='flow'] .lifecycle-progress-fill { background: var(--st-product-flow); }
+  .lifecycle-step[data-color='face'] .lifecycle-progress-fill { background: var(--st-product-face); }
+  .lifecycle-step[data-color='sponsor'] .lifecycle-progress-fill { background: var(--st-sponsor); }
+
+  .lifecycle-close {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin-top: var(--st-space-md);
+    padding-left: 1.75rem;
+  }
+  .lifecycle-close-lines {
+    font-family: var(--st-font-serif);
+    font-weight: 500;
+    font-size: clamp(1.05rem, 1.2vw + 0.7rem, 1.35rem);
+    line-height: 1.4;
+    color: var(--st-on-background);
+    max-width: 34ch;
+  }
+  .lifecycle-close-link {
+    font-family: var(--st-font-display);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--st-secondary);
+  }
+  .lifecycle-close-link:hover { opacity: 0.75; }
+  .lifecycle-close-link:focus-visible {
+    outline: 2px solid var(--st-secondary);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+
+  .widget-facematch {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    padding: 1.1rem;
+  }
+  .facematch-header {
+    font-family: var(--st-font-display);
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: var(--st-on-surface-variant);
+  }
+  .facematch-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+  .facematch-tile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--st-radius);
+    background: var(--st-surface-container);
+    color: var(--st-on-surface-variant);
+    overflow: hidden;
+  }
+  .facematch-frame {
+    position: absolute;
+    inset: 22%;
+    border: 2px solid var(--st-product-face);
+    border-radius: 3px;
+    opacity: 0;
+    transform: scale(1.35);
+    animation: facematch-lock 3.2s ease-out infinite;
+    animation-delay: calc(var(--stagger-idx) * 0.22s);
+  }
+  @keyframes facematch-lock {
+    0%   { opacity: 0; transform: scale(1.35); }
+    18%  { opacity: 1; transform: scale(1); }
+    72%  { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1); }
+  }
+  .facematch-footer {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--st-product-face);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .facematch-frame {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
   .lifecycle-heading {
     margin: 0;
     font-family: var(--st-font-serif);
@@ -1040,129 +1175,10 @@ const lifecycleCSS = `
     94%, 100% { opacity: 0; transform: scale(0.96); }
   }
 
-  /* ── Logistics timeline widget ── */
-  .widget-logistics-timeline {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  .logistics-header {
-    display: flex;
-    align-items: center;
-    gap: 0.7rem;
-  }
-  .logistics-avatar {
-    flex-shrink: 0;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--st-font-ui);
-    font-weight: 700;
-    font-size: 0.75rem;
-    background: color-mix(in srgb, var(--st-secondary) 16%, transparent);
-    color: var(--st-secondary);
-  }
-  .logistics-header-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.1rem;
-  }
-  .logistics-name {
-    font-family: var(--st-font-ui);
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--st-on-background);
-  }
-  .logistics-live {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-family: var(--st-font-ui);
-    font-size: 0.7rem;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-    color: var(--st-on-surface-variant);
-  }
-  .logistics-live-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--status-success, #27c93f);
-    box-shadow: 0 0 0 0 rgba(39, 201, 63, 0.6);
-    animation: ticket-pulse 1.8s ease-out infinite;
-  }
-
-  .logistics-timeline {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-  }
-  .logistics-row {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    padding: 0.55rem 0;
-    font-family: var(--st-font-ui);
-    font-size: 0.85rem;
-    /* Staggered slide/fade-in — a live feed populating top to bottom.
-       Replays each time the list remounts (see the key prop on
-       .logistics-timeline above), not just once on initial page load. */
-    opacity: 0;
-    transform: translateY(8px);
-    animation: logistics-row-in 0.45s ease both;
-    animation-delay: calc(var(--stagger-idx, 0) * 130ms);
-  }
-  .logistics-row + .logistics-row {
-    border-top: 1px solid var(--st-outline-variant);
-  }
-  @keyframes logistics-row-in {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  .logistics-row-label {
-    flex-grow: 1;
-    color: var(--st-on-background);
-  }
-  .logistics-row-time {
-    font-size: 0.78rem;
-    color: var(--st-on-surface-variant);
-  }
-  .logistics-row-missed .logistics-row-time {
-    color: color-mix(in srgb, var(--status-error, #ba1a1a) 70%, var(--st-on-surface-variant) 30%);
-  }
-  .logistics-row-pending .logistics-row-time {
-    color: var(--st-secondary);
-  }
-  .logistics-icon {
-    flex-shrink: 0;
-  }
-  .logistics-icon-success {
-    color: var(--status-success, #27c93f);
-  }
-  .logistics-icon-missed {
-    /* Muted, not alarm-red — a no-show is informational here, not an error
-       state the widget needs to shout about. */
-    color: color-mix(in srgb, var(--status-error, #ba1a1a) 65%, var(--st-on-surface-variant) 35%);
-  }
-  .logistics-icon-pending {
-    color: var(--st-secondary);
-  }
-  .logistics-spin {
-    animation: widget-spin 1.1s linear infinite;
-  }
-
   /* ── Gallery widget: chaos -> AI gate -> organized inbox, one continuous
      6s loop, entirely CSS keyframes (no JS timers, no active-based replay
-     needed — unlike the logistics list this is an ambient loop, so it's
-     already "fresh" no matter when the user looks, same as the ticket flip
-     and scan cycle). ── */
+     needed: this is an ambient loop, so it is already "fresh" no matter
+     when the user looks, same as the ticket flip and scan cycle). ── */
   .widget-gallery {
     display: flex;
     flex-direction: column;
@@ -1292,15 +1308,8 @@ const lifecycleCSS = `
       opacity: 1 !important;
       transform: scale(1) !important;
     }
-    .ticket-pulse-dot,
-    .logistics-live-dot,
-    .logistics-spin {
+    .ticket-pulse-dot {
       animation: none !important;
-    }
-    .logistics-row {
-      animation: none !important;
-      opacity: 1 !important;
-      transform: none !important;
     }
     /* Same "freeze on the resolved state" approach as the scan widget: no
        particles drifting, gate static instead of pulsing, inbox shown

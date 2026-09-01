@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, Camera } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
 
 /* Scroll readers that don't assume WHICH element scrolls. Normally the
@@ -249,10 +249,19 @@ export default function Navbar() {
     }
   }, [pathname]);
 
+  /* The spec asks for a two-column mega menu here. That was rejected as
+     unnecessary for six links, so its Products and Learn columns become two
+     labelled groups inside the dropdown that already exists. */
   const services = [
-    { name: "idexi Face", desc: "AI photo sorting & delivery", href: "/services/face" },
-    { name: "idexi Flow", desc: "Access control & event logistics", href: "/services/flow" },
-    { name: "idexi Pass", desc: "Smart access & check-in", href: "/services/pass" },
+    { name: "idexi Pass", desc: "Smart digital ticketing", href: "/services/pass" },
+    { name: "idexi Flow", desc: "Unified operations hub", href: "/services/flow" },
+    { name: "idexi Face", desc: "Instant photo delivery", href: "/services/face" },
+  ];
+
+  const learn = [
+    { name: "How it works", desc: "The full connected journey", href: "/how-it-works" },
+    { name: "Use cases", desc: "Real events, real results", href: "/use-cases" },
+    { name: "Privacy & security", desc: "How guest data is protected", href: "/privacy-security" },
   ];
 
   return (
@@ -282,7 +291,15 @@ export default function Navbar() {
 
               <div className={`nav-dropdown-menu-bridge ${servicesOpen ? "show" : ""}`}>
                 <div className="nav-dropdown-menu">
+                  <p className="nav-dropdown-group">Products</p>
                   {services.map((s) => (
+                    <Link key={s.href} href={s.href} prefetch={true} className="nav-dropdown-item">
+                      <span className="dropdown-name">{s.name}</span>
+                      <span className="dropdown-desc">{s.desc}</span>
+                    </Link>
+                  ))}
+                  <p className="nav-dropdown-group">Learn</p>
+                  {learn.map((s) => (
                     <Link key={s.href} href={s.href} prefetch={true} className="nav-dropdown-item">
                       <span className="dropdown-name">{s.name}</span>
                       <span className="dropdown-desc">{s.desc}</span>
@@ -292,9 +309,8 @@ export default function Navbar() {
               </div>
             </div>
 
-            <Link href="/#how-it-works" className="nav-link" onClick={(e) => handleNavClick(e, "/#how-it-works")}>How It Works</Link>
-            <Link href="/#use-cases" className="nav-link" onClick={(e) => handleNavClick(e, "/#use-cases")}>Use Cases</Link>
-            <Link href="/#about" className="nav-link" onClick={(e) => handleNavClick(e, "/#about")}>About</Link>
+            <Link href="/pricing" className={`nav-link ${pathname === "/pricing" ? "active" : ""}`}>Pricing</Link>
+            <Link href="/about" className={`nav-link ${pathname === "/about" ? "active" : ""}`}>About</Link>
           </div>
 
           {/* Center pill — logo, floats independent of the side pills' widths.
@@ -342,12 +358,19 @@ export default function Navbar() {
           {/* Right — theme toggle + CTA, no wrapping pill */}
           <div className="nav-right">
             <ThemeToggle />
+            {/* Attendee entry point. Deliberately ghost-styled so it never
+                competes with the primary CTA next to it: organizers convert,
+                attendees just need a door. */}
+            <Link href="/services/face" className="nav-photo-link">
+              <Camera size={15} strokeWidth={1.75} aria-hidden="true" />
+              Where&apos;s My Photo?
+            </Link>
             <Link
               href="/#contact"
               className="st-btn nav-cta"
               onClick={(e) => handleNavClick(e, "/#contact")}
             >
-              Book Consultation
+              Book a Demo
             </Link>
           </div>
 
@@ -368,23 +391,33 @@ export default function Navbar() {
         {/* Mobile drawer */}
         <div className={`nav-mobile-drawer ${isOpen ? "open" : ""}`}>
           <Link href="/" className={`mobile-link ${pathname === "/" ? "active" : ""}`} onClick={() => setIsOpen(false)}>Home</Link>
-          <div className="mobile-section-title">Solutions</div>
+          <div className="mobile-section-title">Products</div>
           {services.map((s) => (
             <Link key={s.href} href={s.href} prefetch={true} className="mobile-service-link" onClick={() => setIsOpen(false)}>
               <span className="dropdown-name">{s.name}</span>
               <span className="dropdown-desc">{s.desc}</span>
             </Link>
           ))}
-          <Link href="/#how-it-works" className="mobile-link" onClick={(e) => handleNavClick(e, "/#how-it-works")}>How It Works</Link>
-          <Link href="/#use-cases" className="mobile-link" onClick={(e) => handleNavClick(e, "/#use-cases")}>Use Cases</Link>
-          <Link href="/#about" className="mobile-link" onClick={(e) => handleNavClick(e, "/#about")}>About</Link>
+          <div className="mobile-section-title">Learn</div>
+          {learn.map((s) => (
+            <Link key={s.href} href={s.href} prefetch={true} className="mobile-service-link" onClick={() => setIsOpen(false)}>
+              <span className="dropdown-name">{s.name}</span>
+              <span className="dropdown-desc">{s.desc}</span>
+            </Link>
+          ))}
+          <Link href="/pricing" className="mobile-link" onClick={() => setIsOpen(false)}>Pricing</Link>
+          <Link href="/about" className="mobile-link" onClick={() => setIsOpen(false)}>About</Link>
+          <Link href="/services/face" className="mobile-link mobile-photo-link" onClick={() => setIsOpen(false)}>
+            <Camera size={15} strokeWidth={1.75} aria-hidden="true" />
+            Where&apos;s My Photo?
+          </Link>
           <Link
             href="/#contact"
             className="st-btn nav-cta"
             style={{ justifyContent: "center", marginTop: "1rem" }}
             onClick={(e) => handleNavClick(e, "/#contact")}
           >
-            Book Consultation
+            Book a Demo
           </Link>
         </div>
       </nav>
@@ -531,6 +564,43 @@ const navCSS = `
     align-items: center;
     gap: 0.6rem;
   }
+  .nav-photo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 1.1rem;
+    min-height: 42px;
+    font-family: var(--st-font-ui);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--st-on-surface-variant);
+    background: transparent;
+    border: 1px solid var(--st-outline-variant);
+    border-radius: var(--st-radius-full);
+    white-space: nowrap;
+    transition: var(--transition-smooth);
+  }
+  .nav-photo-link:hover {
+    color: var(--st-secondary);
+    border-color: var(--st-secondary);
+  }
+  .nav-photo-link:focus-visible {
+    outline: 2px solid var(--st-secondary);
+    outline-offset: 3px;
+  }
+  /* Below this width the right side would crowd the logo pill; the drawer
+     carries the same link, so it is dropped rather than shrunk. */
+  @media (max-width: 1150px) {
+    .nav-photo-link { display: none; }
+  }
+
+  .mobile-photo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--st-secondary);
+  }
+
   .nav-cta {
     display: inline-flex;
     align-items: center;
@@ -606,6 +676,19 @@ const navCSS = `
     padding: 0.6rem;
     box-shadow: 0 16px 48px rgba(11, 28, 48, 0.16);
   }
+  .nav-dropdown-group {
+    padding: 0.5rem 0.9rem 0.25rem;
+    font-family: var(--st-font-display);
+    font-weight: 600;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--st-on-surface-variant);
+  }
+  .nav-dropdown-group:first-child {
+    padding-top: 0.25rem;
+  }
+
   .nav-dropdown-item {
     display: flex;
     flex-direction: column;

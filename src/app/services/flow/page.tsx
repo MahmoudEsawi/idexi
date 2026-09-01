@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import ServiceComparison from "@/components/ServiceComparison";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowLeft,
@@ -24,7 +25,7 @@ const steps = [
   },
   {
     title: "Live Cloud Sync",
-    desc: "Check-in counts, room capacities, and item pickups update across the entire team in real-time.",
+    desc: "Check-in counts, room capacities, and item pickups update across the entire team in real time.",
   },
 ];
 
@@ -113,7 +114,7 @@ export default function FlowService() {
               and tracks hospitality items in under 0.3 seconds.
             </p>
             <div className="service-cta-row">
-              <Link href="/#contact" className="st-btn st-btn-primary">Book Consultation <ArrowRight size={16} /></Link>
+              <Link href="/#contact" className="st-btn st-btn-primary">Book a Demo <ArrowRight size={16} /></Link>
             </div>
           </div>
 
@@ -129,7 +130,7 @@ export default function FlowService() {
 
         {/* How it works */}
         <div className="service-section">
-          <h2 className="service-subsection-title">One Scan, Three Jobs</h2>
+          <h2 className="service-subsection-title">One scan, three jobs</h2>
           <div className="service-process">
             {steps.map((step, idx) => (
               <motion.div
@@ -159,14 +160,14 @@ export default function FlowService() {
             </div>
             <div className="service-bento-card">
               <ScanLine size={22} style={{ color: "var(--st-secondary)", marginBottom: "0.75rem" }} />
-              <h3 className="service-bento-card-title">One Universal Code</h3>
+              <h3 className="service-bento-card-title">One universal code</h3>
               <p className="service-bento-card-desc">
                 Gate access, workshop routing, and hospitality pickups all from the same badge.
               </p>
             </div>
             <div className="service-bento-card">
               <Smartphone size={22} style={{ color: "var(--st-secondary)", marginBottom: "0.75rem" }} />
-              <h3 className="service-bento-card-title">Real-Time Sync</h3>
+              <h3 className="service-bento-card-title">Real-time sync</h3>
               <p className="service-bento-card-desc">
                 Live dashboard syncs across all organizers with full offline support.
               </p>
@@ -175,8 +176,10 @@ export default function FlowService() {
         </div>
 
         {/* Clean, Visual Who Is It For */}
+        <ServiceComparison product="flow" />
+
         <div className="service-section">
-          <h2 className="service-subsection-title">Who Is It For?</h2>
+          <h2 className="service-subsection-title">Who is it for?</h2>
           <div className="flow-audience-grid">
             {flowAudiences.map((aud) => (
               <div key={aud.id} className="flow-audience-card">
