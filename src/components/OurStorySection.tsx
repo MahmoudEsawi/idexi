@@ -122,7 +122,7 @@ export default function OurStorySection() {
                         alt={`${member.name}, ${member.role}`}
                         fill
                         sizes="280px"
-                        priority
+                        quality={70}
                         className="team-photo"
                       />
                     </motion.div>

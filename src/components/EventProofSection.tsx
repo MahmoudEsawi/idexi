@@ -352,8 +352,8 @@ export default function EventProofSection() {
         </div>
 
         <p className="ep-note">
-          These are our own operational records, not survey results. We have run three
-          events so far, and every one of them is on this chart.
+          These are our own operational records, not survey results. Every event we
+          have run is on this chart, with nothing left off it.
         </p>
 
         <div className="ep-proof-bar">

@@ -24,7 +24,7 @@ import { motion, useReducedMotion } from "framer-motion";
    Photography is the project's own event library, not stock. Swap the `image`
    paths as real photography per category arrives; nothing else needs to move.
 
-   Copy note: category names and hook lines follow idexi-MASTER-SPEC.md
+   Copy note: category names and hook lines follow docs/specs/idexi-MASTER-SPEC.md
    section 8. The spec's two em dashes are replaced per rule 14 of
    humanizer.md, which bans them: the Graduations hook takes a comma and the
    Weddings hook splits into two sentences. No other wording changes. */
@@ -33,7 +33,6 @@ type Scene = {
   id: string;
   category: string;
   hook: string;
-  pain: string;
   image: string;
   /** Alt text describes the photograph, not the category. */
   alt: string;
@@ -45,84 +44,78 @@ const SCENES: Scene[] = [
   {
     id: "graduations",
     category: "Graduations",
-    hook: "Finally, graduates get their photos the moment they walk off stage.",
-    pain: "The photographer shoots hundreds of families, and everyone waits weeks for a shared folder they then have to search.",
-    image: "/venue-graduations.webp",
-    alt: "Graduates in caps and gowns celebrating at a commencement ceremony",
+    hook: "Whether it's a school, an institute, or a university, graduation day means hundreds of names to organize and the photos every graduate actually wants.",
+    image: "/use-cases/graduations.webp",
+    alt: "Graduates throwing their caps in the air at an outdoor ceremony at sunset",
     roles: [
-      { product: "idexi Pass", color: "pass", role: "One ticket per graduate, plus seats for the family who came with them." },
-      { product: "idexi Flow", color: "flow", role: "A single ceremony door, scanned as fast as the line moves." },
-      { product: "idexi Face", color: "face", role: "Each graduate matched across the day and sent their own gallery." },
+      { product: "idexi Pass", color: "pass", role: "Sorts every graduate into their category the moment they register." },
+      { product: "idexi Flow", color: "flow", role: "Checks each graduate in as they arrive, so staff always know who's present." },
+      { product: "idexi Face", color: "face", role: "Delivers the graduate's own photo the moment the ceremony ends, without mixing them up with anyone else in the crowd." },
     ],
     tags: ["VIP & guest tiers", "Kit & meal pickup", "Private photo gallery"],
   },
   {
     id: "competitions",
     category: "Competitions",
-    hook: "No printed lists. No spreadsheets. Just hundreds of participants, checked in and sorted automatically.",
-    pain: "Participant lists live in a spreadsheet, get printed the night before, and go stale the moment someone registers late.",
-    image: "/pass-arena-expo.jpg",
-    alt: "A packed arena floor during a large competition",
+    hook: "Dozens of teams, hundreds of participants from different schools or universities, and a schedule that can't afford to run late.",
+    image: "/use-cases/competitions.webp",
+    alt: "A student robotics team gathered around their machine at a competition table",
     roles: [
-      { product: "idexi Pass", color: "pass", role: "Separate tiers for competitors, judges, mentors and press." },
-      { product: "idexi Flow", color: "flow", role: "Round-by-round access, with kits and meals logged against the same code." },
-      { product: "idexi Face", color: "face", role: "Every competitor found across the day's photography." },
+      { product: "idexi Pass", color: "pass", role: "Registers every team and participant with their category, sent out automatically ahead of time." },
+      { product: "idexi Flow", color: "flow", role: "Checks participants in fast, and confirms who's cleared for which round or session." },
+      { product: "idexi Face", color: "face", role: "Sends every participant their own photos from the day, without digging through team group shots." },
     ],
     tags: ["VIP & guest tiers", "Press credentials", "Session access", "Kit & meal pickup", "Sponsor branding", "Private photo gallery", "Multi-day"],
   },
   {
     id: "conferences",
     category: "Conferences & Talks",
-    hook: "One QR code. Every session. Guests always end up exactly where they belong.",
-    pain: "Session access gets checked by whoever is standing at the door, which means it mostly does not get checked.",
-    image: "/flow-conference-hall.jpg",
-    alt: "A full conference hall facing a lit stage",
+    hook: "Multiple sessions, speakers running on a schedule, and an audience that needs to be in the right room at the right time.",
+    image: "/use-cases/conferences.webp",
+    alt: "A seated auditorium audience facing a speaker at a lit podium",
     roles: [
-      { product: "idexi Pass", color: "pass", role: "One code that already knows which track each guest belongs to." },
-      { product: "idexi Flow", color: "flow", role: "Room-level access, so the record shows who actually attended what." },
-      { product: "idexi Face", color: "face", role: "Speakers and attendees matched and sent their photos the same day." },
+      { product: "idexi Pass", color: "pass", role: "Sends every attendee a ticket that matches their access level: general, speaker, or press." },
+      { product: "idexi Flow", color: "flow", role: "Confirms which session each guest is registered for, and directs them straight to their seat." },
+      { product: "idexi Face", color: "face", role: "Captures every keynote and networking moment, delivered straight to each attendee afterward." },
     ],
     tags: ["VIP & guest tiers", "Press credentials", "Session access", "Kit & meal pickup", "Sponsor branding", "Private photo gallery", "Multi-day"],
   },
   {
     id: "summits",
     category: "Corporate Summits",
-    hook: "Your VIPs recognized the second they walk in. Your sponsors seen everywhere else.",
-    pain: "Nobody at the door knows which arrival is the keynote speaker's guest, and sponsor logos end up on a banner nobody photographs.",
-    image: "/face-corporate-summit.jpg",
-    alt: "Executives networking at a corporate summit",
+    hook: "Executives, partners, and sponsors all in the same room, and every one of them expects to be treated like it matters.",
+    image: "/use-cases/summits.webp",
+    alt: "Delegates in business attire talking over drinks at an evening summit reception",
     roles: [
-      { product: "idexi Pass", color: "pass", role: "Executive, delegate and press tiers, branded for the host company." },
-      { product: "idexi Flow", color: "flow", role: "Guest status on the scanning phone the instant the code is read." },
-      { product: "idexi Face", color: "face", role: "Sponsor branding carried on every delivered gallery." },
+      { product: "idexi Pass", color: "pass", role: "Issues branded tickets by category, so VIPs and general attendees are never mixed up." },
+      { product: "idexi Flow", color: "flow", role: "Flags VIP guests the moment they arrive, and tracks every badge and welcome kit." },
+      { product: "idexi Face", color: "face", role: "Delivers professional event photos to every attendee, the kind they're proud to share on LinkedIn." },
     ],
     tags: ["VIP & guest tiers", "Press credentials", "Session access", "Kit & meal pickup", "Sponsor branding", "Private photo gallery"],
   },
   {
     id: "tradeshows",
     category: "Trade Shows & Exhibitions",
-    hook: "No scanners to buy. No lines to manage. Just thousands of badges, scanned in seconds.",
-    pain: "Hardware is rented, configured, and then half of it fails on the busiest morning of the year.",
-    image: "/flow-trade-expo.jpg",
-    alt: "Visitors moving between exhibitor stands on a trade show floor",
+    hook: "Thousands of visitors moving through the floor all day, and every exhibitor booth needs to know exactly who walked by.",
+    image: "/use-cases/tradeshows.webp",
+    alt: "A packed exhibition hall of stands and lanyarded visitors",
     roles: [
-      { product: "idexi Pass", color: "pass", role: "Badges issued ahead of time for exhibitors, buyers and press." },
-      { product: "idexi Flow", color: "flow", role: "Any number of staff phones scanning in parallel, across every entrance." },
-      { product: "idexi Face", color: "face", role: "Stand and floor photography matched back to the people in it." },
+      { product: "idexi Pass", color: "pass", role: "Issues digital badges to thousands of visitors and exhibitors, without a single printed list." },
+      { product: "idexi Flow", color: "flow", role: "Scans badges at any booth or entrance, instantly, with zero dedicated hardware." },
+      { product: "idexi Face", color: "face", role: "Sends visitors their photos from the floor, a simple touch that keeps your event memorable." },
     ],
     tags: ["VIP & guest tiers", "Press credentials", "Sponsor branding", "Private photo gallery", "Multi-day"],
   },
   {
     id: "weddings",
     category: "Weddings & Private Celebrations",
-    hook: "No asking the photographer. No waiting to get home. Just open your phone. Your photos are already there.",
-    pain: "Guests spend the following month asking the couple for photos, and the couple spends it forwarding a link.",
-    image: "/face-gala-wedding.jpg",
-    alt: "Guests in formal dress at an evening celebration",
+    hook: "A guest list that matters personally, and photos everyone wants the same night, not weeks later.",
+    image: "/use-cases/weddings.webp",
+    alt: "Guests dancing under festoon lights at a wedding reception",
     roles: [
-      { product: "idexi Pass", color: "pass", role: "Quiet invitations, with no badge or lanyard anywhere in sight." },
-      { product: "idexi Flow", color: "flow", role: "Left switched off. Nobody scans anyone at a wedding." },
-      { product: "idexi Face", color: "face", role: "Every guest matched and sent their own private gallery." },
+      { product: "idexi Pass", color: "pass", role: "Sends elegant, personalized invitations with a unique code for every guest." },
+      { product: "idexi Flow", color: "flow", role: "Confirms each guest at the door quietly and smoothly, with no clipboard and no awkward waiting." },
+      { product: "idexi Face", color: "face", role: "Gets every guest their own photos before the night even ends, with no waiting on the photographer." },
     ],
     tags: ["Private photo gallery"],
   },
@@ -130,8 +123,29 @@ const SCENES: Scene[] = [
 
 export default function UseCaseReel() {
   const [activeIndex, setActiveIndex] = React.useState(0);
+  const [reelInView, setReelInView] = React.useState(false);
+  const panelsRef = React.useRef<HTMLDivElement>(null);
   const panelRefs = React.useRef<(HTMLElement | null)[]>([]);
   const reduced = useReducedMotion();
+
+  /* The spine is fixed so it holds position while the panels scroll, which
+     also meant it kept floating over the footer once the reel was behind
+     the viewport. It now tracks the panels container rather than the reel
+     root, because the root also contains the outro, which is still on
+     screen when the page bottom is reached. */
+  React.useEffect(() => {
+    const node = panelsRef.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setReelInView(entry.isIntersecting),
+      // A middle band, not the full viewport: at the page bottom the panels
+      // container still had a sliver on screen behind the outro, which kept
+      // the spine alive over the footer.
+      { rootMargin: '-30% 0px -30% 0px', threshold: 0 }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   React.useEffect(() => {
     const nodes = panelRefs.current.filter(Boolean) as HTMLElement[];
@@ -164,11 +178,18 @@ export default function UseCaseReel() {
             key={scene.id}
             className={i === activeIndex ? "reel-shot reel-shot-on" : "reel-shot"}
           >
+            {/* 100vw is the wrong number here. The stage is full-bleed at
+                100svh and the photographs are 16:9, so cover-cropping into a
+                portrait phone viewport is height-constrained: a 390px-wide
+                derivative gets stretched about four times vertically. These
+                widths are picked from the height the crop actually has to
+                fill, capped so a phone still never pulls a 4K frame. Only the
+                first is eager: it is the one painted when the reel pins. */}
             <Image
               src={scene.image}
               alt=""
               fill
-              sizes="100vw"
+              sizes="(max-width: 767px) 1080px, 1920px"
               quality={70}
               priority={i === 0}
               className="reel-img"
@@ -180,7 +201,7 @@ export default function UseCaseReel() {
 
       {/* Chapter spine. The spec fixes this order on purpose, so where you are
           in the sequence is information, not ornament. */}
-      <div className="reel-spine" aria-hidden="true">
+      <div className={reelInView ? "reel-spine reel-spine-on" : "reel-spine"} aria-hidden="true">
         {SCENES.map((scene, i) => (
           <span
             key={scene.id}
@@ -191,7 +212,7 @@ export default function UseCaseReel() {
         ))}
       </div>
 
-      <div className="reel-panels">
+      <div className="reel-panels" ref={panelsRef}>
         {SCENES.map((scene, i) => (
           <section
             key={scene.id}
@@ -208,7 +229,7 @@ export default function UseCaseReel() {
                 src={scene.image}
                 alt={scene.alt}
                 fill
-                sizes="100vw"
+                sizes="(max-width: 767px) 1080px, 1920px"
                 quality={70}
                 className="reel-img"
               />
@@ -228,8 +249,6 @@ export default function UseCaseReel() {
               </p>
 
               <h2 className="reel-hook">{scene.hook}</h2>
-
-              <p className="reel-pain">{scene.pain}</p>
 
               <div className="reel-spec">
                 <ul className="reel-roles">
@@ -255,8 +274,10 @@ export default function UseCaseReel() {
       </div>
 
       <div className="reel-outro">
+        <h2 className="reel-outro-heading">Don&apos;t see your event type listed?</h2>
         <p className="reel-outro-text">
-          Running something that is not on this list? It probably still fits.
+          idexi adapts to almost any live event. Tell us about yours, and we&apos;ll show
+          you exactly how it fits.
         </p>
         <Link href="/#contact" className="st-btn st-btn-primary">
           Book a Demo
@@ -363,20 +384,12 @@ const reelCSS = `
   .reel-hook {
     font-family: var(--st-font-serif);
     font-weight: 500;
-    font-size: clamp(2rem, 4.6vw + 0.5rem, 4rem);
-    line-height: 1.08;
+    font-size: clamp(1.5rem, 1.9vw + 0.8rem, 2.4rem);
+    line-height: 1.25;
     letter-spacing: -0.015em;
     color: #ffffff;
     text-wrap: balance;
     text-shadow: 0 2px 30px rgba(0, 0, 0, 0.4);
-  }
-
-  .reel-pain {
-    margin-top: 1.1rem;
-    max-width: 52ch;
-    font-size: clamp(0.98rem, 0.4vw + 0.9rem, 1.1rem);
-    line-height: 1.65;
-    color: rgba(255, 255, 255, 0.74);
   }
 
   .reel-spec {
@@ -436,6 +449,13 @@ const reelCSS = `
     flex-direction: column;
     gap: 0.55rem;
     pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s;
+  }
+  .reel-spine-on {
+    opacity: 1;
+    visibility: visible;
   }
   .reel-spine-dot {
     display: flex;
@@ -456,6 +476,17 @@ const reelCSS = `
     color: #ffffff;
   }
 
+  .reel-outro-heading {
+    margin: 0;
+    font-family: var(--st-font-serif);
+    font-weight: 500;
+    font-size: clamp(1.7rem, 2.6vw + 0.9rem, 2.4rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: rgba(255, 255, 255, 0.96);
+    text-wrap: balance;
+  }
+
   .reel-outro {
     position: relative;
     z-index: 1;
@@ -472,7 +503,7 @@ const reelCSS = `
     font-size: clamp(1.25rem, 2vw + 0.7rem, 1.9rem);
     line-height: 1.35;
     color: rgba(255, 255, 255, 0.9);
-    max-width: 26ch;
+    max-width: 38ch;
   }
 
   /* Short laptop viewports. The longest hook runs to four lines, and at
@@ -485,13 +516,8 @@ const reelCSS = `
       padding-bottom: clamp(2rem, 5vh, 3rem);
     }
     .reel-hook {
-      font-size: clamp(1.7rem, 3vw + 0.4rem, 2.7rem);
-      line-height: 1.1;
-    }
-    .reel-pain {
-      margin-top: 0.75rem;
-      font-size: 0.95rem;
-      line-height: 1.55;
+      font-size: clamp(1.35rem, 1.5vw + 0.7rem, 1.95rem);
+      line-height: 1.25;
     }
     .reel-spec {
       margin-top: 1.05rem;

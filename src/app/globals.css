@@ -116,8 +116,6 @@
   --st-sponsor: #6b3fd4;
   --st-sponsor-container: #ebddff;
   --st-on-sponsor-container: #2b0a63;
-  /* Full-bleed tint for the Sponsors band only. */
-  --st-sponsor-surface: #f2ecff;
 
   --st-inverse-surface: #213145;
   --st-inverse-on-surface: #eaf1ff;
@@ -128,7 +126,16 @@
   --st-surface: #0b1c30;
   --st-surface-dim: #070d18;
   --st-surface-bright: #213145;
-  --st-surface-container-lowest: #05070d;
+  /* Elevated, not recessed. In light this role is #ffffff, so every card on
+     the site reaches for it and gets a crisp white surface on a tinted
+     ground. In dark it was #05070d, three times darker than --st-background
+     (#0d1b3e), so the same cards punched black holes in the page. It now sits
+     one step ABOVE the background in the same navy, which is what a card
+     nearer the light source looks like. Five components had already patched
+     around this individually; those overrides are gone now that the token is
+     right. Shades, shadows and the camera viewfinder use --st-surface-dim,
+     which is the role that is genuinely meant to be near-black. */
+  --st-surface-container-lowest: #16274a;
   --st-surface-container-low: #101f38;
   --st-surface-container: #16273f;
   --st-surface-container-high: #1c2f4a;
@@ -182,7 +189,6 @@
   --st-sponsor: #cfbcff;
   --st-sponsor-container: #422b7a;
   --st-on-sponsor-container: #ebddff;
-  --st-sponsor-surface: #1a1442;
 
   --st-inverse-surface: #f8f9ff;
   --st-inverse-on-surface: #0b1c30;
@@ -467,7 +473,7 @@ button, .btn {
   font-weight: 600;
   font-size: 1rem;
   padding: 0.85rem 2rem;
-  border-radius: 9999px;
+  border-radius: var(--st-radius-full);
   border: none;
   cursor: pointer;
   transition: var(--transition-smooth);
@@ -583,7 +589,7 @@ button, .btn {
 
 /* ======= SECTION ======= */
 section {
-  padding: 7rem 1.5rem;
+  padding: var(--st-space-xl) 1.5rem;
   position: relative;
   overflow: hidden;
 }
@@ -675,8 +681,11 @@ section {
 
 /* ======= RESPONSIVE ======= */
 @media (max-width: 768px) {
+  /* Sections that override this with a class already step down to
+     --st-space-lg on a phone; matching that here means every section lands on
+     one mobile value instead of the 48/64/80 spread this rule was causing. */
   section {
-    padding: 4rem 1rem;
+    padding: var(--st-space-lg) 1rem;
   }
 }
 
@@ -690,7 +699,7 @@ section {
     0 10px 40px rgba(0, 0, 0, 0.3),
     inset 0 -1px 0 rgba(255, 255, 255, 0.05),
     inset 0 1px 0 rgba(49, 196, 243, 0.1) !important;
-  border-radius: 0 0 24px 24px;
+  border-radius: 0 0 var(--st-radius-xl) var(--st-radius-xl);
 }
 
 .btn-glass {
@@ -702,7 +711,7 @@ section {
   box-shadow: 
     0 8px 32px 0 rgba(0, 0, 0, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
-  border-radius: 9999px;
+  border-radius: var(--st-radius-full);
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -794,7 +803,7 @@ section {
   grid-template-columns: 1.15fr 0.85fr;
   gap: 4rem;
   align-items: center;
-  margin-bottom: 6rem;
+  margin-bottom: var(--st-space-xl);
 }
 .service-info-col {
   display: flex;
@@ -903,7 +912,7 @@ section {
   color: var(--status-success);
 }
 .service-section {
-  margin-bottom: 6rem;
+  margin-bottom: var(--st-space-xl);
 }
 .service-subsection-title {
   font-family: var(--st-font-serif);
@@ -981,7 +990,7 @@ section {
   border-top: 1px solid var(--st-outline-variant);
   border-bottom: 1px solid var(--st-outline-variant);
   padding: 5rem 1.5rem;
-  margin-bottom: 6rem;
+  margin-bottom: var(--st-space-xl);
 }
 .service-bento {
   max-width: 1200px;
@@ -1079,7 +1088,7 @@ section {
   align-items: center;
   background: color-mix(in srgb, var(--st-secondary) 8%, transparent);
   border: 1px solid color-mix(in srgb, var(--st-secondary) 25%, transparent);
-  border-radius: 9999px;
+  border-radius: var(--st-radius-full);
   padding: 0.55rem 1.25rem;
   color: var(--st-on-surface-variant);
   font-size: 0.9rem;
@@ -1125,7 +1134,7 @@ section {
   padding: 1rem 0;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 8px;
+  border-radius: var(--st-radius);
 }
 .pass-barcode-lines {
   width: 80%;

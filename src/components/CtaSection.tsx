@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { submitLead, type LeadFormState } from "@/app/actions/submit-lead";
 import { EVENT_TYPES, SOLUTIONS } from "@/app/actions/lead-options";
@@ -13,7 +14,32 @@ import { EVENT_TYPES, SOLUTIONS } from "@/app/actions/lead-options";
 
 const INITIAL_FORM_STATE: LeadFormState = { status: "idle" };
 
-export default function CtaSection() {
+/* The home page's recap. Product pages pass bullets={null} instead: the
+   spec's product template is heading, subhead and form only, and three of
+   these five lines are about products that page is not selling. */
+const HOME_BULLETS = [
+  "All your tickets delivered in under 5 minutes",
+  "No scanning hardware to buy or maintain",
+  "Every guest gets their photos, automatically",
+  "Sponsor branding on every ticket, email, and photo",
+  "Plans starting at $199 per event",
+];
+
+type CtaSectionProps = {
+  heading?: string;
+  subtext?: string;
+  /** null renders no recap list. Omit for the home page's five lines. */
+  bullets?: string[] | null;
+  /** Pre-selects "What interests you most?" on a product page. */
+  defaultSolution?: (typeof SOLUTIONS)[number];
+};
+
+export default function CtaSection({
+  heading = "Your next event doesn't have to be chaos",
+  subtext = "Tell us about your event. We'll show you exactly how idexi fits, with no commitment and no pressure.",
+  bullets = HOME_BULLETS,
+  defaultSolution,
+}: CtaSectionProps) {
   // The form posts straight to the submitLead Server Action. Success is
   // reported only when the notification email actually went out: an earlier
   // version flipped to "thanks, we'll be in touch" unconditionally, which
@@ -29,22 +55,25 @@ export default function CtaSection() {
       <div className="cta-row">
         {/* Left Side: Text Content */}
         <div className="cta-text">
-          <h2 className="cta-heading">Your next event doesn&apos;t have to be chaos</h2>
-          <p className="cta-subtext">
-            Tell us about your event. We&apos;ll show you exactly how idexi fits, with no
-            commitment and no pressure.
-          </p>
+          <h2 className="cta-heading">{heading}</h2>
+          <p className="cta-subtext">{subtext}</p>
           {/* The "Why organizers choose idexi" checklist used to be its own
               section immediately above this one. Merged in here because the
               two were one closing beat already: the recap and the ask belong
               in the same field of view, not stacked as separate scrolls. */}
-          <ul className="cta-bullets">
-            <li>All your tickets delivered in under 5 minutes</li>
-            <li>No scanning hardware to buy or maintain</li>
-            <li>Every guest gets their photos, automatically</li>
-            <li>Sponsor branding on every ticket, email, and photo</li>
-            <li>Plans starting at $199 per event</li>
-          </ul>
+          {bullets && bullets.length > 0 && (
+            <ul className="cta-bullets">
+              {bullets.map((line) => (
+                <li key={line}>{line}</li>
+              ))}
+            </ul>
+          )}
+
+          <p className="cta-nudge">
+            <Link href="/faqs" className="cta-nudge-link">
+              Still have a question? Ask here <span aria-hidden="true">&rarr;</span>
+            </Link>
+          </p>
         </div>
 
         {/* Right Side: Form */}
@@ -166,10 +195,10 @@ export default function CtaSection() {
                     re-applies a select's defaultValue and would otherwise
                     reset it to the empty placeholder. */}
                 <select
-                  key={values.solution ?? "empty"}
+                  key={values.solution ?? defaultSolution ?? "empty"}
                   id="cta-solution"
                   name="solution"
-                  defaultValue={values.solution ?? ""}
+                  defaultValue={values.solution ?? defaultSolution ?? ""}
                   required
                   aria-invalid={Boolean(fieldErrors.solution)}
                   aria-describedby={fieldErrors.solution ? "cta-solution-error" : undefined}
@@ -266,6 +295,30 @@ const ctaCSS = `
     border-radius: 50%;
     background: var(--st-secondary);
   }
+  /* Sits tight to the checklist above it: the spec treats the two as one
+     closing reassurance beat, not as separate blocks. */
+  .cta-nudge {
+    margin: 1.35rem 0 0;
+    font-size: 1.0625rem;
+    line-height: 1.55;
+  }
+  .cta-nudge-link {
+    color: var(--st-secondary);
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--st-secondary) 35%, transparent);
+    padding-bottom: 1px;
+    transition: border-color 0.25s ease, color 0.25s ease;
+  }
+  .cta-nudge-link:hover {
+    color: var(--st-on-background);
+    border-bottom-color: var(--st-on-background);
+  }
+  .cta-nudge-link:focus-visible {
+    outline: 2px solid var(--st-secondary);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
   .cta-bullets strong {
     font-weight: 600;
     color: var(--st-on-background);

@@ -271,7 +271,6 @@ export default function Navbar() {
         <div className="nav-shell">
           {/* Left pill — nav links */}
           <div className="nav-pill nav-pill-links">
-            <Link href="/" className={`nav-link ${pathname === "/" ? "active" : ""}`}>Home</Link>
 
             <div
               ref={dropdownRef}
@@ -286,25 +285,29 @@ export default function Navbar() {
                 aria-expanded={servicesOpen}
                 aria-haspopup="true"
               >
-                Services <ChevronDown size={14} className={`chevron ${servicesOpen ? "open" : ""}`} />
+                Platform <ChevronDown size={14} className={`chevron ${servicesOpen ? "open" : ""}`} />
               </button>
 
               <div className={`nav-dropdown-menu-bridge ${servicesOpen ? "show" : ""}`}>
                 <div className="nav-dropdown-menu">
-                  <p className="nav-dropdown-group">Products</p>
-                  {services.map((s) => (
-                    <Link key={s.href} href={s.href} prefetch={true} className="nav-dropdown-item">
-                      <span className="dropdown-name">{s.name}</span>
-                      <span className="dropdown-desc">{s.desc}</span>
-                    </Link>
-                  ))}
-                  <p className="nav-dropdown-group">Learn</p>
-                  {learn.map((s) => (
-                    <Link key={s.href} href={s.href} prefetch={true} className="nav-dropdown-item">
-                      <span className="dropdown-name">{s.name}</span>
-                      <span className="dropdown-desc">{s.desc}</span>
-                    </Link>
-                  ))}
+                  <div className="nav-dropdown-col">
+                    <p className="nav-dropdown-group">Products</p>
+                    {services.map((s) => (
+                      <Link key={s.href} href={s.href} prefetch={true} className="nav-dropdown-item">
+                        <span className="dropdown-name">{s.name}</span>
+                        <span className="dropdown-desc">{s.desc}</span>
+                      </Link>
+                    ))}
+                  </div>
+                  <div className="nav-dropdown-col">
+                    <p className="nav-dropdown-group">Learn</p>
+                    {learn.map((s) => (
+                      <Link key={s.href} href={s.href} prefetch={true} className="nav-dropdown-item">
+                        <span className="dropdown-name">{s.name}</span>
+                        <span className="dropdown-desc">{s.desc}</span>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -390,7 +393,6 @@ export default function Navbar() {
 
         {/* Mobile drawer */}
         <div className={`nav-mobile-drawer ${isOpen ? "open" : ""}`}>
-          <Link href="/" className={`mobile-link ${pathname === "/" ? "active" : ""}`} onClick={() => setIsOpen(false)}>Home</Link>
           <div className="mobile-section-title">Products</div>
           {services.map((s) => (
             <Link key={s.href} href={s.href} prefetch={true} className="mobile-service-link" onClick={() => setIsOpen(false)}>
@@ -653,11 +655,16 @@ const navCSS = `
      outside both boxes and killed the hover the instant the cursor crossed
      it. Here the same 14px lives inside this element as padding-top, so
      it's still part of one continuous hoverable box the whole way down. */
+  /* Anchored to the trigger's left edge, not centred on it. The nav pill sits
+     on the left of the viewport, so centring a 580px panel on a trigger at
+     x~130 hung its left edge off-screen. Growing rightward is the only
+     direction with room. The width clamps so a narrow desktop cannot push it
+     past the right edge either. */
   .nav-dropdown-menu-bridge {
     position: absolute;
     top: 100%;
-    left: -60px;
-    width: 280px;
+    left: 0;
+    width: min(580px, calc(100vw - 2rem));
     padding-top: 14px;
     opacity: 0;
     transform: translateY(-8px);
@@ -670,11 +677,31 @@ const navCSS = `
     pointer-events: all;
   }
   .nav-dropdown-menu {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     background: var(--st-surface-container-lowest);
     border: 1px solid var(--st-outline-variant);
     border-radius: var(--st-radius-lg);
-    padding: 0.6rem;
+    padding: 0.7rem;
     box-shadow: 0 16px 48px rgba(11, 28, 48, 0.16);
+  }
+  /* A hairline between the two columns rather than a gap alone: it is what
+     makes the panel read as two labelled groups instead of six links that
+     happened to wrap. */
+  .nav-dropdown-col + .nav-dropdown-col {
+    padding-left: 0.7rem;
+    border-left: 1px solid var(--st-outline-variant);
+  }
+  .nav-dropdown-col:first-child {
+    padding-right: 0.7rem;
+  }
+  @media (max-width: 640px) {
+    .nav-dropdown-menu { grid-template-columns: 1fr; }
+    .nav-dropdown-col + .nav-dropdown-col {
+      padding-left: 0;
+      border-left: none;
+    }
+    .nav-dropdown-col:first-child { padding-right: 0; }
   }
   .nav-dropdown-group {
     padding: 0.5rem 0.9rem 0.25rem;
@@ -685,7 +712,9 @@ const navCSS = `
     text-transform: uppercase;
     color: var(--st-on-surface-variant);
   }
-  .nav-dropdown-group:first-child {
+  /* Each column now opens with its own label, so the rule targets the first
+     child of a column rather than of the panel. */
+  .nav-dropdown-col > .nav-dropdown-group:first-child {
     padding-top: 0.25rem;
   }
 

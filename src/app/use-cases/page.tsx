@@ -29,50 +29,74 @@ export default function UseCasesPage() {
     <div className="ucp">
       <style>{pageCSS}</style>
 
-      <header className="ucp-masthead">
-        <Link href="/" className="ucp-back">
-          &larr; Back to idexi
-        </Link>
-        <p className="ucp-eyebrow">Use Cases</p>
-        <h1 className="ucp-title">Built for every kind of event</h1>
-        <p className="ucp-intro">
-          Find your event below and see exactly how idexi fits it. The pieces are the same
-          each time; what changes is which door matters most.
-        </p>
-      </header>
+      {/* The light page and the dark reel meet twice. Neither meeting is a
+          blend: a gradient between them is a seam by definition, a band of
+          interpolated grey with nothing in it, and it reads as a rendering
+          artifact rather than a decision.
 
-      {/* The masthead sits on the light page background and the reel is
-          near-black. Cutting straight between them read as two pages stapled
-          together, so each edge gets a band that carries one into the other. */}
-      <div className="ucp-fade ucp-fade-in" aria-hidden="true" />
+          Instead the light page is two panels that overlap the reel, each
+          with a rounded edge, so the dark slab appears to slide underneath
+          the page. Every edge stays a clean curve at full contrast. The
+          corner notches show the photograph because these panels sit above
+          the reel in the stacking order while the page background sits
+          below it. */}
+      <header className="ucp-masthead">
+        <div className="ucp-measure">
+          <Link href="/" className="ucp-back">
+            &larr; Back to idexi
+          </Link>
+          <p className="ucp-eyebrow">Use Cases</p>
+          <h1 className="ucp-title">Every Event Is Different. idexi Adapts.</h1>
+          <p className="ucp-intro">
+            Find your event type below, and see exactly how the pieces fit together.
+          </p>
+        </div>
+      </header>
 
       <UseCaseReel />
 
-      <div className="ucp-fade ucp-fade-out" aria-hidden="true" />
+      <div className="ucp-tail" aria-hidden="true" />
     </div>
   );
 }
 
 const pageCSS = `
   .ucp {
+    /* One radius drives both seams, so the top and bottom edges of the slab
+       are the same shape. */
+    --ucp-seam: clamp(30px, 4.5vw, 64px);
+    position: relative;
     background: var(--st-background);
     transition: background 0.4s ease;
   }
 
-  .ucp-masthead {
-    max-width: 70ch;
-    margin: 0 auto;
-    padding: 7rem 1.5rem 3rem;
+  .ucp-masthead,
+  .ucp-tail {
+    position: relative;
+    /* Above the reel, below nothing. The reel paints over the page
+       background, so the area outside each rounded corner shows the
+       photograph rather than the page. */
+    z-index: 2;
+    background: var(--st-background);
   }
 
-  .ucp-fade {
-    height: clamp(90px, 14vh, 170px);
+  .ucp-masthead {
+    padding: 7rem 1.5rem calc(var(--ucp-seam) + 2.5rem);
+    margin-bottom: calc(var(--ucp-seam) * -1);
+    border-bottom-left-radius: var(--ucp-seam);
+    border-bottom-right-radius: var(--ucp-seam);
   }
-  .ucp-fade-in {
-    background: linear-gradient(to bottom, var(--st-background) 0%, #05070d 100%);
+
+  .ucp-tail {
+    height: calc(var(--ucp-seam) + 2.5rem);
+    margin-top: calc(var(--ucp-seam) * -1);
+    border-top-left-radius: var(--ucp-seam);
+    border-top-right-radius: var(--ucp-seam);
   }
-  .ucp-fade-out {
-    background: linear-gradient(to bottom, #05070d 0%, var(--st-background) 100%);
+
+  .ucp-measure {
+    max-width: 70ch;
+    margin: 0 auto;
   }
 
   .ucp-back {
@@ -118,7 +142,7 @@ const pageCSS = `
 
   @media (max-width: 768px) {
     .ucp-masthead {
-      padding: 5rem 1.25rem 2rem;
+      padding: 5rem 1.25rem calc(var(--ucp-seam) + 1.75rem);
     }
   }
 `;

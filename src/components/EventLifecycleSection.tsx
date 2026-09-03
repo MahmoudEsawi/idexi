@@ -17,7 +17,7 @@ type Step = {
   color: "pass" | "flow" | "face" | "sponsor";
 };
 
-/* Verbatim from idexi-MASTER-SPEC.md, section 6. Labels, sublabels, captions
+/* Verbatim from docs/specs/idexi-MASTER-SPEC.md, section 6. Labels, sublabels, captions
    and the colour mapping are the partner's exact wording and are not to be
    rewritten, including the capitalised "Idexi", which differs from the site's
    own conventions elsewhere. If this copy is ever
@@ -331,6 +331,28 @@ export default function EventLifecycleSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [inView, setInView] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  const stepRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [rail, setRail] = useState({ top: 0, height: 0 });
+
+  /* One indicator slides between steps rather than each step drawing its own
+     segment. Geometry comes from the steps themselves, so it tracks the
+     active description expanding without a magic number anywhere.
+
+     Measurement happens in the ResizeObserver callback, never synchronously
+     in the effect body: the observer fires once on observe, which gives the
+     initial position, and again whenever a step changes height. Calling
+     setState directly here would trip React 19 cascading-render rules. */
+  useEffect(() => {
+    const nodes = stepRefs.current.filter(Boolean) as HTMLButtonElement[];
+    if (!nodes.length) return;
+    const measure = () => {
+      const el = stepRefs.current[activeIndex];
+      if (el) setRail({ top: el.offsetTop, height: el.offsetHeight });
+    };
+    const observer = new ResizeObserver(measure);
+    nodes.forEach((n) => observer.observe(n));
+    return () => observer.disconnect();
+  }, [activeIndex]);
 
   // Scroll-spy: only autoplay while the section is actually on screen.
   useEffect(() => {
@@ -375,11 +397,29 @@ export default function EventLifecycleSection() {
             </div>
 
             <div className="lifecycle-stepper" role="tablist" aria-orientation="vertical">
+              {/* The one moving part. Sits in the rail gutter and slides to
+                  whichever step is active, carrying the countdown with it. */}
+              <span
+                className="lifecycle-rail"
+                data-color={steps[activeIndex].color}
+                style={{ top: rail.top, height: rail.height }}
+                aria-hidden="true"
+              >
+                <span
+                  key={activeIndex}
+                  className={`lifecycle-rail-fill${inView ? " lifecycle-rail-animating" : ""}`}
+                  style={{ "--progress-duration": `${AUTO_ADVANCE_MS}ms` } as React.CSSProperties}
+                />
+              </span>
+
               {steps.map((step, i) => {
                 const active = i === activeIndex;
                 return (
                   <button
                     key={step.title}
+                    ref={(el) => {
+                      stepRefs.current[i] = el;
+                    }}
                     type="button"
                     role="tab"
                     aria-selected={active}
@@ -387,14 +427,6 @@ export default function EventLifecycleSection() {
                     data-color={step.color}
                     onClick={() => setActiveIndex(i)}
                   >
-                    {active && (
-                      <span className="lifecycle-progress-track" aria-hidden="true">
-                        <span
-                          className={`lifecycle-progress-fill${inView ? " lifecycle-progress-animating" : ""}`}
-                          style={{ "--progress-duration": `${AUTO_ADVANCE_MS}ms` } as React.CSSProperties}
-                        />
-                      </span>
-                    )}
                     <span className="lifecycle-step-head">
                       <span className="lifecycle-step-number">{step.number}</span>
                       <span className="lifecycle-step-title">{step.title}</span>
@@ -446,7 +478,11 @@ export default function EventLifecycleSection() {
 const lifecycleCSS = `
   .lifecycle {
     position: relative;
-    padding: var(--st-space-2xl) 0;
+    /* --st-space-2xl is not a token in this system. An undefined var with no
+       fallback makes the whole declaration invalid, so this section has been
+       rendering with no vertical padding at all, which is why its seams
+       measured half of every other section's. */
+    padding: var(--st-space-xl) 0;
     background: var(--st-background);
     transition: background 0.4s ease;
     scroll-margin-top: 96px;
@@ -499,10 +535,6 @@ const lifecycleCSS = `
   .lifecycle-step[data-color='face'] .lifecycle-step-number { color: var(--st-product-face); }
   .lifecycle-step[data-color='sponsor'] .lifecycle-step-number { color: var(--st-sponsor); }
 
-  .lifecycle-step[data-color='pass'] .lifecycle-progress-fill { background: var(--st-product-pass); }
-  .lifecycle-step[data-color='flow'] .lifecycle-progress-fill { background: var(--st-product-flow); }
-  .lifecycle-step[data-color='face'] .lifecycle-progress-fill { background: var(--st-product-face); }
-  .lifecycle-step[data-color='sponsor'] .lifecycle-progress-fill { background: var(--st-sponsor); }
 
   .lifecycle-close {
     display: flex;
@@ -630,19 +662,25 @@ const lifecycleCSS = `
     flex-direction: column;
     gap: var(--st-space-xs);
     max-width: 460px;
-    padding-left: 1.75rem;
+    padding-left: 1.9rem;
   }
+  /* The full-height track the indicator runs in. */
   .lifecycle-stepper::before {
     content: '';
     position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
-    width: 3px;
+    width: 2px;
     border-radius: var(--st-radius-full);
     background: var(--st-outline-variant);
+    opacity: 0.6;
   }
 
+  /* No card, no ring, no drop shadow. The active step is signalled by
+     opacity and by the rail beside it, which is the whole point: a step is
+     a line of type, not a box. Padding is vertical only so the text sits on
+     the stepper measure rather than inside a container. */
   .lifecycle-step {
     position: relative;
     display: flex;
@@ -651,67 +689,71 @@ const lifecycleCSS = `
     width: 100%;
     text-align: left;
     background: transparent;
-    /* No border, deliberately. Absolutely-positioned children resolve
-       against the PADDING box, so a 1px border here would offset the
-       progress bar below by exactly 1px and leave it sitting alongside
-       the rail instead of on it. The active step's outline is an inset
-       box-shadow ring instead: same look, zero layout contribution, so
-       the bar's -1.75rem offset stays exactly the container's padding. */
     border: none;
-    border-radius: var(--st-radius-md);
-    padding: 0.85rem 1.1rem;
+    border-radius: 0;
+    padding: 0.8rem 0;
     cursor: pointer;
-    transition: var(--transition-smooth);
+    opacity: 0.42;
+    transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
     /* Overrides the global "button, .btn { overflow: hidden }" rule in
-       globals.css. This step is a <button>, so it inherited that clip and
-       it silently ate the progress bar, which sits in the gutter OUTSIDE
-       this box. It is also why a per-step border-left was the only version
-       that ever rendered: a border paints on the element's own box and is
-       never clipped by its own overflow. The description collapse does its
-       own clipping on .lifecycle-step-desc, so nothing here needs it. */
+       globals.css, which clipped anything sitting outside this box. */
     overflow: visible;
   }
-  .lifecycle-step-active {
-    background: var(--st-surface-container-lowest);
-    box-shadow:
-      inset 0 0 0 1px var(--st-outline-variant),
-      0 8px 24px rgba(11, 28, 48, 0.08);
+  .lifecycle-step:hover { opacity: 0.72; }
+  .lifecycle-step-active,
+  .lifecycle-step-active:hover { opacity: 1; }
+  /* Opacity would otherwise dim the focus ring along with the step. */
+  .lifecycle-step:focus-visible {
+    opacity: 1;
+    outline: 2px solid var(--st-secondary);
+    outline-offset: 4px;
+    border-radius: 4px;
   }
 
-  /* The active step's segment of the rail. Pulled back into the gutter by
-     exactly the container's padding-left, so it lands dead-on the rail
-     above with no magic numbers to keep in sync — change the padding and
-     this follows. top/bottom: 0 make it track this step's own height,
-     which grows as the description expands, with no JS measurement.
-     Rendered only while the step is active (see the JSX), so it remounts
-     and restarts the countdown on every step change, manual or auto. */
-  .lifecycle-progress-track {
+  /* Sliding indicator. top and height come from the measured active step;
+     they animate rather than jump. This element is absolutely positioned and
+     out of flow, so moving it reflows nothing around it. */
+  .lifecycle-rail {
     position: absolute;
-    left: -1.75rem;
-    top: 0;
-    bottom: 0;
-    z-index: 1;
-    width: 3px;
+    left: 0;
+    width: 2px;
+    border-radius: var(--st-radius-full);
+    overflow: hidden;
+    transition:
+      top 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      height 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      background 0.45s ease;
+    background: color-mix(in srgb, var(--st-secondary) 22%, transparent);
   }
-  /* Grows scaleY 0 -> 1 across AUTO_ADVANCE_MS: a literal countdown to the
-     next auto-advance. transform, not height, so it stays compositor-only
-     and never triggers layout. */
-  .lifecycle-progress-fill {
+  .lifecycle-rail[data-color='pass'] { background: color-mix(in srgb, var(--st-product-pass) 22%, transparent); }
+  .lifecycle-rail[data-color='flow'] { background: color-mix(in srgb, var(--st-product-flow) 22%, transparent); }
+  .lifecycle-rail[data-color='face'] { background: color-mix(in srgb, var(--st-product-face) 22%, transparent); }
+  .lifecycle-rail[data-color='sponsor'] { background: color-mix(in srgb, var(--st-sponsor) 22%, transparent); }
+
+  /* Grows scaleY 0 to 1 across AUTO_ADVANCE_MS: a literal countdown to the
+     next auto-advance. transform, not height, so it stays compositor-only.
+     Keyed on the active index in the JSX, so it restarts on every step
+     change, manual or automatic. */
+  .lifecycle-rail-fill {
     position: absolute;
     inset: 0;
     border-radius: var(--st-radius-full);
-    background: var(--st-secondary);
-    box-shadow: 0 0 12px color-mix(in srgb, var(--st-secondary) 45%, transparent);
     transform: scaleY(0);
     transform-origin: top;
+    background: var(--st-secondary);
   }
-  .lifecycle-progress-animating {
-    animation: lifecycle-progress-grow var(--progress-duration, 5500ms) linear forwards;
+  .lifecycle-rail[data-color='pass'] .lifecycle-rail-fill { background: var(--st-product-pass); }
+  .lifecycle-rail[data-color='flow'] .lifecycle-rail-fill { background: var(--st-product-flow); }
+  .lifecycle-rail[data-color='face'] .lifecycle-rail-fill { background: var(--st-product-face); }
+  .lifecycle-rail[data-color='sponsor'] .lifecycle-rail-fill { background: var(--st-sponsor); }
+  .lifecycle-rail-animating {
+    animation: lifecycle-rail-grow var(--progress-duration, 5500ms) linear forwards;
   }
-  @keyframes lifecycle-progress-grow {
+  @keyframes lifecycle-rail-grow {
     from { transform: scaleY(0); }
     to { transform: scaleY(1); }
   }
+
   .lifecycle-step-head {
     display: flex;
     align-items: baseline;
@@ -1286,9 +1328,14 @@ const lifecycleCSS = `
        underlying autoplay timer itself is untouched: prefers-reduced-motion
        governs animation, not this section's auto-advancing content, which
        is a separate (and here, pausable-by-click) concern. */
-    .lifecycle-progress-animating {
+    .lifecycle-rail-animating {
       animation: none !important;
       transform: scaleY(1) !important;
+    }
+    /* The indicator still marks the active step, it just jumps there. */
+    .lifecycle-rail,
+    .lifecycle-step {
+      transition: none !important;
     }
     .ticket-flip {
       animation: none !important;
@@ -1346,5 +1393,10 @@ const lifecycleCSS = `
       height: 380px;
       order: 0;
     }
+  }
+
+  /* Phones step down to the shared mobile section rhythm. */
+  @media (max-width: 768px) {
+    .lifecycle { padding-top: var(--st-space-lg); padding-bottom: var(--st-space-lg); }
   }
 `;

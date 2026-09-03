@@ -508,4 +508,9 @@ const aiEnginesCSS = `
       max-width: 480px;
     }
   }
+
+  /* Phones step down to the shared mobile section rhythm. */
+  @media (max-width: 768px) {
+    .ai-engines { padding-top: var(--st-space-lg); padding-bottom: var(--st-space-lg); }
+  }
 `;

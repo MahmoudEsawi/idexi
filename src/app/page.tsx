@@ -22,6 +22,7 @@ export default function Home() {
       {/* ─── HERO ─── */}
       <section className="st-hero">
         <div className="st-hero-content">
+          <p className="st-hero-eyebrow">INTELLIGENT EVENT SOLUTIONS</p>
           <h1 className="st-hero-title st-headline-xl">
             Tickets Sent. Guests Scanned. Photos Delivered.
           </h1>
@@ -86,6 +87,19 @@ const pageCSS = `
     justify-content: center;
     gap: var(--st-space-sm);
     max-width: 580px;
+  }
+
+  /* Same declaration as .lifecycle-eyebrow and .ucp-eyebrow: display face,
+     600, 0.16em tracking, secondary ink. The text is authored uppercase
+     rather than transformed, matching how the other eyebrows on the site are
+     written. Vertical rhythm comes from .st-hero-content's flex gap. */
+  .st-hero-eyebrow {
+    margin: 0;
+    font-family: var(--st-font-display);
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    color: var(--st-secondary);
   }
 
   .st-hero-price {

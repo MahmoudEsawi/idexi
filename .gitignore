@@ -74,3 +74,76 @@ temp/
 # Local stray files, kept on disk but not tracked
 Moody B&W Headshot Prompt for Nano Banana.jfif
 skills-lock.json
+
+# =========================
+# Secrets & tool configs
+# =========================
+# Project-level MCP server config: holds server URLs and API keys.
+.mcp.json
+.mcp.local.json
+# .env* above already covers .env, .env.local, .env.development and
+# .env.production. This re-admits a committed template, which is the one
+# env file a team does want shared.
+!.env.example
+!.env.sample
+*.key
+*.p12
+*.pfx
+secrets.json
+
+# =========================
+# OS artifacts
+# =========================
+# Windows (this project is developed on Windows, so these are the likely ones)
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+# macOS
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# =========================
+# Editors
+# =========================
+.idea/
+*.iml
+*.swp
+*.swo
+*~
+
+# =========================
+# Build output not already covered
+# =========================
+**/node_modules/
+.turbo/
+/dist
+
+# =========================
+# Tool output folders
+# =========================
+# Playwright MCP writes screenshots and traces here on every run.
+.playwright-mcp/
+playwright-report/
+test-results/
+
+# =========================
+# Raw media staging
+# =========================
+# Raw drops get optimized into .webp before they are committed, so the
+# originals never need to enter history. Scoped to a raw/ folder on purpose:
+# a blanket *.jpg rule would ignore the site's actual photography in public/,
+# which is tracked and required at build time.
+raw/
+**/raw/
+public/**/_raw/
+public/**/*-original.*
+public/**/*-unoptimized.*
+
+# Screenshots taken at the repo root while verifying work in a browser.
+# Scoped to the root so nothing under public/ is affected.
+/*.png
+/*.jpg
+/*.jpeg

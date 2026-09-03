@@ -34,44 +34,50 @@ const accordionItems: VenueItem[] = [
     title: "Corporate Summits",
     href: "/use-cases#summits",
     description: "Your VIPs recognized the second they walk in, your sponsors seen everywhere else.",
-    image: "/venue-summits.webp",
-    alt: "Executives networking on stage at a corporate conference",
+    image: "/use-cases/summits-portrait.webp",
+    alt: "Delegates in business attire talking over drinks at an evening summit reception",
   },
   {
     id: 2,
     title: "Trade Shows & Exhibitions",
     href: "/use-cases#tradeshows",
     description: "Thousands of badges scanned in seconds, with no scanners to buy and no lines to manage.",
-    /* Not venue-expos.webp, which the Conferences card below already uses:
-       two identical photographs in a five-card accordion reads as a bug. This
-       is the same photograph the /use-cases trade shows panel uses, so the
-       card and the page it links to now show the same room. */
-    image: "/flow-trade-expo.jpg",
-    alt: "Visitors moving between exhibitor stands on a trade show floor",
+    /* Each card carries the same photograph as the /use-cases panel it links
+       to, so the card and the page it opens show the same room. */
+    image: "/use-cases/tradeshows-portrait.webp",
+    alt: "A packed exhibition hall of stands and lanyarded visitors",
   },
   {
     id: 3,
-    title: "Conferences & Expos",
+    title: "Conferences & Talks",
     href: "/use-cases#conferences",
     description: "One QR code covers every session, so guests always end up exactly where they belong.",
-    image: "/venue-expos.webp",
-    alt: "Attendees browsing exhibitor booths on a busy expo floor",
+    image: "/use-cases/conferences-portrait.webp",
+    alt: "A seated auditorium audience facing a speaker at a lit podium",
   },
   {
     id: 4,
-    title: "Gala & Private Events",
+    title: "Weddings & Private Celebrations",
     href: "/use-cases#weddings",
     description: "Private photo albums reach every guest before they have left the venue.",
-    image: "/venue-galas.webp",
-    alt: "Guests in formal attire mingling at an elegant evening gala",
+    image: "/use-cases/weddings-portrait.webp",
+    alt: "Guests dancing under festoon lights at a wedding reception",
   },
   {
     id: 5,
-    title: "Universities & Graduations",
+    title: "Graduations",
     href: "/use-cases#graduations",
     description: "Graduates get their photos the moment they walk off stage.",
-    image: "/venue-graduations.webp",
-    alt: "Graduates in caps and gowns celebrating at a commencement ceremony",
+    image: "/use-cases/graduations-portrait.webp",
+    alt: "Graduates throwing their caps in the air at an outdoor ceremony at sunset",
+  },
+  {
+    id: 6,
+    title: "Competitions",
+    href: "/use-cases#competitions",
+    description: "Hundreds of participants checked in and sorted automatically, with no printed lists or spreadsheets.",
+    image: "/use-cases/competitions-portrait.webp",
+    alt: "A student robotics team gathered around their machine at a competition table",
   },
 ];
 
@@ -92,7 +98,20 @@ function AccordionItem({
       onFocus={onActivate}
       aria-current={isActive ? "true" : undefined}
     >
-      <Image src={item.image} alt={item.alt} fill sizes="400px" className="venue-item-img" />
+      {/* The slat is a tall crop: 302x450 open on desktop, 154x320 on mobile,
+          and it never grows past that. sizes says so, so the browser fetches a
+          ~320px derivative rather than the 1920 it would pick from 100vw. The
+          source is the 2:3 portrait cut for the same reason: cover-cropping the
+          landscape original into this slot is height-constrained, and the
+          browser would have to download ~2.7x the slat width and discard it. */}
+      <Image
+        src={item.image}
+        alt={item.alt}
+        fill
+        sizes="(max-width: 767px) 220px, 320px"
+        quality={70}
+        className="venue-item-img"
+      />
       <div className="venue-item-overlay" aria-hidden="true" />
       <span className="venue-item-caption">{item.title}</span>
       {/* These cards route somewhere now, so the active one has to look like
@@ -113,10 +132,17 @@ export default function VenueAccordion() {
     <div id="use-cases" className="venue-wrap">
       <style>{venueCSS}</style>
       <section className="venue-section">
+        <header className="venue-masthead">
+          <h2 className="venue-title">Built for every kind of event.</h2>
+          <p className="venue-intro">
+            Find your event below, and see exactly how idexi fits it.
+          </p>
+        </header>
+
         <div className="venue-row">
           {/* Left Side: Text Content */}
           <div className="venue-text">
-            <h2 className="venue-heading">{activeItem.title}</h2>
+            <h3 className="venue-heading">{activeItem.title}</h3>
             <p className="venue-subtext">{activeItem.description}</p>
             <div className="venue-cta-wrap">
               <Link href="/#contact" className="st-btn st-btn-primary">
@@ -130,7 +156,9 @@ export default function VenueAccordion() {
             <div
               className="venue-accordion"
               style={{
-                gridTemplateColumns: accordionItems.map((_, i) => (i === activeIndex ? "6fr" : "1fr")).join(" "),
+                gridTemplateColumns: accordionItems
+                  .map((_, i) => (i === activeIndex ? "var(--venue-open)" : "var(--venue-slat)"))
+                  .join(" "),
               }}
             >
               {accordionItems.map((item, index) => (
@@ -170,6 +198,32 @@ const venueCSS = `
     gap: 3rem;
   }
 
+  /* Section masthead. Serif title at the shared main-heading size, with the
+     card title below it stepped down so the two never compete. */
+  .venue-masthead {
+    max-width: 44rem;
+    margin: 0 auto var(--st-space-lg);
+    text-align: center;
+  }
+  .venue-title {
+    margin: 0;
+    font-family: var(--st-font-serif);
+    font-weight: 500;
+    font-size: clamp(2rem, 3vw + 1rem, 3rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--st-on-background);
+    text-wrap: balance;
+  }
+  .venue-intro {
+    margin: var(--st-space-sm) auto 0;
+    max-width: 34rem;
+    font-family: var(--st-font-ui);
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--st-on-surface-variant);
+  }
+
   .venue-text {
     width: 100%;
     text-align: center;
@@ -181,7 +235,7 @@ const venueCSS = `
     margin: 0;
     font-family: var(--st-font-serif);
     font-weight: 500;
-    font-size: clamp(2.25rem, 5vw, 3.75rem);
+    font-size: clamp(1.9rem, 3.5vw, 2.85rem);
     line-height: 1.1;
     letter-spacing: -0.01em;
     color: var(--st-on-background);
@@ -216,6 +270,8 @@ const venueCSS = `
      columns keeps that one width change to a single container-level
      property instead of 5 separate per-item width transitions. */
   .venue-accordion {
+    --venue-open: 6fr;
+    --venue-slat: 1fr;
     display: grid;
     grid-auto-flow: column;
     align-items: center;
@@ -231,7 +287,7 @@ const venueCSS = `
     height: 450px;
     width: 100%;
     border: none;
-    border-radius: 1rem;
+    border-radius: var(--st-radius-lg);
     overflow: hidden;
     cursor: pointer;
     padding: 0;
@@ -281,8 +337,8 @@ const venueCSS = `
   .venue-item-caption {
     position: absolute;
     left: 50%;
-    bottom: 6rem;
-    transform: translateX(-50%) rotate(90deg);
+    bottom: 50%;
+    transform: translate(-50%, 50%) rotate(90deg);
     width: auto;
     text-align: left;
     white-space: nowrap;
@@ -317,11 +373,20 @@ const venueCSS = `
      in to match so the vertical label still sits comfortably inside the
      shorter card. */
   @media (max-width: 640px) {
+    /* Six cards on a 390px screen: the 1rem gutters alone were eating 112px
+       of the track, which left the collapsed strips narrower than the label
+       standing in them. Tighter gutters and a smaller open share buy the
+       strips back without meaningfully shrinking the open card. */
+    .venue-accordion {
+      --venue-open: 4fr;
+      gap: 0.5rem;
+      padding: 0.75rem;
+    }
     .venue-item {
       height: 320px;
     }
     .venue-item-caption {
-      bottom: 4.5rem;
+      bottom: 50%;
       font-size: 1rem;
     }
     .venue-item-go {
@@ -358,5 +423,10 @@ const venueCSS = `
     .venue-accordion-col {
       width: 50%;
     }
+  }
+
+  /* Phones step down to the shared mobile section rhythm. */
+  @media (max-width: 768px) {
+    .venue-section { padding-top: var(--st-space-lg); padding-bottom: var(--st-space-lg); }
   }
 `;

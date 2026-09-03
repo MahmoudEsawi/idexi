@@ -9,7 +9,14 @@ import JourneyScroll from "@/components/JourneyScroll";
    The four stages live in JourneyScroll, which tells them as one guest record
    moving through four states rather than as four separate cards. Their labels
    and captions are the spec's, matching the home page stepper exactly so the
-   two never describe the journey differently. */
+   two never describe the journey differently.
+
+   Hero and closing copy come from the How It Works content file. That file
+   also specifies a horizontal before/during/after diagram and a dashboard
+   mockup, neither of which exists here: the journey is told as a pinned
+   scroll instead, and rebuilding it as a static diagram would mean removing
+   that. Those two sections are open questions for the partner, not omissions
+   made silently. */
 
 export const metadata: Metadata = {
   title: "How It Works | idexi",
@@ -21,23 +28,29 @@ export default function HowItWorksPage() {
   return (
     <PageShell
       eyebrow="How It Works"
-      title="From ticket to photo, under 5 minutes"
-      intro="One guest record moves through four stages. Nothing is re-entered between them, which is the whole reason the timing holds."
+      title="Before the Doors Open. During the Event. After It Ends."
+      intro="One connected system: Pass, Flow, and Face hand off to one another automatically, at exactly the right moment."
       wide
     >
+      {/* The content file's section 2 heading. The pinned journey below is the
+          timeline it introduces. */}
+      <h2 className="hiw-timeline-head">Here&apos;s exactly what happens, and when.</h2>
+
       <JourneyScroll />
 
-      <section className="hiw-close">
-        <p className="hiw-close-line">Guests never search.</p>
-        <p className="hiw-close-line">Staff never guess.</p>
-        <p className="hiw-close-line">You never lose control.</p>
+      {/* The content file's section 4. A heading, a line and one button: it
+          specifies a button here rather than the full lead form, which lives
+          on the home page and the product pages. */}
+      <section className="hiw-cta">
+        <h2 className="hiw-cta-heading">Ready to see it in action?</h2>
+        <p className="hiw-cta-sub">
+          Tell us about your event. We&apos;ll show you exactly how it all connects,
+          with no commitment and no pressure.
+        </p>
+        <Link href="/#contact" className="st-btn st-btn-primary">
+          Book a Demo
+        </Link>
       </section>
-
-      <p className="shell-note">
-        Want to see it against your own event?{" "}
-        <Link href="/#contact">Book a demo</Link> and we will map the four stages
-        onto your doors, your sessions, and your photographers.
-      </p>
 
       <style>{hiwCSS}</style>
     </PageShell>
@@ -45,27 +58,47 @@ export default function HowItWorksPage() {
 }
 
 const hiwCSS = `
-  /* No side accent bar here. These three lines are the page's closing
-     argument and carry themselves on type and space; a coloured rule down
-     one edge is the most recognisable tell of generated UI and adds nothing
-     the words do not already do. */
-  .hiw-close {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-    margin: var(--st-space-lg) 0 3rem;
-    padding-top: var(--st-space-md);
-    border-top: 1px solid var(--st-outline-variant);
-  }
-
-  .hiw-close-line {
+  /* Sits between the page intro and the pinned journey, so it needs enough
+     air above it to read as the start of a section rather than a third line
+     of the masthead. */
+  .hiw-timeline-head {
+    margin: clamp(2.5rem, 6vh, 4rem) 0 clamp(1.5rem, 4vh, 2.5rem);
     font-family: var(--st-font-serif);
     font-weight: 500;
-    font-size: clamp(1.5rem, 3.2vw, 2.35rem);
-    line-height: 1.25;
+    font-size: clamp(1.6rem, 2.4vw + 0.9rem, 2.3rem);
+    line-height: 1.2;
     letter-spacing: -0.01em;
     color: var(--st-on-background);
+    text-wrap: balance;
   }
-  .hiw-close-line:nth-child(2) { color: var(--st-on-surface-variant); }
-  .hiw-close-line:nth-child(3) { color: var(--st-on-surface-variant); }
+
+  .hiw-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+    max-width: min(100%, 34rem);
+    /* Carries the breathing room the closing tricolon used to provide
+       between the pinned journey and the ask. */
+    margin: clamp(3.5rem, 9vh, 6rem) auto clamp(2rem, 5vh, 3rem);
+    text-align: center;
+  }
+  .hiw-cta-heading {
+    margin: 0;
+    font-family: var(--st-font-serif);
+    font-weight: 500;
+    font-size: clamp(1.7rem, 2.6vw + 0.9rem, 2.4rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--st-on-background);
+    text-wrap: balance;
+  }
+  .hiw-cta-sub {
+    margin: 0;
+    font-size: 1.02rem;
+    line-height: 1.6;
+    color: var(--st-on-surface-variant);
+  }
+  .hiw-cta .st-btn { margin-top: 0.5rem; }
+
 `;
