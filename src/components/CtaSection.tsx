@@ -2,22 +2,14 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
+import { ShieldCheck } from "lucide-react";
 import { submitLead, type LeadFormState } from "@/app/actions/submit-lead";
 import { EVENT_TYPES, SOLUTIONS } from "@/app/actions/lead-options";
 
-// This project has no Tailwind CSS anywhere (confirmed in CLAUDE.md and
-// every other component) — the reference brief asked for it, but built
-// here with the same CSS-in-JS <style> pattern every sibling section
-// uses instead, so it stays consistent with the rest of the codebase.
-// Copy (heading, bullets) is pulled from page.md's "Optimize Your Next
-// Event" section, the site's only existing CTA content — not invented.
-
 const INITIAL_FORM_STATE: LeadFormState = { status: "idle" };
 
-/* The home page's recap. Product pages pass bullets={null} instead: the
-   spec's product template is heading, subhead and form only, and three of
-   these five lines are about products that page is not selling. */
 const HOME_BULLETS = [
+  "Zero-Risk Guarantee: Full refund if check-in fails at your door",
   "All your tickets delivered in under 5 minutes",
   "No scanning hardware to buy or maintain",
   "Every guest gets their photos, automatically",
@@ -220,6 +212,11 @@ export default function CtaSection({
               <button type="submit" className="cta-submit cta-field-full" disabled={isPending}>
                 {isPending ? "Sending..." : "Book a Demo"}
               </button>
+
+              <div className="cta-guarantee cta-field-full">
+                <ShieldCheck size={16} aria-hidden="true" className="cta-guarantee-icon" />
+                <span><strong>Zero-Risk Guarantee:</strong> 100% full refund if check-in fails at your door.</span>
+              </div>
             </form>
           )}
         </div>
@@ -455,6 +452,26 @@ const ctaCSS = `
   }
   .cta-submit:active {
     transform: scale(0.99);
+  }
+
+  .cta-guarantee {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    margin-top: 0.65rem;
+    font-size: 0.84rem;
+    line-height: 1.4;
+    color: var(--st-on-surface-variant);
+    text-align: center;
+  }
+  .cta-guarantee-icon {
+    color: var(--st-product-pass);
+    flex-shrink: 0;
+  }
+  .cta-guarantee strong {
+    color: var(--st-product-pass);
+    font-weight: 600;
   }
 
   .cta-success {

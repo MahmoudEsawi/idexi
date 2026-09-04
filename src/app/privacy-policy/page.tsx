@@ -13,7 +13,7 @@ import PageShell from "@/components/PageShell";
    complete; get it reviewed and then add it. */
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | idexi",
+  title: "Privacy Policy",
   description:
     "idexi's privacy policy: what data we process for an event, how long we keep it, who controls it, and how to reach us about it.",
 };

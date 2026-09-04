@@ -19,9 +19,9 @@ import JourneyScroll from "@/components/JourneyScroll";
    made silently. */
 
 export const metadata: Metadata = {
-  title: "How It Works | idexi",
+  title: "How It Works",
   description:
-    "From ticket to photo in under five minutes: how idexi Pass, Flow, and Face hand one guest record between them across a single event.",
+    "See how idexi Pass, Flow, and Face work together to issue fraud-proof tickets, scan guests offline, and deliver photos in under five minutes.",
 };
 
 export default function HowItWorksPage() {

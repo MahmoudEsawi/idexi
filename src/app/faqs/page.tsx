@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "FAQs | idexi",
+  title: "Frequently Asked Questions",
   description:
-    "Answers about idexi: where to find your event photos, how check-in works offline, what happens at the door, and how guest data is protected and deleted.",
+    "Answers on idexi event check-in software, offline gate scanning, stopping duplicate ticket fraud, AI photo delivery, and our 100% full refund guarantee.",
 };
 
 interface FaqItem {
@@ -18,6 +18,30 @@ interface FaqCategory {
 }
 
 const categories: FaqCategory[] = [
+  {
+    title: "Ticketing & Gate Security",
+    questions: [
+      {
+        question: "How do you stop duplicate ticket scanning and screenshot fraud?",
+        answer: [
+          "idexi Pass issues dynamic cryptographic QR codes tied to an individual guest record. The moment a ticket is scanned at any door by idexi Flow, that ticket token is permanently invalidated in real-time.",
+          "Even if venue internet cuts out completely, Flow's local offline sync engine detects and flags already-scanned codes across all connected staff devices, stopping screenshotted or forwarded passes immediately at the entrance.",
+        ],
+      },
+      {
+        question: "What makes idexi different from traditional event check-in software?",
+        answer: [
+          "Traditional event check-in software forces organizers to rent expensive laser scanners, deal with spotty WiFi gateways, and buy separate photo hosting tools. idexi turns any staff smartphone into an instant 0.3-second QR scanner that operates 100% offline, syncs automatically, and connects directly to AI facial recognition photo delivery from $199 per event.",
+        ],
+      },
+      {
+        question: "What is your refund policy or check-in guarantee?",
+        answer: [
+          "We offer a 100% Zero-Risk Money-Back Guarantee: full refund if check-in fails. If idexi experiences platform downtime or our check-in software fails to process your attendees at the gate, your event fee is refunded in full. We take the technical risk so you don't have to.",
+        ],
+      },
+    ],
+  },
   {
     title: "Photos & privacy",
     questions: [
@@ -101,9 +125,28 @@ const categories: FaqCategory[] = [
   },
 ];
 
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: categories.flatMap((cat) =>
+    cat.questions.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer.join(" "),
+      },
+    }))
+  ),
+};
+
 export default function FaqsPage() {
   return (
     <div className="faq-page">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <style>{faqCSS}</style>
       <div className="container faq-container">
         <Link href="/" className="faq-back-link">
@@ -112,7 +155,7 @@ export default function FaqsPage() {
 
         <h1 className="faq-heading">Frequently asked questions</h1>
         <p className="faq-intro">
-          Answers about how idexi&apos;s check-in, access control, and photo delivery products actually work.
+          Answers about how idexi&apos;s check-in, access control, fraud prevention, and photo delivery products work.
         </p>
 
         {categories.map((category) => (

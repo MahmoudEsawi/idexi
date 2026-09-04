@@ -1,19 +1,41 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
+import { Mail } from "lucide-react";
 import PageShell from "@/components/PageShell";
 
-/* Company page from the header and the footer's Company column.
-
-   The origin story, the founders, and the "8 years of frontline experience"
-   figure all come from OurStorySection on the home page rather than being
-   written fresh, so the two never drift into telling different versions of the
-   same history. If that section's copy changes, change it here too. */
-
 export const metadata: Metadata = {
-  title: "About | idexi",
+  title: "About",
   description:
-    "idexi was built by two AI graduates with eight years of frontline event and media experience, to remove the friction between tickets, doors, and photos.",
+    "idexi was built by AI graduates Saif Alqdessi and Jafar Alkhadrawi with 8 years of event experience to fix tickets, door check-in, and photo delivery.",
 };
+
+const TEAM_MEMBERS = [
+  {
+    name: "Saif Alqdessi",
+    role: "Co-Founder & Tech Lead",
+    image: "/saif.webp",
+    email: "alqdessi.qp@gmail.com",
+    linkedin: "https://www.linkedin.com/in/saif-alqdess",
+    bio: "AI systems engineer. Focused on distributed gate architecture, offline sync protocols, and real-time fraud prevention.",
+  },
+  {
+    name: "Jafar Alkhadrawi",
+    role: "Co-Founder & Business Lead",
+    image: "/jafar.webp",
+    email: "khadrawi.jafer@gmail.com",
+    linkedin: "https://www.linkedin.com/in/jafar-alkhadrawi",
+    bio: "AI graduate and operations lead. Focused on on-site event deployment, venue partnerships, and client success.",
+  },
+];
+
+function LinkedInIcon({ size = 15 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+    </svg>
+  );
+}
 
 export default function AboutPage() {
   return (
@@ -64,10 +86,49 @@ export default function AboutPage() {
       <section className="shell-section">
         <h2>The team</h2>
         <p>
-          <strong>Saif Alqdessi</strong>, co-founder and tech lead. <strong>Jafar
-          Alkhadrawi</strong>, co-founder and business lead. We are small on purpose,
-          which is why our team is reachable during your event rather than only before it.
+          We are co-founded by two AI graduates with frontline experience. We keep our core team small on purpose so our founders remain personally reachable and accountable during your live event, not just beforehand.
         </p>
+        <div className="about-team-grid">
+          {TEAM_MEMBERS.map((member) => (
+            <div key={member.name} className="about-member-card">
+              <div className="about-member-photo-wrap">
+                <Image
+                  src={member.image}
+                  alt={`${member.name}, ${member.role}`}
+                  fill
+                  sizes="120px"
+                  quality={85}
+                  className="about-member-photo"
+                />
+              </div>
+              <div className="about-member-details">
+                <h3 className="about-member-name">{member.name}</h3>
+                <span className="about-member-role">{member.role}</span>
+                <p className="about-member-bio">{member.bio}</p>
+                <div className="about-member-contacts">
+                  <a
+                    href={`mailto:${member.email}`}
+                    className="about-member-link"
+                    aria-label={`Email ${member.name}`}
+                  >
+                    <Mail size={15} aria-hidden="true" />
+                    <span>{member.email}</span>
+                  </a>
+                  <a
+                    href={member.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="about-member-link"
+                    aria-label={`${member.name} on LinkedIn`}
+                  >
+                    <LinkedInIcon size={15} />
+                    <span>LinkedIn Profile</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section className="shell-section">
@@ -84,6 +145,99 @@ export default function AboutPage() {
         <Link href="/#contact">Book a demo</Link> and we will walk through how the
         pieces fit yours, or email <a href="mailto:info@idexi.tech">info@idexi.tech</a>.
       </p>
+
+      <style>{aboutCSS}</style>
     </PageShell>
   );
 }
+
+const aboutCSS = `
+  .about-team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  .about-member-card {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    padding: 1.25rem;
+    background: var(--st-surface-container-lowest);
+    border: 1px solid var(--st-outline-variant);
+    border-radius: var(--st-radius-xl);
+    box-shadow: 0 8px 24px -12px rgba(11, 28, 48, 0.08);
+  }
+  .about-member-photo-wrap {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    flex-shrink: 0;
+    border-radius: var(--st-radius-lg);
+    overflow: hidden;
+    background: var(--st-surface-container-high);
+  }
+  .about-member-photo {
+    object-fit: cover;
+    object-position: top center;
+  }
+  .about-member-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    min-width: 0;
+  }
+  .about-member-name {
+    margin: 0;
+    font-family: var(--st-font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--st-on-background);
+  }
+  .about-member-role {
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-family: var(--st-font-display);
+    color: var(--st-secondary);
+    padding: 0.15rem 0.5rem;
+    background: color-mix(in srgb, var(--st-secondary) 10%, transparent);
+    border-radius: var(--st-radius-full);
+    width: fit-content;
+  }
+  .about-member-bio {
+    margin: 0.2rem 0 0;
+    font-size: 0.88rem;
+    line-height: 1.45;
+    color: var(--st-on-surface-variant);
+  }
+  .about-member-contacts {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--st-outline-variant);
+  }
+  .about-member-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.82rem;
+    color: var(--st-on-surface-variant);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .about-member-link:hover {
+    color: var(--st-secondary);
+  }
+  @media (max-width: 500px) {
+    .about-member-card {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .about-member-photo-wrap {
+      width: 80px;
+      height: 80px;
+    }
+  }
+`;

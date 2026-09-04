@@ -19,9 +19,9 @@ import UseCaseReel from "@/components/UseCaseReel";
    is about capability, not history. */
 
 export const metadata: Metadata = {
-  title: "Use Cases | idexi",
+  title: "Use Cases",
   description:
-    "Graduations, competitions, conferences, corporate summits, trade shows, and weddings: how idexi fits each kind of event.",
+    "Graduations, summits, conferences, expos, and galas: how idexi provides offline event check-in, fraud-proof ticketing, and AI photos.",
 };
 
 export default function UseCasesPage() {

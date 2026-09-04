@@ -10,16 +10,110 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "idexi: Intelligent Event Solutions | AI-Powered Access Control & Photo Management",
-  description: "Transform event experiences with idexi. Features idexi Face (instant AI photo delivery), idexi Flow (staff-powered access control & event logistics), and idexi Pass (smart digital ticketing).",
-  keywords: ["AI events", "face recognition photos", "event access control", "digital check-in", "event check-in app", "smart check-in", "idexi", "event software"],
-  authors: [
-    { name: "Mahmoud Al-Esawi", url: "https://github.com/MahmoudEsawi" },
-    { name: "idexi Team" },
+  metadataBase: new URL("https://idexi.tech"),
+  title: {
+    default: "idexi — AI Event Check-In, Ticketing & Photo Delivery",
+    template: "%s | idexi",
+  },
+  description:
+    "AI event check-in software, fraud-proof digital ticketing, and instant photo delivery with offline support. Plans from $199 with a full refund guarantee.",
+  keywords: [
+    "event check-in software",
+    "how to stop duplicate ticket scanning",
+    "offline event check-in app",
+    "AI event ticketing",
+    "facial recognition event photos",
+    "event access control",
+    "digital check-in software",
+    "stop duplicate ticket entry",
+    "qr ticket scanner app",
+    "idexi",
   ],
-  creator: "Mahmoud Al-Esawi",
+  authors: [
+    { name: "Saif Alqdessi", url: "https://www.linkedin.com/in/saif-alqdess" },
+    { name: "Jafar Alkhadrawi", url: "https://www.linkedin.com/in/jafar-alkhadrawi" },
+    { name: "idexi Team", url: "https://idexi.tech" },
+  ],
+  creator: "idexi",
   publisher: "idexi",
   robots: "index, follow",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://idexi.tech",
+    siteName: "idexi",
+    title: "idexi — AI Event Check-In, Ticketing & Photo Delivery",
+    description:
+      "AI event check-in software, fraud-proof digital ticketing, and instant photo delivery with offline support. Plans from $199 with a full refund guarantee.",
+    images: [
+      {
+        url: "/flow-conference-hall.jpg",
+        width: 1200,
+        height: 630,
+        alt: "idexi — AI Event Check-In, Ticketing & Photo Delivery",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "idexi — AI Event Check-In, Ticketing & Photo Delivery",
+    description:
+      "AI event check-in software, fraud-proof digital ticketing, and instant photo delivery with offline support. Plans from $199 with a full refund guarantee.",
+    images: ["/flow-conference-hall.jpg"],
+  },
+};
+
+const jsonLdOrgAndProduct = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://idexi.tech/#organization",
+      "name": "idexi",
+      "url": "https://idexi.tech",
+      "logo": "https://idexi.tech/logo-black-horizontal.png",
+      "description":
+        "AI-powered event solutions: intelligent check-in, fraud-proof digital ticketing, and facial recognition photo delivery.",
+      "founders": [
+        {
+          "@type": "Person",
+          "name": "Saif Alqdessi",
+          "jobTitle": "Co-Founder & Tech Lead",
+          "email": "alqdessi.qp@gmail.com",
+          "sameAs": "https://www.linkedin.com/in/saif-alqdess"
+        },
+        {
+          "@type": "Person",
+          "name": "Jafar Alkhadrawi",
+          "jobTitle": "Co-Founder & Business Lead",
+          "email": "khadrawi.jafer@gmail.com",
+          "sameAs": "https://www.linkedin.com/in/jafar-alkhadrawi"
+        }
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "info@idexi.tech",
+        "contactType": "customer support"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://idexi.tech/#software",
+      "name": "idexi Event Suite",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web, iOS, Android",
+      "description":
+        "AI event check-in software, fraud-proof digital ticketing, and facial recognition photo delivery with offline sync and 100% full refund guarantee if check-in fails.",
+      "offers": {
+        "@type": "Offer",
+        "price": "199.00",
+        "priceCurrency": "USD",
+        "priceValidUntil": "2027-12-31",
+        "availability": "https://schema.org/InStock",
+        "description": "Starting at $199 per event with full refund guarantee if check-in fails at the door."
+      }
+    }
+  ]
 };
 
 const themeInitScript = `
@@ -45,6 +139,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrgAndProduct) }}
+        />
       </head>
       <body style={bodyStyle}>
         <Navbar />

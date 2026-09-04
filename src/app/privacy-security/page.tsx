@@ -26,9 +26,9 @@ import PageShell from "@/components/PageShell";
    carried by type and rules alone. */
 
 export const metadata: Metadata = {
-  title: "Privacy & Security | idexi",
+  title: "Privacy & Security",
   description:
-    "How idexi protects guest data: private galleries opened by a one-time code, nothing shared with sponsors, and automatic deletion 30 days after your event ends.",
+    "How idexi protects guest data: private OTP-gated photo galleries, zero sponsor sharing, and automatic deletion 30 days after your event ends.",
 };
 
 const PROTECTION = [

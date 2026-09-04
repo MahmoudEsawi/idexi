@@ -1,23 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ShieldCheck } from "lucide-react";
 import PageShell from "@/components/PageShell";
 
-/* Pricing page from the header and the footer's Company column.
-
-   The master spec states exactly one number: "Plans starting at $199 per
-   event." No tiers, no per-guest rates, and no annual plans have been
-   confirmed, so none are invented here. The page anchors on the one real
-   figure and explains what moves a quote, which is both honest and how this
-   is actually sold (per event, scoped in a consultation). If a real tier
-   structure gets decided, this page becomes a table. Until then it does not. */
-
 export const metadata: Metadata = {
-  title: "Pricing | idexi",
+  title: "Pricing",
   description:
-    "idexi plans start at $199 per event. Every quote is scoped to your event, with no scanning hardware to buy and no per-guest photo fees.",
+    "idexi event plans start at $199. Backed by our Zero-Risk Guarantee: full refund if check-in fails. No hardware to buy, no per-guest photo charges.",
 };
 
 const INCLUDED = [
+  "Zero-Risk Guarantee: Full refund if check-in fails at your door",
   "Personalized QR tickets delivered to every guest",
   "Ticket categories for VIP, general, press, and staff",
   "Check-in from any staff phone, with no scanner hardware to buy",
@@ -65,6 +58,17 @@ export default function PricingPage() {
             No scanning hardware to buy or maintain. No per-guest charge for photo
             delivery.
           </p>
+
+          <div className="pricing-guarantee">
+            <div className="pricing-guarantee-header">
+              <ShieldCheck size={18} className="pricing-guarantee-icon" aria-hidden="true" />
+              <span>Zero-Risk Guarantee</span>
+            </div>
+            <p className="pricing-guarantee-copy">
+              <strong>Full refund if check-in fails.</strong> If our system experiences downtime or fails guest admission at your door, you receive a 100% refund.
+            </p>
+          </div>
+
           <Link href="/#contact" className="st-btn st-btn-primary pricing-cta">
             Book a Demo
           </Link>
@@ -151,6 +155,38 @@ const pricingCSS = `
   .pricing-note {
     font-size: 0.95rem;
     line-height: 1.6;
+    color: var(--st-on-surface-variant);
+  }
+
+  .pricing-guarantee {
+    margin: 0.75rem 0 0.5rem;
+    padding: 0.85rem 1rem;
+    border-radius: var(--st-radius-md);
+    background: color-mix(in srgb, var(--st-product-pass) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--st-product-pass) 25%, transparent);
+  }
+
+  .pricing-guarantee-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--st-font-display);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--st-product-pass);
+  }
+
+  .pricing-guarantee-icon {
+    color: var(--st-product-pass);
+    flex-shrink: 0;
+  }
+
+  .pricing-guarantee-copy {
+    margin: 0.35rem 0 0;
+    font-size: 0.86rem;
+    line-height: 1.45;
     color: var(--st-on-surface-variant);
   }
 

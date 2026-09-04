@@ -1,20 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Mail } from "lucide-react";
-
-// "Our Team" (the right-hand panel below) is structurally ported from
-// team.md's animated-testimonials template: an absolutely-stacked,
-// crossfading photo on one side, a key-swapped text block with prev/next
-// controls on the other, autoplay via setInterval. @tabler/icons-react
-// (the template's icon source) isn't installed; lucide-react (already a
-// project dependency, used everywhere else) supplies the arrows instead.
-// Framer Motion itself IS already a dependency, unlike the rest of this
-// project's animation, which is hand-rolled CSS — used here rather than
-// reimplemented in CSS specifically because the template's fidelity was
-// requested directly.
+import { Mail } from "lucide-react";
 
 interface TeamMember {
   name: string;
@@ -22,37 +9,29 @@ interface TeamMember {
   image: string;
   email: string;
   linkedin: string;
+  bio: string;
 }
 
 const TEAM: TeamMember[] = [
   {
     name: "Saif Alqdessi",
-    role: "Co-Founder, Tech Lead",
+    role: "Co-Founder & Tech Lead",
     image: "/saif.webp",
     email: "alqdessi.qp@gmail.com",
     linkedin: "https://www.linkedin.com/in/saif-alqdess",
+    bio: "AI engineer. 8 years building gate infrastructure, computer vision, and offline sync engines.",
   },
   {
     name: "Jafar Alkhadrawi",
-    role: "Co-Founder, Business Lead",
+    role: "Co-Founder & Business Lead",
     image: "/jafar.webp",
     email: "khadrawi.jafer@gmail.com",
     linkedin: "https://www.linkedin.com/in/jafar-alkhadrawi",
+    bio: "AI graduate & operations lead. 8 years managing frontline event logistics and partner venues.",
   },
 ];
 
-// Fixed values, not Math.random() and not per-index — matches this
-// project's established convention of deterministic, not random,
-// decorative motion, so the section renders identically on every load.
-// The inactive card always tilts/translates the same way: negative
-// (toward the photo stack's own left edge, away from the text column),
-// regardless of which team member is currently active or which index
-// they occupy in the array. A per-index sign here previously made the
-// background card swing right for odd indexes and collide with the text.
-const INACTIVE_TILT = -10;
-const INACTIVE_OFFSET = { x: -18, y: 14 };
-
-function LinkedInIcon({ size = 18 }: { size?: number }) {
+function LinkedInIcon({ size = 16 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
@@ -61,111 +40,76 @@ function LinkedInIcon({ size = 18 }: { size?: number }) {
 }
 
 export default function OurStorySection() {
-  const [active, setActive] = useState(0);
-  const prefersReducedMotion = useReducedMotion();
-
-  const handleNext = () => setActive((prev) => (prev + 1) % TEAM.length);
-  const handlePrev = () => setActive((prev) => (prev - 1 + TEAM.length) % TEAM.length);
-  const isActive = (index: number) => index === active;
-
-  useEffect(() => {
-    if (prefersReducedMotion) return;
-    const interval = setInterval(handleNext, 5000);
-    return () => clearInterval(interval);
-  }, [prefersReducedMotion]);
-
-  const current = TEAM[active];
-
   return (
     <section id="about" className="story-section">
       <style>{storyCSS}</style>
       <div className="story-row">
         {/* Left Side: Our Story */}
         <div className="story-text">
+          <p className="story-eyebrow">FOUNDING TEAM</p>
           <h2 className="story-heading">Our Story</h2>
           <p className="story-paragraph">
             Born from 8 years of frontline experience in event management and media coverage, idexi was created by
             AI graduates Saif and Jafar to solve the industry&apos;s biggest friction points.
           </p>
           <p className="story-paragraph">
-            We merged deep event expertise with AI to eliminate ticketing errors and automate instant photo
-            delivery. That&apos;s what puts intelligence back into physical spaces, so events feel like magic
-            instead of logistics.
+            We merged deep event expertise with AI to eliminate ticketing errors, stop screenshot pass fraud at the gate,
+            and automate instant photo delivery. We put intelligence back into physical spaces so events feel seamless
+            instead of chaotic.
           </p>
+          <div className="story-badge-strip">
+            <span className="story-pill">8+ Years Experience</span>
+            <span className="story-pill">AI Engineers</span>
+            <span className="story-pill">Zero Unproven Risk</span>
+          </div>
         </div>
 
-        {/* Right Side: Our Team */}
+        {/* Right Side: Co-Founders with 100% Parity */}
         <div className="team-panel">
-          <div className="team-grid">
-            <div className="team-photo-stack">
-              <AnimatePresence mode="sync">
-                {TEAM.map((member, index) => {
-                  const isCurrent = isActive(index);
-                  return (
-                    <motion.div
-                      key={member.name}
-                      initial={{ opacity: 0, scale: 0.9, rotate: INACTIVE_TILT }}
-                      animate={{
-                        opacity: isCurrent ? 1 : 0.75,
-                        scale: isCurrent ? 1 : 0.94,
-                        x: isCurrent ? 0 : INACTIVE_OFFSET.x,
-                        y: isCurrent ? 0 : INACTIVE_OFFSET.y,
-                        rotate: isCurrent ? 0 : INACTIVE_TILT,
-                        zIndex: isCurrent ? 10 : 1,
-                      }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      transition={{ duration: prefersReducedMotion ? 0 : 0.4, ease: "easeInOut" }}
-                      className="team-photo-frame"
-                    >
-                      <Image
-                        src={member.image}
-                        alt={`${member.name}, ${member.role}`}
-                        fill
-                        sizes="280px"
-                        quality={70}
-                        className="team-photo"
-                      />
-                    </motion.div>
-                  );
-                })}
-              </AnimatePresence>
-            </div>
-
-            <div className="team-details">
-              <motion.div
-                key={active}
-                initial={{ y: prefersReducedMotion ? 0 : 16, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: prefersReducedMotion ? 0 : 0.2, ease: "easeInOut" }}
-                aria-live="polite"
-              >
-                <h3 className="team-name">{current.name}</h3>
-                <p className="team-role">{current.role}</p>
-                <div className="team-contact">
-                  <a href={`mailto:${current.email}`} className="team-contact-link" aria-label={`Email ${current.name}`}>
-                    <Mail size={18} aria-hidden="true" />
-                  </a>
-                  <a
-                    href={current.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="team-contact-link"
-                    aria-label={`${current.name} on LinkedIn`}
-                  >
-                    <LinkedInIcon size={18} />
-                  </a>
+          <div className="founders-grid">
+            {TEAM.map((member) => (
+              <article key={member.name} className="founder-card">
+                <div className="founder-photo-box">
+                  <Image
+                    src={member.image}
+                    alt={`${member.name}, ${member.role}`}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 200px"
+                    quality={85}
+                    className="founder-photo"
+                  />
                 </div>
-              </motion.div>
-
-              <div className="team-nav">
-                <button type="button" onClick={handlePrev} className="team-nav-btn" aria-label="Previous team member">
-                  <ArrowLeft size={22} strokeWidth={2} aria-hidden="true" />
-                </button>
-                <button type="button" onClick={handleNext} className="team-nav-btn" aria-label="Next team member">
-                  <ArrowRight size={22} strokeWidth={2} aria-hidden="true" />
-                </button>
-              </div>
-            </div>
+                <div className="founder-body">
+                  <div className="founder-header">
+                    <h3 className="founder-name">{member.name}</h3>
+                    <span className="founder-role-badge">{member.role}</span>
+                  </div>
+                  <p className="founder-bio">{member.bio}</p>
+                  <div className="founder-links">
+                    <a
+                      href={`mailto:${member.email}`}
+                      className="founder-link-item"
+                      aria-label={`Email ${member.name} at ${member.email}`}
+                      title={`Email ${member.name}`}
+                    >
+                      <Mail size={15} aria-hidden="true" />
+                      <span className="founder-link-label">{member.email}</span>
+                    </a>
+                    <a
+                      href={member.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="founder-link-item"
+                      aria-label={`${member.name} on LinkedIn`}
+                      title={`${member.name} on LinkedIn`}
+                    >
+                      <LinkedInIcon size={15} />
+                      <span className="founder-link-label">LinkedIn</span>
+                    </a>
+                  </div>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </div>
@@ -177,23 +121,7 @@ const storyCSS = `
   .story-section {
     background: var(--st-background);
     transition: background 0.4s ease;
-    /* Clears the fixed Navbar pill when landed on via an #about anchor
-       jump, so the heading isn't tucked under it. */
     scroll-margin-top: 96px;
-  }
-  /* Mobile only. The inactive team photo's deliberate "peek out to the
-     left" tilt (INACTIVE_OFFSET.x, a negative translateX) has no clipping
-     ancestor by design on desktop, where there's enough surrounding
-     margin for the peek to never reach the true viewport edge. On a
-     narrow phone the stack runs edge-to-edge, so that same offset was
-     bleeding past x:0 and causing real page-level horizontal scroll —
-     confirmed via document.documentElement.scrollWidth exceeding
-     clientWidth. Clipping at the section boundary here still lets most of
-     the peek read visually; it just can't spill into the scrollable area. */
-  @media (max-width: 767px) {
-    .story-section {
-      overflow-x: hidden;
-    }
   }
   .story-row {
     max-width: 1280px;
@@ -201,17 +129,20 @@ const storyCSS = `
     padding: var(--st-space-xl) var(--st-space-margin-mobile);
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 3.5rem;
   }
 
   .story-text {
     width: 100%;
   }
-  /* The brand's elegant serif display heading — pinned explicitly rather
-     than inherited, so it stays serif regardless of the global h1-h6
-     sans-serif default. Every main section heading on the page shares
-     this exact declaration (see CtaSection, AIEnginesSection,
-     EventLifecycleSection, VenueAccordion). */
+  .story-eyebrow {
+    margin: 0 0 0.5rem;
+    font-family: var(--st-font-display);
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    color: var(--st-secondary);
+  }
   .story-heading {
     margin: 0 0 1.25rem;
     font-family: var(--st-font-serif);
@@ -229,133 +160,157 @@ const storyCSS = `
     line-height: 1.7;
     color: var(--st-on-surface-variant);
   }
-  .story-paragraph:last-child {
-    margin-bottom: 0;
+  .story-badge-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+  }
+  .story-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.85rem;
+    border-radius: var(--st-radius-full);
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: var(--st-font-display);
+    background: var(--st-surface-container-low);
+    color: var(--st-secondary);
+    border: 1px solid var(--st-outline-variant);
   }
 
   .team-panel {
     width: 100%;
   }
-  .team-grid {
+  .founders-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 2.5rem;
+    gap: 1.5rem;
   }
 
-  .team-photo-stack {
-    position: relative;
-    width: 100%;
-    height: 320px;
-    perspective: 1000px;
-  }
-  .team-photo-frame {
-    position: absolute;
-    inset: 0;
-    transform-origin: bottom;
+  .founder-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.25rem;
+    background: var(--st-surface-container-lowest);
+    border: 1px solid var(--st-outline-variant);
     border-radius: var(--st-radius-xl);
-    overflow: hidden;
-    box-shadow: 0 20px 40px -20px rgba(13, 27, 62, 0.25);
+    box-shadow: 0 10px 30px -15px rgba(11, 28, 48, 0.08);
+    transition: transform 0.25s ease, border-color 0.25s ease;
   }
-  .team-photo {
+  .founder-card:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--st-secondary) 50%, var(--st-outline-variant));
+  }
+
+  .founder-photo-box {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    flex-shrink: 0;
+    border-radius: var(--st-radius-lg);
+    overflow: hidden;
+    background: var(--st-surface-container-high);
+  }
+  .founder-photo {
     object-fit: cover;
     object-position: top center;
   }
 
-  .team-details {
+  .founder-body {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    gap: 0.4rem;
+    flex: 1;
+    min-width: 0;
   }
-  .team-name {
+  .founder-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  .founder-name {
     margin: 0;
     font-family: var(--st-font-display);
     font-weight: 700;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: var(--st-on-background);
   }
-  .team-role {
-    margin: 0.35rem 0 0;
-    font-family: var(--st-font-ui);
-    font-size: 0.95rem;
+  .founder-role-badge {
+    font-size: 0.76rem;
+    font-weight: 600;
+    font-family: var(--st-font-display);
+    padding: 0.15rem 0.55rem;
+    border-radius: var(--st-radius-full);
+    background: color-mix(in srgb, var(--st-secondary) 12%, transparent);
+    color: var(--st-secondary);
+    white-space: nowrap;
+  }
+  .founder-bio {
+    margin: 0;
+    font-size: 0.88rem;
+    line-height: 1.45;
     color: var(--st-on-surface-variant);
   }
-  .team-contact {
+  .founder-links {
     display: flex;
-    gap: 0.5rem;
-    margin-top: 1.25rem;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem 1rem;
+    margin-top: 0.4rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--st-outline-variant);
   }
-  .team-contact-link {
+  .founder-link-item {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: var(--st-radius-full);
-    background: var(--st-surface-container-low);
+    gap: 0.4rem;
+    font-size: 0.82rem;
     color: var(--st-on-surface-variant);
-    transition: color 0.2s ease, background 0.2s ease;
+    text-decoration: none;
+    transition: color 0.2s ease;
   }
-  .team-contact-link:hover {
-    color: var(--st-primary);
-    background: var(--st-surface-container-high);
+  .founder-link-item:hover {
+    color: var(--st-secondary);
   }
-  .team-contact-link:focus-visible {
+  .founder-link-item:focus-visible {
     outline: 2px solid var(--st-secondary);
     outline-offset: 2px;
+    border-radius: 4px;
+  }
+  .founder-link-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 170px;
   }
 
-  .team-nav {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 1.75rem;
-  }
-  /* No pill/box: no background, border, or padding — just the raw icon,
-     colored via --st-on-background so it's black on the light theme and
-     white on dark (the same token the "James Kim"-style name/heading text
-     above it already uses), with a plain scale-up on hover/focus. */
-  .team-nav-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    background: none;
-    padding: 0;
-    color: var(--st-on-background);
-    cursor: pointer;
-    transition: transform 0.2s ease, opacity 0.2s ease;
-  }
-  .team-nav-btn:hover {
-    transform: scale(1.15);
-    opacity: 0.7;
-  }
-  .team-nav-btn:focus-visible {
-    outline: 2px solid var(--st-secondary);
-    outline-offset: 4px;
-    border-radius: var(--st-radius-sm);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .team-nav-btn:hover {
-      transform: none;
+  @media (max-width: 580px) {
+    .founder-card {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .founder-photo-box {
+      width: 90px;
+      height: 90px;
     }
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 860px) {
     .story-row {
       flex-direction: row;
       align-items: flex-start;
-      gap: 5.5rem;
+      gap: 4rem;
     }
     .story-text {
-      width: 50%;
+      width: 48%;
     }
     .team-panel {
-      width: 50%;
-    }
-    .team-grid {
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
+      width: 52%;
     }
   }
 `;

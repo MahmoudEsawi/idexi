@@ -9,7 +9,7 @@ import PageShell from "@/components/PageShell";
    worse than useless. They go in after legal review. */
 
 export const metadata: Metadata = {
-  title: "Terms of Service | idexi",
+  title: "Terms of Service",
   description:
     "The terms covering use of idexi's ticketing, check-in, and photo delivery services for an event.",
 };

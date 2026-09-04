@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { ShieldCheck } from "lucide-react";
 import IntroStrobeLoader from "@/components/IntroStrobeLoader";
 import HeroKineticPhotos from "@/components/HeroKineticPhotos";
 import AIEnginesSection from "@/components/AIEnginesSection";
 import EventLifecycleSection from "@/components/EventLifecycleSection";
 import VenueAccordion from "@/components/VenueAccordion";
 import OurStorySection from "@/components/OurStorySection";
-import CtaSection from "@/components/CtaSection";
+import CtaSection from "@/components/CtaSection";
 import EventProofSection from "@/components/EventProofSection";
 
 import ProblemSection from "@/components/ProblemSection";
@@ -38,12 +39,16 @@ export default function Home() {
               See How It Works
             </Link>
           </div>
-          {/* Price anchor sits under the CTAs rather than in the headline: it
-              qualifies traffic before anyone fills the form, and answers the
-              first question most organizers actually have. */}
-          <p className="st-hero-price">
-            Plans start at <strong>$199 per event</strong>. No hardware to buy.
-          </p>
+          {/* Price anchor & Risk reversal guarantee: overcomes upfront spend anxiety */}
+          <div className="st-hero-price-wrap">
+            <p className="st-hero-price">
+              Plans start at <strong>$199 per event</strong>. No hardware to buy.
+            </p>
+            <p className="st-hero-guarantee">
+              <ShieldCheck size={16} aria-hidden="true" className="st-hero-guarantee-icon" />
+              <span><strong>Zero-Risk Guarantee:</strong> Full refund if check-in fails at your door.</span>
+            </p>
+          </div>
         </div>
 
         {/* Right Column: Transparent Kinetic Photo Moodboard */}
@@ -102,6 +107,13 @@ const pageCSS = `
     color: var(--st-secondary);
   }
 
+  .st-hero-price-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-top: 0.5rem;
+  }
+
   .st-hero-price {
     margin: 0;
     font-size: 0.95rem;
@@ -111,6 +123,22 @@ const pageCSS = `
   .st-hero-price strong {
     font-weight: 600;
     color: var(--st-on-background);
+  }
+
+  .st-hero-guarantee {
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.88rem;
+    line-height: 1.4;
+    color: var(--st-product-pass);
+  }
+  .st-hero-guarantee-icon {
+    flex-shrink: 0;
+  }
+  .st-hero-guarantee strong {
+    font-weight: 600;
   }
 
   .st-hero-title {

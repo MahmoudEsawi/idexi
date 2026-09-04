@@ -44,6 +44,7 @@ const footerColumns: FooterColumn[] = [
       { label: "How It Works", href: "/how-it-works" },
       { label: "Use Cases", href: "/use-cases" },
       { label: "Pricing", href: "/pricing" },
+      { label: "Stop Ticket Fraud", href: "/how-to-stop-duplicate-ticket-scanning" },
     ],
   },
   {
