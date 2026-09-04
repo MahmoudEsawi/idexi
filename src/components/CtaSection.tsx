@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useState, useEffect } from "react";
 import { ShieldCheck } from "lucide-react";
 import { submitLead, type LeadFormState } from "@/app/actions/submit-lead";
 import { EVENT_TYPES, SOLUTIONS } from "@/app/actions/lead-options";
@@ -32,11 +32,13 @@ export default function CtaSection({
   bullets = HOME_BULLETS,
   defaultSolution,
 }: CtaSectionProps) {
-  // The form posts straight to the submitLead Server Action. Success is
-  // reported only when the notification email actually went out: an earlier
-  // version flipped to "thanks, we'll be in touch" unconditionally, which
-  // meant a failed send looked identical to a delivered lead.
   const [state, formAction, isPending] = useActionState(submitLead, INITIAL_FORM_STATE);
+  const [renderedAt, setRenderedAt] = useState<number | null>(null);
+
+  useEffect(() => {
+    setRenderedAt(Date.now());
+  }, []);
+
   const submitted = state.status === "success";
   const fieldErrors = state.fieldErrors ?? {};
   const values = state.values ?? {};
@@ -49,10 +51,6 @@ export default function CtaSection({
         <div className="cta-text">
           <h2 className="cta-heading">{heading}</h2>
           <p className="cta-subtext">{subtext}</p>
-          {/* The "Why organizers choose idexi" checklist used to be its own
-              section immediately above this one. Merged in here because the
-              two were one closing beat already: the recap and the ask belong
-              in the same field of view, not stacked as separate scrolls. */}
           {bullets && bullets.length > 0 && (
             <ul className="cta-bullets">
               {bullets.map((line) => (
@@ -77,14 +75,14 @@ export default function CtaSection({
             </div>
           ) : (
             <form className="cta-form" action={formAction}>
-              {/* Honeypot. Hidden from sight, from screen readers, and from
-                  tab order, so only a bot filling every field it finds will
-                  ever populate it. Kept off-screen rather than display:none
-                  because some bots skip undisplayed inputs. */}
+              {/* Anti-Bot Traps: dual honeypot & time-gate */}
               <div className="cta-hp" aria-hidden="true">
                 <label htmlFor="cta-website">Website</label>
                 <input id="cta-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+                <label htmlFor="cta-company-hp">Company</label>
+                <input id="cta-company-hp" name="company_hp" type="text" tabIndex={-1} autoComplete="off" />
               </div>
+              <input type="hidden" name="_rendered_at" value={renderedAt ?? ""} />
 
               {state.status === "error" && state.message && (
                 <p className="cta-form-error cta-field-full" role="alert">
