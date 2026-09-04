@@ -3,9 +3,6 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   output: "standalone",
-  turbopack: {
-    root: ".",
-  },
   images: {
     /* Next 16 only honours quality values listed here; anything else is
        silently served at the 75 default. Every quality prop in the codebase

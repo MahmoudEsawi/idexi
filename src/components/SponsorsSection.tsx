@@ -88,22 +88,6 @@ const QR_ROWS = [
 ];
 const QR_CELLS = QR_ROWS.join("").split("");
 
-const MOTION_QUERY = "(prefers-reduced-motion: reduce)";
-
-function subscribeToMotionPreference(onChange: () => void) {
-  const query = window.matchMedia(MOTION_QUERY);
-  query.addEventListener("change", onChange);
-  return () => query.removeEventListener("change", onChange);
-}
-
-function usePrefersReducedMotion() {
-  return React.useSyncExternalStore(
-    subscribeToMotionPreference,
-    () => window.matchMedia(MOTION_QUERY).matches,
-    () => false
-  );
-}
-
 /* The recurring asset: four partner marks on one plate, at three scales.
    Built from the sponsor container pair, so it stays legible on ticket
    stock, on an email cover, and over a photograph, in both themes, from one
@@ -131,7 +115,7 @@ function QrBlock() {
 }
 
 function Counter({ value, active }: { value: number; active: boolean }) {
-  const reduced = usePrefersReducedMotion();
+  const reduced = useReducedMotion();
   const [counted, setCounted] = React.useState(0);
 
   React.useEffect(() => {
@@ -157,8 +141,7 @@ export default function SponsorsSection() {
   const [inView, setInView] = React.useState(false);
   const [active, setActive] = React.useState(0);
   const [held, setHeld] = React.useState(false);
-  const reduced = usePrefersReducedMotion();
-  const framerReduced = useReducedMotion();
+  const reduced = Boolean(useReducedMotion());
 
   React.useEffect(() => {
     const node = sectionRef.current;
@@ -196,10 +179,10 @@ export default function SponsorsSection() {
     return {
       className: "sp-object",
       "data-object": key,
-      animate: framerReduced
+      animate: reduced
         ? { opacity: on ? 1 : 0, scale: 1, y: 0 }
         : { opacity: on ? 1 : 0, scale: on ? 1 : 0.96, y: on ? 0 : 14 },
-      transition: framerReduced
+      transition: reduced
         ? { duration: 0 }
         : {
             default: { type: "spring" as const, stiffness: 240, damping: 28, mass: 0.9 },

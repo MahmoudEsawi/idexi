@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
+import { useReducedMotion } from "framer-motion";
 
 const POOL_IMAGES = [
   "/editorial-red-coat.jpg",
@@ -50,7 +51,8 @@ const MOVING_TILES: MovingTile[] = [
 ];
 
 export default function IntroStrobeLoader() {
-  const [isVisible, setIsVisible] = useState(true);
+  const prefersReducedMotion = useReducedMotion();
+  const [isVisible, setIsVisible] = useState(false);
   const [phase, setPhase] = useState<"active" | "fading" | "exit">("active");
 
   const [tileImages, setTileImages] = useState<number[]>(() =>
@@ -60,6 +62,21 @@ export default function IntroStrobeLoader() {
   const intervalsRef = useRef<NodeJS.Timeout[]>([]);
 
   useEffect(() => {
+    // Accessibility check: immediately skip if user prefers reduced motion
+    if (prefersReducedMotion) return;
+
+    // UX check: only show once per browser session
+    try {
+      if (sessionStorage.getItem("idexi_intro_seen")) {
+        return;
+      }
+      sessionStorage.setItem("idexi_intro_seen", "1");
+    } catch {
+      // Ignore storage errors in restricted iframes
+    }
+
+    setIsVisible(true);
+
     // Fast image strobing per moving tile
     intervalsRef.current = MOVING_TILES.map((tile, idx) => {
       return setInterval(() => {
@@ -100,7 +117,7 @@ export default function IntroStrobeLoader() {
       clearTimeout(t3);
       window.removeEventListener("keydown", handleSkip);
     };
-  }, []);
+  }, [prefersReducedMotion]);
 
   if (!isVisible) return null;
 

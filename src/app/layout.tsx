@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ArchitectEasterEgg from "@/components/ArchitectEasterEgg";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -60,6 +59,13 @@ export const metadata: Metadata = {
     description:
       "AI event check-in software, fraud-proof digital ticketing, and instant photo delivery with offline support. Plans from $199 with a full refund guarantee.",
     images: ["/flow-conference-hall.jpg"],
+  },
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
   },
 };
 
@@ -150,7 +156,6 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
-        <ArchitectEasterEgg />
       </body>
     </html>
   );
