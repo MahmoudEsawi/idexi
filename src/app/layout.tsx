@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ArchitectEasterEgg from "@/components/ArchitectEasterEgg";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -12,7 +13,12 @@ export const metadata: Metadata = {
   title: "idexi: Intelligent Event Solutions | AI-Powered Access Control & Photo Management",
   description: "Transform event experiences with idexi. Features idexi Face (instant AI photo delivery), idexi Flow (staff-powered access control & event logistics), and idexi Pass (smart digital ticketing).",
   keywords: ["AI events", "face recognition photos", "event access control", "digital check-in", "event check-in app", "smart check-in", "idexi", "event software"],
-  authors: [{ name: "idexi Team" }],
+  authors: [
+    { name: "Mahmoud Al-Esawi", url: "https://github.com/MahmoudEsawi" },
+    { name: "idexi Team" },
+  ],
+  creator: "Mahmoud Al-Esawi",
+  publisher: "idexi",
   robots: "index, follow",
 };
 
@@ -46,6 +52,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <ArchitectEasterEgg />
       </body>
     </html>
   );
