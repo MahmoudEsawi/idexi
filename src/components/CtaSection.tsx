@@ -229,40 +229,42 @@ const ctaCSS = `
   .cta-section {
     background: var(--st-background);
     transition: background 0.4s ease;
-    /* Clears the fixed Navbar pill when landed on via a #contact anchor
-       jump, so the heading isn't tucked under it. */
     scroll-margin-top: 96px;
+    width: 100%;
+    overflow: hidden;
   }
   .cta-row {
     max-width: 1280px;
     margin: 0 auto;
     padding: var(--st-space-xl) var(--st-space-margin-mobile);
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 3rem;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .cta-text {
     width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    box-sizing: border-box;
   }
-  /* Body copy and labels below inherit font-family from the global
-     body rule. The heading is pinned explicitly to the brand's serif
-     display font, matching OurStorySection's heading declaration exactly
-     (same family, weight, and letter-spacing) rather than the global
-     h1-h6 sans-serif default. */
   .cta-heading {
     margin: 0 0 1.25rem;
     font-family: var(--st-font-serif);
     font-weight: 500;
-    font-size: clamp(2.25rem, 5vw, 3.5rem);
-    line-height: 1.1;
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    line-height: 1.12;
     letter-spacing: -0.01em;
     color: var(--st-on-background);
+    word-break: break-word;
   }
   .cta-subtext {
     margin: 0 0 1.25rem;
-    max-width: 34rem;
-    font-size: 1.0625rem;
+    max-width: 36rem;
+    font-size: clamp(0.98rem, 2vw, 1.0625rem);
     line-height: 1.6;
     color: var(--st-on-surface-variant);
   }
@@ -273,14 +275,17 @@ const ctaCSS = `
     display: flex;
     flex-direction: column;
     gap: 0.85rem;
-    max-width: 34rem;
+    max-width: 36rem;
+    width: 100%;
+    box-sizing: border-box;
   }
   .cta-bullets li {
     position: relative;
-    padding-left: 1.5rem;
-    font-size: 1.0625rem;
+    padding-left: 1.4rem;
+    font-size: clamp(0.95rem, 2vw, 1.0625rem);
     line-height: 1.55;
     color: var(--st-on-surface-variant);
+    word-break: break-word;
   }
   .cta-bullets li::before {
     content: '';
@@ -292,11 +297,9 @@ const ctaCSS = `
     border-radius: 50%;
     background: var(--st-secondary);
   }
-  /* Sits tight to the checklist above it: the spec treats the two as one
-     closing reassurance beat, not as separate blocks. */
   .cta-nudge {
     margin: 1.35rem 0 0;
-    font-size: 1.0625rem;
+    font-size: clamp(0.95rem, 2vw, 1.0625rem);
     line-height: 1.55;
   }
   .cta-nudge-link {
@@ -323,21 +326,63 @@ const ctaCSS = `
 
   .cta-form-panel {
     width: 100%;
-    padding: 2rem;
+    max-width: 640px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 1.5rem 1.25rem;
     border-radius: var(--st-radius-xl);
     background: var(--st-surface-container-lowest);
     border: 1px solid var(--st-outline-variant);
+    box-shadow: 0 16px 40px -20px rgba(11, 28, 48, 0.12);
+    container-type: inline-size;
+    container-name: ctaform;
+  }
+
+  @media (min-width: 600px) {
+    .cta-form-panel {
+      padding: 2.25rem 2rem;
+    }
   }
 
   .cta-form {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1rem;
+    width: 100%;
+    box-sizing: border-box;
   }
+
+  /* Two-column layout when the card container has at least 460px */
+  @container ctaform (min-width: 460px) {
+    .cta-form {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.1rem 1.25rem;
+    }
+    .cta-field-full {
+      grid-column: 1 / -1;
+    }
+  }
+
+  /* Fallback for browsers without container query support */
+  @supports not (container-type: inline-size) {
+    @media (min-width: 640px) {
+      .cta-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.1rem 1.25rem;
+      }
+      .cta-field-full {
+        grid-column: 1 / -1;
+      }
+    }
+  }
+
   .cta-field {
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
   }
   .cta-field-full {
     grid-column: 1 / -1;
@@ -350,8 +395,6 @@ const ctaCSS = `
   .cta-required {
     color: var(--st-error);
   }
-  /* Honeypot wrapper: moved off-screen rather than display:none, since some
-     bots ignore undisplayed inputs. Never focusable, never announced. */
   .cta-hp {
     position: absolute;
     left: -9999px;
@@ -369,6 +412,7 @@ const ctaCSS = `
     color: var(--st-error);
     font-size: 0.9rem;
     line-height: 1.5;
+    word-break: break-word;
   }
   .cta-field-error {
     font-size: 0.82rem;
@@ -388,20 +432,21 @@ const ctaCSS = `
     transform: none;
     box-shadow: none;
   }
-  /* Browsers do not have form controls inherit font-family from the page
-     by default (they use the OS's native UI font instead) — font: inherit
-     is what makes them genuinely pick up the same font as the label right
-     above them, rather than a second hardcoded value duplicating it. */
+
   .cta-field input,
   .cta-field select,
   .cta-field textarea {
     font: inherit;
-    font-size: 0.9375rem;
+    font-size: 1rem; /* 16px to prevent iOS Safari auto-zoom on focus */
     color: var(--st-on-background);
     background: var(--st-surface-container-lowest);
     border: 1.5px solid var(--st-outline-variant);
     border-radius: var(--st-radius-md);
-    padding: 0.7rem 0.9rem;
+    padding: 0.75rem 0.9rem;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
   .cta-field textarea {
@@ -411,6 +456,8 @@ const ctaCSS = `
   .cta-field input::placeholder,
   .cta-field textarea::placeholder {
     color: var(--st-outline);
+    opacity: 0.85;
+    font-size: 0.92rem;
   }
   .cta-field input:focus,
   .cta-field select:focus,
@@ -421,10 +468,15 @@ const ctaCSS = `
   }
   .cta-field select {
     appearance: none;
+    -webkit-appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2345464e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 0.9rem center;
-    padding-right: 2.5rem;
+    background-position: right 0.85rem center;
+    padding-right: 2.25rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
   }
   .cta-field select:invalid,
   .cta-field select option[value=""] {
@@ -434,6 +486,7 @@ const ctaCSS = `
   .cta-submit {
     margin-top: 0.25rem;
     width: 100%;
+    min-height: 48px;
     padding: 0.9rem 1.5rem;
     font: inherit;
     font-weight: 600;
@@ -443,6 +496,7 @@ const ctaCSS = `
     border: none;
     border-radius: var(--st-radius-full);
     cursor: pointer;
+    box-sizing: border-box;
     transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   }
   .cta-submit:hover {
@@ -459,11 +513,13 @@ const ctaCSS = `
     align-items: center;
     justify-content: center;
     gap: 0.45rem;
-    margin-top: 0.65rem;
-    font-size: 0.84rem;
-    line-height: 1.4;
+    margin-top: 0.75rem;
+    font-size: 0.82rem;
+    line-height: 1.45;
     color: var(--st-on-surface-variant);
     text-align: center;
+    width: 100%;
+    box-sizing: border-box;
   }
   .cta-guarantee-icon {
     color: var(--st-product-pass);
@@ -472,6 +528,14 @@ const ctaCSS = `
   .cta-guarantee strong {
     color: var(--st-product-pass);
     font-weight: 600;
+  }
+
+  @media (max-width: 440px) {
+    .cta-guarantee {
+      flex-direction: column;
+      gap: 0.25rem;
+      font-size: 0.78rem;
+    }
   }
 
   .cta-success {
@@ -495,20 +559,26 @@ const ctaCSS = `
     }
   }
 
-  @media (min-width: 768px) {
+  /* Split side-by-side layout only on desktop screens with ample breathing room */
+  @media (min-width: 1024px) {
     .cta-row {
-      flex-direction: row;
+      grid-template-columns: 1fr 1.08fr;
+      gap: 4rem;
       align-items: center;
     }
     .cta-text {
-      width: 50%;
+      max-width: none;
+      margin: 0;
     }
     .cta-form-panel {
-      width: 50%;
+      max-width: none;
+      margin: 0;
     }
-    .cta-form {
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem 1.25rem;
+  }
+
+  @media (min-width: 1280px) {
+    .cta-row {
+      gap: 5rem;
     }
   }
 `;
