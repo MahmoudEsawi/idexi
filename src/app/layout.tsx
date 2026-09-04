@@ -47,7 +47,7 @@ export const metadata: Metadata = {
       "AI event check-in software, fraud-proof digital ticketing, and instant photo delivery with offline support. Plans from $199 with a full refund guarantee.",
     images: [
       {
-        url: "/flow-conference-hall.jpg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "idexi — AI Event Check-In, Ticketing & Photo Delivery",
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     title: "idexi — AI Event Check-In, Ticketing & Photo Delivery",
     description:
       "AI event check-in software, fraud-proof digital ticketing, and instant photo delivery with offline support. Plans from $199 with a full refund guarantee.",
-    images: ["/flow-conference-hall.jpg"],
+    images: ["/og-image.png"],
   },
   icons: {
     icon: [
