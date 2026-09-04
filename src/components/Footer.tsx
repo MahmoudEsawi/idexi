@@ -75,6 +75,17 @@ const socialColumn: { label: string; href: string; icon: React.ReactNode }[] = [
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const { ref, inView } = useInViewOnce<HTMLElement>(0.15);
+  const clickCountRef = React.useRef(0);
+
+  const handleEasterTrigger = () => {
+    clickCountRef.current += 1;
+    if (clickCountRef.current >= 5) {
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("idexi:architect-easter-egg"));
+      }
+      clickCountRef.current = 0;
+    }
+  };
 
   return (
     <footer
@@ -92,6 +103,8 @@ export default function Footer() {
             width={160}
             height={41}
             className="footer-logo-img footer-logo-light"
+            onClick={handleEasterTrigger}
+            style={{ cursor: "pointer" }}
           />
           <Image
             src="/logo-white-horizontal.png"
@@ -100,11 +113,17 @@ export default function Footer() {
             width={160}
             height={41}
             className="footer-logo-img footer-logo-dark"
+            onClick={handleEasterTrigger}
+            style={{ cursor: "pointer" }}
           />
           <p className="footer-tagline">
             AI-powered check-in, access control, and photo delivery for live events.
           </p>
-          <p className="footer-copyright">
+          <p
+            className="footer-copyright"
+            onClick={handleEasterTrigger}
+            style={{ cursor: "default", userSelect: "none" }}
+          >
             &copy; {currentYear} idexi. All rights reserved.
           </p>
         </div>
