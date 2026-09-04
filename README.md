@@ -215,7 +215,7 @@ Visit [`http://localhost:3000`](http://localhost:3000) in your browser.
 
 ### 🌟 Executive Leadership
 * **Saif Alqdessi** — *Co-Founder & Tech Lead*
-* **Jafar Alkhadrawi** — *Co-Founder & Business Operations*
+* **Jafar Alkhadrawi** — *Co-Founder & Businesss Operations*
 
 ---
 
